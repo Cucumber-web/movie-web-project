@@ -1,0 +1,465 @@
+[
+  {
+  "Query": "세얼간이",
+  "KMAQuery": "세얼간이",
+  "TotalCount": 2,
+  "Data": [
+    {
+      "CollName": "kmdb_new2",
+      "TotalCount": 2,
+      "Count": 2,
+      "Result": [
+        {
+          "DOCID": "F28254",
+          "movieId": "F",
+          "movieSeq": "28254",
+          "title": " 세 얼간이",
+          "titleEng": "3 Idiots",
+          "titleOrg": "3 Idiots",
+          "titleEtc": "세얼간이^세 얼간이^3 Idiots^3 Idiots^3 Idiots",
+          "prodYear": "2009",
+          "directors": {
+            "director": [
+              {
+                "directorNm": "라지쿠마르 히라니",
+                "directorEnNm": "Rajkumar Hirani",
+                "directorId": "00157021"
+              }
+            ]
+          },
+          "actors": {
+            "actor": [
+              {
+                "actorNm": "아미르 칸",
+                "actorEnNm": "Aamir Khan",
+                "actorId": "00052108"
+              },
+              {
+                "actorNm": "마드하반",
+                "actorEnNm": "Madhavan",
+                "actorId": "00157018"
+              },
+              {
+                "actorNm": "셔먼 조쉬",
+                "actorEnNm": "Sharman Joshi",
+                "actorId": "00157019"
+              },
+              {
+                "actorNm": "카리나 카푸르",
+                "actorEnNm": "Kareena Kapoor",
+                "actorId": "00092850"
+              },
+              {
+                "actorNm": "보만 이라니",
+                "actorEnNm": "Boman Irani",
+                "actorId": "00157020"
+              },
+              {
+                "actorNm": "오미 바이댜",
+                "actorEnNm": "Omi Vaidya",
+                "actorId": "00106564"
+              }
+            ]
+          },
+          "nation": "인도",
+          "company": "Vinod Chopra Productions",
+          "plots": {
+            "plot": [
+              {
+                "plotLang": "한국어",
+                "plotText": "천재들만 간다는 일류 명문대 ICE, 성적과 취업만을 강요하는 학교를 발칵 뒤집어 놓은 대단한 녀석 란초! 아버지가 정해준 꿈, 공학자가 되기 위해 정작 본인이 좋아하는 일은 포기하고 공부만하는 파파보이 파르한! 찢어지게 가난한 집, 병든 아버지와 식구들을 책임지기 위해 무조건 대기업에 취직해야만 하는 라주! 친구의 이름으로 뭉친 세 얼간이! 삐딱한 천재들의 진정한 꿈을 찾기 위한 세상 뒤집기 한판이 시작된다!  모두다 외쳐봐! 알 이즈 웰...알 이즈 웰..."
+              }
+            ]
+          },
+          "runtime": "170",
+          "rating": "12세관람가",
+          "genre": "코메디,드라마",
+          "kmdbUrl": "https://www.kmdb.or.kr/db/kor/detail/movie/F/28254",
+          "type": "극영화",
+          "use": "극장용",
+          "episodes": "",
+          "ratedYn": "Y",
+          "repRatDate": "20110809",
+          "repRlsDate": "20110817",
+          "ratings": {
+            "rating": [
+              {
+                "ratingMain": "Y",
+                "ratingDate": "20110809",
+                "ratingNo": "2011-F434",
+                "ratingGrade": "12세관람가",
+                "releaseDate": "20110817",
+                "runtime": "170"
+              },
+              {
+                "ratingMain": "N",
+                "ratingDate": "20110720",
+                "ratingNo": "2011-F385",
+                "ratingGrade": "12세관람가",
+                "releaseDate": "20110817",
+                "runtime": "141"
+              },
+              {
+                "ratingMain": "",
+                "ratingDate": "20160620",
+                "ratingNo": "2016-MF00890",
+                "ratingGrade": "12세관람가",
+                "releaseDate": "20161109",
+                "runtime": "171"
+              }
+            ]
+          },
+          "keywords": "공학자,명문대,세친구,천재,대기업,우정,재개봉",
+          "posters": "http://file.koreafilm.or.kr/thm/02/00/01/46/tn_DPF002093.JPG|http://file.koreafilm.or.kr/thm/02/00/01/47/tn_DPF002121.JPG",
+          "stlls": "http://file.koreafilm.or.kr/thm/01/copy/00/37/78/tn_DSFT051950.jpg|http://file.koreafilm.or.kr/thm/01/copy/00/37/78/tn_DSFT051951.jpg|http://file.koreafilm.or.kr/thm/01/copy/00/37/78/tn_DSFT051952.jpg|http://file.koreafilm.or.kr/thm/01/copy/00/37/78/tn_DSFT051953.jpg|http://file.koreafilm.or.kr/thm/01/copy/00/37/78/tn_DSFT051954.jpg|http://file.koreafilm.or.kr/thm/01/copy/00/37/78/tn_DSFT051955.jpg|http://file.koreafilm.or.kr/thm/01/copy/00/37/78/tn_DSFT051957.jpg|http://file.koreafilm.or.kr/thm/01/copy/00/37/78/tn_DSFT051958.jpg|http://file.koreafilm.or.kr/thm/01/copy/00/37/78/tn_DSFT051959.jpg|http://file.koreafilm.or.kr/thm/01/copy/00/37/78/tn_DSFT051956.jpg",
+          "staffs": {
+            "staff": [
+              {
+                "staffNm": "라지쿠마르 히라니",
+                "staffEnNm": "Rajkumar Hirani",
+                "staffRoleGroup": "감독",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157021"
+              },
+              {
+                "staffNm": "비두 비노드 쇼프라",
+                "staffEnNm": "Vidhu Vinod Chopra",
+                "staffRoleGroup": "각본",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157022"
+              },
+              {
+                "staffNm": "라지쿠마르 히라니",
+                "staffEnNm": "Rajkumar Hirani",
+                "staffRoleGroup": "각본",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157021"
+              },
+              {
+                "staffNm": "애브히짓 조쉬",
+                "staffEnNm": "Abhijit Joshi",
+                "staffRoleGroup": "각본",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157023"
+              },
+              {
+                "staffNm": "아미르 칸",
+                "staffEnNm": "Aamir Khan",
+                "staffRoleGroup": "출연",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00052108"
+              },
+              {
+                "staffNm": "마드하반",
+                "staffEnNm": "Madhavan",
+                "staffRoleGroup": "출연",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157018"
+              },
+              {
+                "staffNm": "셔먼 조쉬",
+                "staffEnNm": "Sharman Joshi",
+                "staffRoleGroup": "출연",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157019"
+              },
+              {
+                "staffNm": "카리나 카푸르",
+                "staffEnNm": "Kareena Kapoor",
+                "staffRoleGroup": "출연",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00092850"
+              },
+              {
+                "staffNm": "보만 이라니",
+                "staffEnNm": "Boman Irani",
+                "staffRoleGroup": "출연",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157020"
+              },
+              {
+                "staffNm": "오미 바이댜",
+                "staffEnNm": "Omi Vaidya",
+                "staffRoleGroup": "출연",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00106564"
+              },
+              {
+                "staffNm": "비두 비노드 쇼프라",
+                "staffEnNm": "Vidhu Vinod Chopra",
+                "staffRoleGroup": "제작자",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157022"
+              },
+              {
+                "staffNm": "아닐 다브다",
+                "staffEnNm": "Anil Davda",
+                "staffRoleGroup": "기획",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157025"
+              },
+              {
+                "staffNm": "C.K. 무라리드하란",
+                "staffEnNm": "C.K. Muraleedharan",
+                "staffRoleGroup": "촬영",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157024"
+              },
+              {
+                "staffNm": "샨타누 모이트라",
+                "staffEnNm": "Shantanu Moitra",
+                "staffRoleGroup": "음악",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157026"
+              },
+              {
+                "staffNm": "라이니시 헤다오",
+                "staffEnNm": "Rajnish Hedao",
+                "staffRoleGroup": "미술",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157027"
+              },
+              {
+                "staffNm": "매니쉬 말호트라",
+                "staffEnNm": "Manish Malhotra",
+                "staffRoleGroup": "의상",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00157028"
+              },
+              {
+                "staffNm": "Vinod Chopra Productions",
+                "staffEnNm": "",
+                "staffRoleGroup": "제작사",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": ""
+              },
+              {
+                "staffNm": "(주)씨네마드마농",
+                "staffEnNm": "",
+                "staffRoleGroup": "수입사",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": ""
+              }
+            ]
+          },
+          "vods": {
+            "vod": [
+              {
+                "vodClass": "예고편()",
+                "vodUrl": "https://www.kmdb.or.kr/db/kor/detail/movie/F/28254/own/videoData"
+              },
+              {
+                "vodClass": "뮤직비디오(뮤직비디오)",
+                "vodUrl": "https://www.kmdb.or.kr/db/kor/detail/movie/F/28254/own/videoData"
+              },
+              {
+                "vodClass": "기타(관객추천)",
+                "vodUrl": "https://www.kmdb.or.kr/db/kor/detail/movie/F/28254/own/videoData"
+              },
+              {
+                "vodClass": "기타(캐릭터 영상)",
+                "vodUrl": "https://www.kmdb.or.kr/db/kor/detail/movie/F/28254/own/videoData"
+              },
+              {
+                "vodClass": "기타(카이스트 시사회)",
+                "vodUrl": "https://www.kmdb.or.kr/db/kor/detail/movie/F/28254/own/videoData"
+              },
+              {
+                "vodClass": "기타(선생님들의 강력 추천 영상 )",
+                "vodUrl": "https://www.kmdb.or.kr/db/kor/detail/movie/F/28254/own/videoData"
+              }
+            ]
+          },
+          "openThtr": "",
+          "stat": [
+            {
+              "screenArea": "",
+              "screenCnt": "",
+              "salesAcc": "",
+              "audiAcc": "",
+              "statSouce": "",
+              "statDate": ""
+            }
+          ],
+          "screenArea": "",
+          "screenCnt": "",
+          "salesAcc": "",
+          "audiAcc": "",
+          "statSouce": "",
+          "statDate": "",
+          "themeSong": "",
+          "soundtrack": "",
+          "fLocation": "",
+          "Awards1": "",
+          "Awards2": "",
+          "regDate": "20110704",
+          "modDate": "20221007",
+          "Codes": {
+            "Code": [
+              {
+                "CodeNm": "FIMS",
+                "CodeNo": "20110899"
+              },
+              {
+                "CodeNm": "FIMS(추가)",
+                "CodeNo": "20112151"
+              }
+            ]
+          },
+          "CommCodes": {
+            "CommCode": [
+              {
+                "CodeNm": "FIMS",
+                "CodeNo": "20110899"
+              }
+            ]
+          },
+          "ALIAS": "srcKmdb2"
+        },
+        {
+          "DOCID": "A08742",
+          "movieId": "A",
+          "movieSeq": "08742",
+          "title": " 세 얼간이",
+          "titleEng": "Three Idiots (Seeolgani)",
+          "titleOrg": "",
+          "titleEtc": "세얼간이^세 얼간이^Three Idiots (Seeolgani)",
+          "prodYear": "2017",
+          "directors": {
+            "director": [
+              {
+                "directorNm": "문종현",
+                "directorEnNm": "Moon Jong Hyun",
+                "directorId": "00202971"
+              }
+            ]
+          },
+          "actors": {
+            "actor": [
+              {
+                "actorNm": "",
+                "actorEnNm": "",
+                "actorId": ""
+              }
+            ]
+          },
+          "nation": "대한민국",
+          "company": "",
+          "plots": {
+            "plot": [
+              {
+                "plotLang": "한국어",
+                "plotText": "2012년부터 2016년까지, 잠원동 경원중학교 동창인 세 친구는 여전히 같은 동네를 하릴없이 돌아다닌다. 술을 마시거나, 카메라를 가지고 놀거나, 카메라로 만든 것을 서로 보여주는 것이 이들의 놀이다. 고층 아파트와 높은 크레인들로 이루어진 강남 아파트촌은 그들의 한가한 놀이와 별 볼일 없는 고민들을 위한 물적 토대이기도 하고, 한편으로는 그들을 옭아매는 구속이기도 하다. 하지만 어쩌면, 견고한 아파트촌도 뜻밖의 마지막을 맞을지도 모른다. (제22회 인디포럼)"
+              }
+            ]
+          },
+          "runtime": "62",
+          "rating": "",
+          "genre": "드라마",
+          "kmdbUrl": "https://www.kmdb.or.kr/db/kor/detail/movie/A/08742",
+          "type": "다큐멘터리",
+          "use": "극장용",
+          "episodes": "",
+          "ratedYn": "",
+          "repRatDate": "",
+          "repRlsDate": "",
+          "ratings": {
+            "rating": [
+              {
+                "ratingMain": "Y",
+                "ratingDate": "",
+                "ratingNo": "",
+                "ratingGrade": "",
+                "releaseDate": "",
+                "runtime": "62"
+              }
+            ]
+          },
+          "keywords": "세친구,강남,동창",
+          "posters": "",
+          "stlls": "http://file.koreafilm.or.kr/thm/01/copy/00/50/48/tn_DSAT017188.jpg",
+          "staffs": {
+            "staff": [
+              {
+                "staffNm": "문종현",
+                "staffEnNm": "Moon Jong Hyun",
+                "staffRoleGroup": "감독",
+                "staffRole": "",
+                "staffEtc": "",
+                "staffId": "00202971"
+              }
+            ]
+          },
+          "vods": {
+            "vod": [
+              {
+                "vodClass": "",
+                "vodUrl": ""
+              }
+            ]
+          },
+          "openThtr": "",
+          "stat": [
+            {
+              "screenArea": "",
+              "screenCnt": "",
+              "salesAcc": "",
+              "audiAcc": "",
+              "statSouce": "",
+              "statDate": ""
+            }
+          ],
+          "screenArea": "",
+          "screenCnt": "",
+          "salesAcc": "",
+          "audiAcc": "",
+          "statSouce": "",
+          "statDate": "",
+          "themeSong": "",
+          "soundtrack": "",
+          "fLocation": "",
+          "Awards1": "",
+          "Awards2": "",
+          "regDate": "20190104",
+          "modDate": "20190830",
+          "Codes": {
+            "Code": [
+              {
+                "CodeNm": "FIMS",
+                "CodeNo": "20176667"
+              }
+            ]
+          },
+          "CommCodes": {
+            "CommCode": [
+              {
+                "CodeNm": "FIMS",
+                "CodeNo": "20176667"
+              }
+            ]
+          },
+          "ALIAS": "srcKmdb2"
+        }
+      ]
+    }
+  ]
+}
+]
