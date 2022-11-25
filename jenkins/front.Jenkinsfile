@@ -1,7 +1,7 @@
 pipeline{
     agent {
         kubernetes{
-            yamlFile 'KubernetesPod.yaml'
+            yamlFile 'front-agent-pod.yaml'
         }
     }
 
@@ -21,8 +21,8 @@ pipeline{
             }
             post{
                 always{
-                    slackSend(channel: "#infra", token: "slack-token", color: "#0000FF",
-                     message: "Build Started! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#front-end", token: "slack-token", color: "#0000FF",
+                     message: "Front-End Build Started! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
             }
         }
@@ -30,14 +30,14 @@ pipeline{
         stage('Checkout'){
             steps{
                 git branch: 'main',
-                    url: 'https://github.com/Cucumber-web/Test-Front.git',
+                    url: 'https://github.com/Cucumber-web/movie-web-project.git',
                     credentialsId: 'github-repo-access-token'
             }
             post{
                 failure{
                     echo 'Repository clone failure!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "danger",
-                     message: "Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#front-end", token: "slack-token", color: "danger",
+                     message: "Front-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
                 success{
                     echo 'Repository clone success!'
@@ -47,19 +47,21 @@ pipeline{
         
         stage('React Build'){
             steps{
-                sh '''
-                    npm install
-                    npm run build
-                    pwd
-                    ls -al
-                    ls -al build
+                dir('front'){
+                    sh '''
+                        npm install
+                        npm run build
+                        pwd
+                        ls -al
+                        ls -al build
                     '''
+                }
             }
             post{
                 failure{
                     echo 'React build failure!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "danger",
-                     message: "Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#front-end", token: "slack-token", color: "danger",
+                     message: "Front-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
                 success{
                     echo 'React build success!'
@@ -81,8 +83,8 @@ pipeline{
             post{
                 failure{
                     echo 'Docker image build failure!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "danger",
-                     message: "Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#front-end", token: "slack-token", color: "danger",
+                     message: "Front-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
                 success{
                     echo 'Docker image build success!'
@@ -108,8 +110,8 @@ pipeline{
             post{
                 failure{
                     echo 'Docker Image Push failure!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "danger",
-                     message: "Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#front-end", token: "slack-token", color: "danger",
+                     message: "Front-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
                 success{
                     echo 'Docker Image Push Success!'
@@ -140,13 +142,13 @@ pipeline{
             post{
                 failure{
                     echo 'Kubernetes Manifest Update failure!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "danger",
-                     message: "Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#front-end", token: "slack-token", color: "danger",
+                     message: "Front-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
                 success{
                     echo 'Kubernetes Manifest Update Success!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "good",
-                     message: "Build Success! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#front-end", token: "slack-token", color: "good",
+                     message: "Front-End Build Success! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
 
                     /*
                     slackResponse.addReaction("thumbsup")
