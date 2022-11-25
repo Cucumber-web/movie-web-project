@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-front
+spec:
+  selector:
+    matchLabels:
+      app: test-front
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: test-front
+    spec:
+      containers:
+      - name: test-front
+        image: uh2959/cucumber-front:12
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80

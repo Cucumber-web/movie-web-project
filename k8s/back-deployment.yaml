@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-back
+spec:
+  selector:
+    matchLabels:
+      app: test-back
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: test-back
+    spec:
+      containers:
+      - name: test-back
+        image: uh2959/cucumber-back:99
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 8080
