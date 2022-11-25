@@ -1,7 +1,7 @@
 pipeline{
     agent {
         kubernetes{
-            yamlFile 'KubernetesPod.yaml'
+            yamlFile 'back-agent-pod.yaml'
         }
     }
     tools{
@@ -20,8 +20,8 @@ pipeline{
             }
             post{
                 always{
-                    slackSend(channel: "#infra", token: "slack-token", color: "#0000FF",
-                     message: "Build Started! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#back-end", token: "slack-token", color: "#0000FF",
+                     message: ":bell: Back-End Build Started! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                     
                     /*
                     slackSend(channel: "#infra", token: "slack-token", color: "#0000FF",
@@ -34,14 +34,14 @@ pipeline{
         stage('Checkout'){
             steps{
                 git branch: 'main',
-                    url: 'https://github.com/Cucumber-web/Test-Back.git',
+                    url: 'https://github.com/Cucumber-web/movie-web-project.git',
                     credentialsId: 'github-repo-access-token'
             }
             post{
                 failure{
                     echo 'Repository clone failure!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "danger",
-                     message: "Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#back-end", token: "slack-token", color: "danger",
+                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
                 success{
                     echo 'Repository clone success!'
@@ -51,7 +51,7 @@ pipeline{
         
         stage('Gradle Jar Build'){
             steps{
-                dir('demo'){
+                dir('back'){
                     sh '''
                         chmod +x gradlew
                         ./gradlew build --exclude-task test
@@ -61,8 +61,8 @@ pipeline{
             post{
                 failure{
                     echo 'Gradle jar build failure!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "danger",
-                     message: "Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#back-end", token: "slack-token", color: "danger",
+                     message: ":rotating_light: Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
                 success{
                     echo 'Gradle jar build success!'
@@ -82,8 +82,8 @@ pipeline{
             post{
                 failure{
                     echo 'Docker image build failure!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "danger",
-                     message: "Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#back-end", token: "slack-token", color: "danger",
+                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
                 success{
                     echo 'Docker image build success!'
@@ -109,8 +109,8 @@ pipeline{
             post{
                 failure{
                     echo 'Docker Image Push failure!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "danger",
-                     message: "Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#back-end", token: "slack-token", color: "danger",
+                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
                 success{
                     echo 'Docker Image Push Success!'
@@ -121,7 +121,7 @@ pipeline{
         stage('Kubernetes Manifest Update'){
             steps{
                 git branch: 'main',
-                    url: 'https://github.com/Cucumber-web/Test-Kubernetes.git',
+                    url: 'https://github.com/Cucumber-web/movie-web-project-k8s.git',
                     credentialsId: 'github-repo-access-token'
                 
                 sh '''
@@ -131,27 +131,23 @@ pipeline{
 
                 sh "sed -i 's/cucumber-back:.*\$/cucumber-back:${currentBuild.number}/g' back_deployment.yaml"
                 sh "git add back_deployment.yaml"
-                sh "git commit -m '[Update] test-back ${currentBuild.number} image versioning'"
+                sh "git commit -m '[Update] back-end ${currentBuild.number} image versioning'"
                 
                 sshagent(credentials: ['41e673ba-49ab-4968-823b-6f33640c5296']){
-                    sh 'git remote set-url origin https://${gitToken}@github.com/Cucumber-web/Test-Kubernetes.git'
+                    sh 'git remote set-url origin https://${gitToken}@github.com/Cucumber-web/movie-web-project-k8s.git'
                     sh "git push origin main"
                 }
             }
             post{
                 failure{
                     echo 'Kubernetes Manifest Update failure!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "danger",
-                     message: "Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                    slackSend(channel: "#back-end", token: "slack-token", color: "danger",
+                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
                 success{
                     echo 'Kubernetes Manifest Update Success!'
-                    slackSend(channel: "#infra", token: "slack-token", color: "good",
-                     message: "Build Success! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
-
-                    /*
-                    slackResponse.addReaction("thumbsup")
-                    */
+                    slackSend(channel: "#back-end", token: "slack-token", color: "good",
+                     message: ":white_check_mark: Back-End Build Success! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
                 }
             }
         }
