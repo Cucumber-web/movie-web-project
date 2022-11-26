@@ -63,8 +63,8 @@ pipeline{
         stage('Docker Image Build'){
             steps{
                 container('docker'){
-                    sh "cp demo/build/libs/demo-0.0.1-SNAPSHOT.jar ./"
-                    sh "cp demo/Dockerfile ./"
+                    sh "cp back/build/libs/demo-0.0.1-SNAPSHOT.jar ./"
+                    sh "cp back/Dockerfile ./"
                     sh "docker build . -t ${dockerHubRegistry}:${currentBuild.number}"
                     sh "docker build . -t ${dockerHubRegistry}:latest"
                 }
