@@ -20,7 +20,9 @@ pipeline{
                 sh 'echo build start'
             }
             post{
-                echo 'start build'
+                always{
+                    echo 'start build'
+                }
             }
         }
 
