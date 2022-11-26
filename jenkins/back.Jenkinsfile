@@ -1,7 +1,7 @@
 pipeline{
     agent {
         kubernetes{
-            yamlFile 'back-agent-pod.yaml'
+            yamlFile 'jenkins/back-agent-pod.yaml'
         }
     }
     tools{
