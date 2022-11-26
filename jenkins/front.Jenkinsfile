@@ -49,7 +49,7 @@ pipeline{
             steps{
                 dir('front'){
                     sh '''
-                        npm install
+                        npm install --save --legacy-peer-deps
                         npm run build
                         pwd
                         ls -al

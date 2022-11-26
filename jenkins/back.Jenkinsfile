@@ -53,7 +53,6 @@ pipeline{
             steps{
                 dir('back'){
                     sh '''
-                        /usr/bin/rdate -s time.bora.net && /sbin/clock -w
                         chmod +x gradlew
                         ./gradlew build --exclude-task test
                     '''
