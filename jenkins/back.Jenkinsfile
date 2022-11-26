@@ -18,6 +18,11 @@ pipeline{
             steps{
                 sh 'echo build start'
             }
+            post{
+                always{
+                    echo 'start build'
+                }
+            }
         }
 
         stage('Checkout'){
