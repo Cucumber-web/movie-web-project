@@ -47,6 +47,7 @@ pipeline{
                 dir('front'){
                     sh '''
                         npm install --save --legacy-peer-deps
+                        npm audit fix
                         npm run build
                         pwd
                         ls -al
