@@ -63,6 +63,7 @@ pipeline{
         stage('Docker Image Build'){
             steps{
                 container('docker'){
+                    /*
                     sh '''
                         pwd
                         ls -al
@@ -70,7 +71,8 @@ pipeline{
                         ls -al back/build
                         ls -al back/build/libs
                     '''
-                    sh "cp back/build/libs/demo-0.0.1-SNAPSHOT.jar ./"
+                    */
+                    sh "cp back/build/libs/back-0.0.1-SNAPSHOT.jar ./"
                     sh "cp back/Dockerfile ./"
                     sh "docker build . -t ${dockerHubRegistry}:${currentBuild.number}"
                     sh "docker build . -t ${dockerHubRegistry}:latest"
