@@ -124,8 +124,8 @@ pipeline{
                     git config --global user.name "UhyeongJo"
                 '''
 
-                sh "sed -i 's/cucumber-back:.*\$/cucumber-back:${currentBuild.number}/g' back_deployment.yaml"
-                sh "git add back_deployment.yaml"
+                sh "sed -i 's/cucumber-back:.*\$/cucumber-back:${currentBuild.number}/g' back-deployment.yaml"
+                sh "git add back-deployment.yaml"
                 sh "git commit -m '[Update] back-end ${currentBuild.number} image versioning'"
                 
                 sshagent(credentials: ['41e673ba-49ab-4968-823b-6f33640c5296']){

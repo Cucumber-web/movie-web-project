@@ -121,8 +121,8 @@ pipeline{
                     git config --global user.name "UhyeongJo"
                 '''
 
-                sh "sed -i 's/cucumber-front:.*\$/cucumber-front:${currentBuild.number}/g' front_deployment.yaml"
-                sh "git add front_deployment.yaml"
+                sh "sed -i 's/cucumber-front:.*\$/cucumber-front:${currentBuild.number}/g' front-deployment.yaml"
+                sh "git add front-deployment.yaml"
                 sh "git commit -m '[Update] front-end ${currentBuild.number} image versioning'"
                 
                 sshagent(credentials: ['41e673ba-49ab-4968-823b-6f33640c5296']){
