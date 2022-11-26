@@ -46,7 +46,7 @@ pipeline{
             steps{
                 dir('front'){
                     sh '''
-                        npm install
+                        npm install -f
                         npm run build
                         pwd
                         ls -al
