@@ -66,12 +66,14 @@ pipeline{
         stage('Docker Image Build'){
             steps{
                 container('docker'){
-                    /*
-                    sh "cp build ./"
-                    sh "cp Dockerfile ./"
-                    */
-                    sh "docker build . -t ${dockerHubRegistry}:${currentBuild.number}"
-                    sh "docker build . -t ${dockerHubRegistry}:latest"
+                    dir('front'){
+                        /*
+                        sh "cp build ./"
+                        sh "cp Dockerfile ./"
+                        */
+                        sh "docker build . -t ${dockerHubRegistry}:${currentBuild.number}"
+                        sh "docker build . -t ${dockerHubRegistry}:latest"
+                    }
                 }
             }
             post{
