@@ -67,10 +67,10 @@ pipeline{
             steps{
                 container('docker'){
                     dir('front'){
-                        
+                        /*
                         sh "cp dist ./"
                         sh "cp Dockerfile ./"
-                        
+                        */
                         sh "docker build . -t ${dockerHubRegistry}:${currentBuild.number}"
                         sh "docker build . -t ${dockerHubRegistry}:latest"
                     }
