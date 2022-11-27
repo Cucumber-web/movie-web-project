@@ -1,7 +1,8 @@
+import React from 'react';
 import styled, { css } from 'styled-components';
 import { BiUser } from 'react-icons/bi';
 import { HiMagnifyingGlass } from 'react-icons/hi2';
-import { useLocation, Link } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 const Navigation = () => {

@@ -1,13 +1,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-
-interface UserInfo {
-  email: string;
-  password: string;
-  nickName: string;
-  gender: string;
-  birth: string;
-}
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [isValid, setIsValid] = useState(false);
@@ -15,16 +9,25 @@ const SignUp = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>({
     email: '',
     password: '',
-    nickName: '',
     gender: '',
     birth: '',
+    role: 'ROLE_USER',
   });
+  const navigate = useNavigate();
 
   const handleInput = e => {
     const { name, value } = e.target;
     setUserInfo(prev => {
       const currentUserInfo = { ...prev };
-      currentUserInfo[name] = value;
+      if (name === 'email') {
+        if (value.includes('@') && value.includes('.com')) {
+          currentUserInfo[name] = value;
+        } else {
+          console.log('test');
+        }
+      } else {
+        currentUserInfo[name] = value;
+      }
       return currentUserInfo;
     });
     console.log(userInfo);
@@ -35,11 +38,12 @@ const SignUp = () => {
   };
 
   const onClickSignUp = () => {
-    // axios
-    //   .post('', userInfo)
-    //   .then(res => console.log(res))
-    //   .catch(err => console.log(err));
-    // console.log(userInfo);
+    axios
+      .post('/register', userInfo)
+      .then(res => {
+        navigate('/');
+      })
+      .catch(err => console.log(err));
   };
 
   useEffect(() => {
@@ -60,13 +64,7 @@ const SignUp = () => {
         <LoginLabel>Email</LoginLabel>
         <LoginInput
           placeholder="email@example.com"
-          name="id"
-          onChange={handleInput}
-        />
-        <LoginLabel>닉네임</LoginLabel>
-        <LoginInput
-          placeholder="Nickname"
-          name="nickName"
+          name="email"
           onChange={handleInput}
         />
         <LoginLabel>비밀번호</LoginLabel>

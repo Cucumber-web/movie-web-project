@@ -2,7 +2,7 @@ import { Cookies } from 'react-cookie';
 
 const cookies = new Cookies();
 
-export const setRefreshToken = (refreshToken: string) => {
+export const setRefreshToken = (refreshToken) => {
   const today = new Date();
   const expireDate = today.setDate(today.getDate() + 30);
 
@@ -11,7 +11,7 @@ export const setRefreshToken = (refreshToken: string) => {
   });
 };
 
-export const setAccessToken = (accessToken: string) => {
+export const setAccessToken = (accessToken) => {
   const today = new Date();
   const expireDate = today.setDate(today.getDate() + 5);
 

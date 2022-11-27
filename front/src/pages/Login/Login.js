@@ -1,10 +1,8 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { setRefreshToken, setAccessToken } from '../../storage/Cookie';
-import { SET_TOKEN } from '../../store/Auth';
-import { useDispatch } from 'react-redux';
 
 const Login = () => {
   const [isValid, setIsValid] = useState(true);
@@ -13,7 +11,6 @@ const Login = () => {
     password: '',
   });
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const handleInput = e => {
     const { name, value } = e.target;
