@@ -48,9 +48,8 @@ pipeline{
                     sh '''
                         npm install
                         npm run start:build
-                        pwd
                         ls -al
-                        ls -al build
+                        ls -al dist
                     '''
                 }
             }
