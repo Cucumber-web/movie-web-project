@@ -46,11 +46,10 @@ pipeline{
             steps{
                 dir('front'){
                     sh '''
-                        npm install -f
-                        npm run build
-                        pwd
+                        npm install
+                        npm run start:build
                         ls -al
-                        ls -al build
+                        ls -al dist
                     '''
                 }
             }
@@ -67,12 +66,14 @@ pipeline{
         stage('Docker Image Build'){
             steps{
                 container('docker'){
-                    /*
-                    sh "cp build ./"
-                    sh "cp Dockerfile ./"
-                    */
-                    sh "docker build . -t ${dockerHubRegistry}:${currentBuild.number}"
-                    sh "docker build . -t ${dockerHubRegistry}:latest"
+                    dir('front'){
+                        /*
+                        sh "cp dist ./"
+                        sh "cp Dockerfile ./"
+                        */
+                        sh "docker build . -t ${dockerHubRegistry}:${currentBuild.number}"
+                        sh "docker build . -t ${dockerHubRegistry}:latest"
+                    }
                 }
             }
             post{
