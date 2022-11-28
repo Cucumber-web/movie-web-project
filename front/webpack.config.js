@@ -8,7 +8,7 @@ module.exports = {
     mode: process.env.mode,
     entry: './src/index.js',
     output: {
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(__dirname, 'build'),
       filename: '[hash].js',
       publicPath: '/'
     },
