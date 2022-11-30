@@ -1,13 +1,17 @@
 package com.movie.back.service;
 
+import com.movie.back.entity.BoxOffice;
 import com.movie.back.repository.BoxOfficeRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -28,7 +32,7 @@ class BoxOfficeServiceTest {
     @Test
         // 옵션 적용
     void test2(){
-        boxOfficeRepository.getBoxOfficeList().forEach(System.out::println);
+        System.out.println(boxOfficeRepository.getMovieRead("헤어질 결심"));
     }
 
     @Test
@@ -54,4 +58,20 @@ class BoxOfficeServiceTest {
         System.out.println(boxOfficeRepository.getMovieRead("자백").getStillImage().size());
     }
 
+    @Test
+    void test7(){
+        boxOfficeService.saveSearchBoxOffice(2021,2022);
+    }
+
+    @Test
+    @Transactional
+    void test8(){
+        for (BoxOffice boxOffice : boxOfficeRepository.getLikeMovieList(PageRequest.of(0, 10))) {
+
+            System.out.println(boxOffice.getTitle());
+            System.out.println(boxOffice.getPosterLink());
+            System.out.println(boxOffice.getSynopsis());
+            //TODO: 좋아요 개수 처리해야함
+        }
+    }
 }

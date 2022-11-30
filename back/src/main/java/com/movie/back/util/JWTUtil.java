@@ -31,7 +31,7 @@ public class JWTUtil {
         Map<String,Object> payloads = new HashMap<>();  //실질적인  내용
         payloads.putAll(valueMap);
 
-        int time = (1)*days;        //(60*24)
+        int time = (10)*days;        //(60*24) 10분
 
         String jwtStr = Jwts.builder()
                 .setHeader(headers) //header 값
