@@ -22,7 +22,7 @@ class MemberRepositoryTest {
     PasswordEncoder passwordEncoder;
     @Test
     void 아이디등록하기(){
-        memberRepository.save(Member.builder().email("user")
+        memberRepository.save(Member.builder().email("user22")
                 .password(passwordEncoder.encode("1111"))
                 .role("ROLE_ADMIN")
                 .gender("남")

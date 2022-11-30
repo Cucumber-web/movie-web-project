@@ -67,13 +67,13 @@ public class CustomSercurityConfig {
         apiLoginFilter.setAuthenticationFailureHandler(new APILoginFailureHandler());
         //apiLoginFilter.setAuthenticationFailureHandler();
         http.addFilterBefore(apiLoginFilter, UsernamePasswordAuthenticationFilter.class);   //인증필터
-        http.addFilterBefore(tokenCheckFilter(jwtUtil),UsernamePasswordAuthenticationFilter.class); //모든 요청 필터
+
+        http.addFilterBefore(tokenCheckFilter(jwtUtil,customUserDetailService),UsernamePasswordAuthenticationFilter.class); //모든 요청 필터
         //UsernamePassword를 처리하는 필터인 UsernamePasswrodAuthenticationFIlter 전에 커스텀필터를 둔다
         //refreshToken 처리
         http.addFilterBefore(new RefreshTokenFilter("/refreshToken",jwtUtil),TokenCheckFilter.class);
 
        // log.info("-------------------Web Configure-------------------");
-
 
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);    //세션을 사용하지 않겠다는 것
@@ -81,7 +81,7 @@ public class CustomSercurityConfig {
         return http.build();
     }
 
-    private TokenCheckFilter tokenCheckFilter(JWTUtil jwtUtil){
-        return new TokenCheckFilter(jwtUtil);
+    private TokenCheckFilter tokenCheckFilter(JWTUtil jwtUtil,CustomUserDetailService customUserDetailService){
+        return new TokenCheckFilter(customUserDetailService,jwtUtil);
     }
 }
