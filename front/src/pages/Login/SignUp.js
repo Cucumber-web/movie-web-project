@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const SignUp = () => {
   const [isValid, setIsValid] = useState(false);
   const [confirmPw, setConfirmPw] = useState('');
-  const [userInfo, setUserInfo] = useState<UserInfo>({
+  const [userInfo, setUserInfo] = useState({
     email: '',
     password: '',
     gender: '',
