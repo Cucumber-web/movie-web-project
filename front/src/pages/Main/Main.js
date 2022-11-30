@@ -26,7 +26,7 @@ const Main = () => {
     const handleRotationMinus = () => {
         setCarouselRotation((prev) => prev - 40);
     };
-    console.log(movie[0]?.postLink);
+    console.log(movie);
     useEffect(() => {
         axios
             .get("/mvi/box")
