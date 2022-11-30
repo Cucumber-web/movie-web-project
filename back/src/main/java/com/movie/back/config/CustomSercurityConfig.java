@@ -74,6 +74,7 @@ public class CustomSercurityConfig {
 
        // log.info("-------------------Web Configure-------------------");
 
+
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);    //세션을 사용하지 않겠다는 것
 
