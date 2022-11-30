@@ -52,16 +52,26 @@ const Main = () => {
     return (
         <MainOutHeightWrapper>
             <MainWrapper>
-                <p onClick={() => navigate('/login')}>asdkjvbasdjkvbasdhjkvb</p>
+                <p onClick={() => navigate("/login")}>asdkjvbasdjkvbasdhjkvb</p>
             </MainWrapper>
             <QuizWrapper>
                 <MainTopText>요즘 인기있는 영화 퀴즈</MainTopText>
                 <QuizImgWrapper>
-                    {movie && movie.slice(0, 7).map((props, idx) => (
-                        <Link to='/detail' state={{"title": props.title}}>
-                            <img src={props.postLink} key={idx + "movieQuiz"} alt="quiz imag"/>
-                        </Link>
-                    ))}
+                    {movie &&
+                        movie
+                            .slice(0, 7)
+                            .map((props, idx) => (
+                                <img
+                                    src={props.postLink}
+                                    key={idx + "movieQuiz"}
+                                    alt="quiz imag"
+                                    onClick={() =>
+                                        navigate("/detail", {
+                                            state: { "title": props.title },
+                                        })
+                                    }
+                                />
+                            ))}
                 </QuizImgWrapper>
             </QuizWrapper>
             <ThisWeek>
