@@ -1,6 +1,7 @@
 package com.movie.back.filter;
 
 
+import com.movie.back.security.CustomUserDetailService;
 import com.movie.back.security.exception.AccessTokenException;
 import com.movie.back.util.JWTUtil;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -8,6 +9,10 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.SignatureException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -21,6 +26,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class TokenCheckFilter  extends OncePerRequestFilter {
 
+
+    private final CustomUserDetailService customUserDetailService;
     private final JWTUtil jwtUtil;
 
     @Override
@@ -31,7 +38,7 @@ public class TokenCheckFilter  extends OncePerRequestFilter {
 //            filterChain.doFilter(request,response); //필터를 따라 다음 필터로
 //            return;
 //        }
-        if(path.startsWith("/register") || path.startsWith("/mvi/")){
+        if(path.startsWith("/register") || path.startsWith("/mvi/") || path.startsWith("/search/")  ){
             filterChain.doFilter(request,response);
             return;
         }
@@ -39,7 +46,20 @@ public class TokenCheckFilter  extends OncePerRequestFilter {
         log.info("JWTUtil: "+jwtUtil);
 
         try{
-            validateAccessToken(request);
+            Map<String,Object> payload = validateAccessToken(request);
+
+            //email 받기
+          /*  String email = (String)payload.get("email");
+            System.out.println("현재 login한 email ==> "+ email);
+
+            UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
+                //select 쿼리 한 번 실행할 수 밖에없음
+            UsernamePasswordAuthenticationToken authenticationToken =
+                    new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+
+            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+            */
+
             filterChain.doFilter(request,response);
         }catch (AccessTokenException accessTokenException){
             accessTokenException.sendResponseError(response);
@@ -64,7 +84,7 @@ public class TokenCheckFilter  extends OncePerRequestFilter {
 
         try{
             Map<String,Object> values = jwtUtil.validateToken(tokenStr);
-
+            System.out.println("토큰 값"+values);
             return values;
         }catch (MalformedJwtException malformedJwtException){
             log.info("MalformedJwtException--------------------------");

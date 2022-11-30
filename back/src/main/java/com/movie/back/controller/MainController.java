@@ -26,7 +26,7 @@ public class MainController {
 
     private final BoxOfficeService boxOfficeService;
 
-    @GetMapping(value = "/box")    //전체 데이터 조회
+    @GetMapping(value = "/box")    //박스오피스, 10개 출력
     public ResponseEntity<List<BoxOfficeDTO>> readAll(){
             return ResponseEntity.ok(boxOfficeService.getBoxList());
     }
@@ -53,5 +53,10 @@ public class MainController {
     }
 
 
+    @GetMapping(value = "/likemovie")    //박스오피스, 10개 출력
+    public ResponseEntity<List<BoxOfficeDTO>> likemovie()
+    {
+        return ResponseEntity.ok(boxOfficeService.getLikeMovie());
+    }
 
 }
