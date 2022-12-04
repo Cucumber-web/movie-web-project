@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -21,12 +22,14 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Member member = memberRepository.findById(username).orElseThrow(() -> new UsernameNotFoundException("없는 이메일임"));
+        Member member = memberRepository.getMemberInfo(username).orElseThrow(() -> new UsernameNotFoundException("없는 이메일임"));
 
         MemberDTO dto = new MemberDTO(
                 member.getEmail(),
                 member.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_USER")),
+                member.getRoleSet().stream().map(memberRole ->
+                        new SimpleGrantedAuthority("ROLE_"+memberRole.name()))
+                        .collect(Collectors.toList()),
                 member.getBirth(),
                 member.getGender()
             );
