@@ -47,8 +47,8 @@ public class UserController {
             }
     }
 
-    @GetMapping("/like")    //토큰 넘겨줘야 실행가능함 토큰과 영화제목을 넘겨주어야 좋아요가 저장됨
-    public ResponseEntity<String> like(@RequestParam String title, HttpServletRequest request){
+    @PostMapping("/like/{title}")    //토큰 넘겨줘야 실행가능함 토큰과 영화제목을 넘겨주어야 좋아요가 저장됨
+    public ResponseEntity<String> like(@PathVariable String title, HttpServletRequest request){
 
         String tokenStr = memberService.jwtExtract(request);
         Map<String,Object> values = jwtUtil.validateToken(tokenStr);

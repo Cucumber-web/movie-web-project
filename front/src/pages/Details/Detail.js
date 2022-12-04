@@ -12,7 +12,7 @@ const Detail = () => {
     console.log(location.state.title);
     useEffect(() => {
         axios
-            .get(`http://localhost:8080/mvi/read?title=${movieTitle}`)
+            .get(`/mvi/read?title=${movieTitle}`)
             .then((res) => {
                 console.log(res);
                 setMovieData(res.data);
