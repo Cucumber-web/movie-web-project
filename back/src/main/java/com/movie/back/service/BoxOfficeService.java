@@ -90,7 +90,7 @@ public class BoxOfficeService {
                     .getStillImage().stream().map(boxStillImage -> boxStillImage.getImageLink())
                     .collect(Collectors.toList());
             if(!still.isEmpty()){
-                resultStill = still.subList(0,10);
+                resultStill = still.subList(0, still.size());
             }
         return BoxOfficeDTO.builder()
                 .title(boxOffice.getTitle())

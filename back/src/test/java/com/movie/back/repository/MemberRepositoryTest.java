@@ -1,14 +1,19 @@
 package com.movie.back.repository;
 
 import com.movie.back.dto.MemberDTO;
+import com.movie.back.dto.MemberRole;
+import com.movie.back.entity.BoxOffice;
 import com.movie.back.entity.Member;
+import com.movie.back.entity.MemberMovie;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,13 +23,20 @@ class MemberRepositoryTest {
 
     @Autowired
     MemberRepository memberRepository;
+
+    @Autowired
+    BoxOfficeRepository boxOfficeRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    MemberMovieRepository memberMovieRepository;
+
     @Test
     void 아이디등록하기(){
-        memberRepository.save(Member.builder().email("user22")
+        memberRepository.save(Member.builder().email("user")
                 .password(passwordEncoder.encode("1111"))
-                .role("ROLE_ADMIN")
+                .roleSet(Set.of(MemberRole.ADMIN))
                 .gender("남")
                 .birth(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
                 .build());
@@ -40,7 +52,7 @@ class MemberRepositoryTest {
     @Test
     void entityToDTO(){
        MemberDTO.toDTO(Member.builder().email("ta33@naver.com").gender("남").birth(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
-                .password(passwordEncoder.encode("1111")).role("ROLE_ADMIN").build()).getAuthorities().forEach(System.out::println);
+                .password(passwordEncoder.encode("1111")).roleSet(Set.of(MemberRole.ADMIN)).build()).getAuthorities().forEach(System.out::println);
     }
 
     @Test
@@ -54,5 +66,39 @@ class MemberRepositoryTest {
     @Test
     void userOut(){
             memberRepository.findAll().forEach(System.out::println);
+    }
+
+    @Test
+    @Transactional      //role 접근할떄 꼭 필요
+    void memberInfo(){
+        System.out.println(memberRepository.getMemberInfo("user").get());
+        //getMemberInfo를 통해 같이 불러오도록 쿼리 만듬
+    }
+    @Test
+    void movieMember(){
+       // BoxOffice boxOffice = boxOfficeRepository.getMovieRead("동감");
+      //  Member member = memberRepository.getMemberInfo("user").get();
+        //찜하기
+        MemberMovie movie = MemberMovie.builder()
+                .member(Member.builder().email("user").build())
+                .boxOfficeId(BoxOffice.builder().title("데시벨").build())
+                .build();
+        memberMovieRepository.save(movie);
+
+
+    }
+
+    @Test
+    @Transactional
+    void movieAll(){
+//        memberRepository.getMyMovie("user")
+//                .get()
+//                .getMovieSet().forEach(memberMovie -> {
+//                    System.out.println(memberMovie.getBoxOfficeId());
+//        });
+        memberMovieRepository.memberMyMovie("user").forEach(boxOffice -> System.out.println(boxOffice.getTitle()));
+            //이메일을 넣으면 inner join으로 BoxOffice 엔티티 객체를 불러옴
+        // inner join 으로 조인키와 pk가 같은 on 을 걸어서 가져옴 - 중복제거 완료
+
     }
 }
