@@ -9,21 +9,21 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@Service
-public class InitService implements ApplicationListener<ContextRefreshedEvent> {
+//@Service
+//public class InitService implements ApplicationListener<ContextRefreshedEvent> {
+public class InitService{
 
-
-    @Autowired
-    private BoxOfficeService boxOfficeService;
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        try {
-            System.out.println("DB 값 주입실행");
-            boxOfficeService.saveBoxMovie();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (KobisScrapper.NotScrappedDateException e) {
-            throw new RuntimeException(e);
-        }
-    }
+   // @Autowired
+//    private BoxOfficeService boxOfficeService;
+//    @Override
+//    public void onApplicationEvent(ContextRefreshedEvent event) {
+//        try {
+//            System.out.println("DB 값 주입실행");
+//            boxOfficeService.saveBoxMovie();
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        } catch (KobisScrapper.NotScrappedDateException e) {
+//            throw new RuntimeException(e);
+//        }
+//    }
 }

@@ -5,6 +5,7 @@ import com.movie.back.dto.MemberRole;
 import com.movie.back.entity.BoxOffice;
 import com.movie.back.entity.Member;
 import com.movie.back.entity.MemberMovie;
+import com.movie.back.service.MovieMemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -31,6 +32,9 @@ class MemberRepositoryTest {
 
     @Autowired
     MemberMovieRepository memberMovieRepository;
+
+    @Autowired
+    MovieMemberService myMovieService;
 
     @Test
     void 아이디등록하기(){
@@ -100,5 +104,10 @@ class MemberRepositoryTest {
             //이메일을 넣으면 inner join으로 BoxOffice 엔티티 객체를 불러옴
         // inner join 으로 조인키와 pk가 같은 on 을 걸어서 가져옴 - 중복제거 완료
 
+    }
+    @Test
+    @Transactional
+    void 찜한영화테스트(){
+        myMovieService.getDtoList("user").forEach(System.out::println);
     }
 }
