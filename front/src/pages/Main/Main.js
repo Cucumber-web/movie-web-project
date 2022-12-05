@@ -1,22 +1,18 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+import Slider from "react-slick";
 import { useEffect, useState } from "react";
 import { Planet } from "react-planet";
 import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import {
-    setRefreshToken,
-    getCookieToken,
-    getAccessToken,
-    setAccessToken,
-} from "../../storage/Cookie";
 import axios from "axios";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const Main = () => {
     const [movie, setMovie] = useState([]);
-    const accessToken = getAccessToken();
-    const refreshToken = getCookieToken();
     const [carouselRotation, setCarouselRotation] = useState(0);
+    const [imageIndex, setImageIndex] = useState(0);
     const navigate = useNavigate();
 
     const handleRotationPlus = () => {
@@ -26,6 +22,18 @@ const Main = () => {
     const handleRotationMinus = () => {
         setCarouselRotation((prev) => prev - 40);
     };
+
+    const CAROUSEL_SETTING = {
+        infinite: true,
+        lazyLoad: true,
+        speed: 300,
+        slidesToShow: 3,
+        centerMode: true,
+        centerPadding: 0,
+        nextArrow: <ArrowNext />,
+        prevArrow: <ArrowPrev />,
+        beforeChange: (current, next) => setImageIndex(next),
+    };
     console.log(movie);
     useEffect(() => {
         axios
@@ -34,44 +42,42 @@ const Main = () => {
                 setMovie(res.data);
             })
             .catch((err) => {
-                if (err.response.data.msg === "Expired Token") {
-                    axios
-                        .post("/refreshToken", {
-                            accessToken: accessToken,
-                            refreshToken: refreshToken,
-                        })
-                        .then((res) => {
-                            setRefreshToken(res.data.refreshToken);
-                            setAccessToken(res.data.accessToken);
-                            document.location.reload();
-                        });
-                }
+                console.log(err);
             });
     }, []);
 
     return (
         <MainOutHeightWrapper>
             <MainWrapper>
-                <p onClick={() => navigate("/login")}>asdkjvbasdjkvbasdhjkvb</p>
+                <Slider {...CAROUSEL_SETTING}>
+                    {movie &&
+                        movie.slice(0, 7).map((props, idx) => (
+                            <MainPoster isMain={idx === imageIndex} onClick={() => navigate("/detail", {state: props.title})}>
+                                <img
+                                    src={props.postLink}
+                                    key={idx}
+                                    alt={props.title}
+                                />
+                            </MainPoster>
+                        ))}
+                </Slider>
             </MainWrapper>
             <QuizWrapper>
                 <MainTopText>요즘 인기있는 영화 퀴즈</MainTopText>
                 <QuizImgWrapper>
                     {movie &&
-                        movie
-                            .slice(0, 7)
-                            .map((props, idx) => (
-                                <img
-                                    src={props.postLink}
-                                    key={idx + "movieQuiz"}
-                                    alt="quiz imag"
-                                    onClick={() =>
-                                        navigate("/detail", {
-                                            state: { "title": props.title },
-                                        })
-                                    }
-                                />
-                            ))}
+                        movie.slice(0, 7).map((props, idx) => (
+                            <img
+                                src={props.postLink}
+                                key={idx + "movieQuiz"}
+                                alt="quiz imag"
+                                onClick={() =>
+                                    navigate("/detail", {
+                                        state: { title: props.title },
+                                    })
+                                }
+                            />
+                        ))}
                 </QuizImgWrapper>
             </QuizWrapper>
             <ThisWeek>
@@ -116,13 +122,18 @@ const Main = () => {
 export default Main;
 
 const MainWrapper = styled.section`
-    width: 100vw;
-    height: 80vh;
+    width: 90%;
+    height: 30rem;
+    margin: 0 auto;
 `;
 
 const MainOutHeightWrapper = styled.section`
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    flex-direction: column;
     position: relative;
-    height: 200vh;
+    height: 180vh;
     overflow-y: hidden;
 `;
 const MainTopText = styled.div`
@@ -139,33 +150,6 @@ const MainTopText = styled.div`
 const PostImageWrapper = styled.img`
     width: 12rem;
     height: 15rem;
-`;
-
-const MovieListWrapper = styled.div`
-    width: 100%;
-    height: 40vh;
-    * {
-        box-shadow: none !important;
-    }
-
-    div div div div div div {
-        border: none !important;
-    }
-
-    div div div div div div .fa {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 2rem;
-        height: 2rem;
-        border: 1px solid white !important;
-        border-radius: 50%;
-    }
-
-    img {
-        width: 26rem;
-        height: 31rem;
-    }
 `;
 
 const QuizWrapper = styled.section`
@@ -190,10 +174,22 @@ const QuizImgWrapper = styled.div`
 `;
 
 const MainPoster = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+    width: 100%;
+    height: 30rem;
+    transform: scale(0.7);
+    transition: transform 300ms;
+    opacity: 0.5;
+    ${(props) =>
+        props.isMain &&
+        css`
+            transform: scale(1.0);
+            opacity: 1;
+        `}
+    img {
+        width: 20rem;
+        height: 100%;
+        margin: 0 auto;
+    }
 `;
 
 const CarouselWrapperCir = styled.section`
@@ -244,3 +240,39 @@ const WeekBtn = styled.button`
         color: #03af59;
     }
 `;
+
+const ArrowNext = styled(AiOutlineArrowRight)`
+    position: absolute;
+    right:0%;
+    top: 50%;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    z-index:10;
+    color: white;
+    border: 1px solid white;
+    border-radius: 50%;
+
+    :hover{
+        color:#03af59;
+        border:1px solid #03af59;
+    }
+`
+
+const ArrowPrev = styled(AiOutlineArrowLeft)`
+    position: absolute;
+    left:0%;
+    top: 50%;
+    width: 2rem;
+    height: 2rem;
+    cursor: pointer;
+    z-index:10;
+    color: white;
+    border: 1px solid white;
+    border-radius: 50%;
+
+    :hover{
+        color:#03af59;
+        border:1px solid #03af59;
+    }
+`

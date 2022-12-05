@@ -8,8 +8,8 @@ import axios from "axios";
 const Detail = () => {
     const location = useLocation();
     const [movieData, setMovieData] = useState({});
-    const movieTitle = location.state.title;
-    console.log(location.state.title);
+    const movieTitle = location.state;
+    console.log(location.state);
     useEffect(() => {
         axios
             .get(`/mvi/read?title=${movieTitle}`)
