@@ -1,9 +1,6 @@
 package com.movie.back.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@ToString
 public class MemberMovie { //찜한영화
 
     @Id
@@ -21,6 +19,7 @@ public class MemberMovie { //찜한영화
 
     @ManyToOne
     @JoinColumn(name="member_id")
+    @ToString.Exclude
     private Member member;
 
     @ManyToOne
