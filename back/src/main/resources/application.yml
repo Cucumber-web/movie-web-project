@@ -5,6 +5,7 @@ spring:
     url: jdbc:mysql://198.19.223.91:2222/movie?useSSL=false
     username: root
     password: jo6326
+
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
