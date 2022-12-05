@@ -49,4 +49,8 @@ public class BoxOffice {
     @Builder.Default
     private Set<LikeGood> likeGoods = new HashSet<>();
 
+    @OneToMany(mappedBy = "boxOffice")
+    @Builder.Default
+    private List<Quiz> quizList = new ArrayList<>();
+
 }
