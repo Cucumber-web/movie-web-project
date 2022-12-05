@@ -27,5 +27,8 @@ public class MemberMovie { //찜한영화
     private BoxOffice boxOfficeId;  //이건 단방향 영화정보가 이 정보를 알 필요가 없음
 
 
+    public void changeMember(Member member){
+        this.member = member;
+    }
 
 }
