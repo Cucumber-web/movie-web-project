@@ -2,6 +2,7 @@ package com.movie.back.service.impl;
 
 
 import com.movie.back.dto.QuizDTO;
+import com.movie.back.dto.QuizItems;
 import com.movie.back.entity.Quiz;
 import com.movie.back.repository.BoxOfficeRepository;
 import com.movie.back.repository.QuizRepository;
@@ -32,11 +33,16 @@ public class QuizServiceImpl implements QuizService {
         return quizDTOList;
     }
 
-    public void saveQuiz(String movieTitle,String email,String quizTitle){
-                quizRepository.save(Quiz.builder()
-                                .movieTitle(movieTitle)
-                                .email(email)
-                                .title(quizTitle)
-                        .build());
+    public void saveQuiz(String movieTitle,String email,String quizTitle,List<QuizItems> quizItems){
+        Quiz quiz =Quiz.builder()
+                .movieTitle(movieTitle)
+                .email(email)
+                .title(quizTitle)
+                .build();
+
+        quizItems.forEach(quizItem -> {
+             quiz.addQuizItem(quizItem.getItem());
+        });
+        quizRepository.save(quiz);
     }
 }
