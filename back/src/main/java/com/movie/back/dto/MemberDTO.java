@@ -29,7 +29,7 @@ public class MemberDTO extends User {
 
     private String gender;
 
-    private String role;
+    private Set<MemberRole> role;
 
     private List<MemberMovieDTO> memberMovieList;
     public MemberDTO(String username, String password,Collection<GrantedAuthority> authorities,String birth,String gender){
@@ -42,21 +42,24 @@ public class MemberDTO extends User {
 
 
     public static Member toEntity(MemberDTO memberDTO){
-                return Member.builder()
-                        .email(memberDTO.getEmail())
-                        .password(memberDTO.getPassword())
-                        .role(memberDTO.getAuthorities().stream().findFirst().orElse(null).toString())
-                        .gender(memberDTO.getGender())
-                        .birth(memberDTO.getBirth())
-                        .build();
+        Member member = Member.builder()
+                .email(memberDTO.getEmail())
+                .password(memberDTO.getPassword())
+                .gender(memberDTO.getGender())
+                .roleSet(memberDTO.getRole())
+                .birth(memberDTO.getBirth())
+                .build();
+
+        return member ;
     }
 
     //toDTO를 통해 바꾼 값만 MemberDTO가 그 값을 가지고 있음 !!
     public static MemberDTO toDTO(Member member){   //member 엔티티는 권한 빼고 모든 값이 채워지면 됨 권한은 알아서 넘김
-                Set<String> roleTypes = Set.of(member.getRole());   //dto는 User를 상속하기에 authorities 변수가 위에 있음
+            //    Set<String> roleTypes = Set.of(member.getRole());   //dto는 User를 상속하기에 authorities 변수가 위에 있음
 
                 return new MemberDTO(member.getEmail(), member.getPassword(),
-                        roleTypes.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toUnmodifiableSet()),
+                        member.getRoleSet().stream().map(memberRole ->
+                                new SimpleGrantedAuthority("ROLE_"+memberRole.name())).collect(Collectors.toUnmodifiableSet()),
                         member.getBirth(), member.getGender());
     }
 }
