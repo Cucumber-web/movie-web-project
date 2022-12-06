@@ -123,7 +123,7 @@ pipeline{
                     git config --global user.email "uh9222959@gmail.com"
                     git config --global user.name "UhyeongJo"
                 '''
-
+                sh "git pull"
                 sh "sed -i 's/cucumber-back:.*\$/cucumber-back:${currentBuild.number}/g' back-deployment.yaml"
                 sh "git add back-deployment.yaml"
                 sh "git commit -m '[Update] back-end ${currentBuild.number} image versioning'"
