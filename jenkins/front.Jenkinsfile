@@ -131,6 +131,7 @@ pipeline{
                     git config --global user.name "UhyeongJo"
                 '''
 
+                sh "git pull"
                 sh "sed -i 's/cucumber-front:.*\$/cucumber-front:${currentBuild.number}/g' front-deployment.yaml"
                 sh "git add front-deployment.yaml"
                 sh "git commit -m '[Update] front-end ${currentBuild.number} image versioning'"
