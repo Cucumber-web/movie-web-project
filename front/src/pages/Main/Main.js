@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 import Slider from "react-slick";
 import { useEffect, useState } from "react";
 import { Planet } from "react-planet";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
+import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "slick-carousel/slick/slick.css";
@@ -30,8 +30,6 @@ const Main = () => {
         slidesToShow: 3,
         centerMode: true,
         centerPadding: 0,
-        nextArrow: <ArrowNext />,
-        prevArrow: <ArrowPrev />,
         beforeChange: (current, next) => setImageIndex(next),
     };
     console.log(movie);
@@ -49,13 +47,21 @@ const Main = () => {
     return (
         <MainOutHeightWrapper>
             <MainWrapper>
-                <Slider {...CAROUSEL_SETTING}>
+                <Slider
+                    {...CAROUSEL_SETTING}
+                >
                     {movie &&
                         movie.slice(0, 7).map((props, idx) => (
-                            <MainPoster isMain={idx === imageIndex} onClick={() => navigate("/detail", {state: props.title})}>
+                            <MainPoster
+                                isMain={idx === imageIndex}
+                                onClick={() =>
+                                    navigate("/detail", { state: props.title })
+                                }
+                                key={idx}
+                            >
                                 <img
                                     src={props.postLink}
-                                    key={idx}
+                                    
                                     alt={props.title}
                                 />
                             </MainPoster>
@@ -84,10 +90,10 @@ const Main = () => {
                 <h2>이번 주에 상영하는 영화</h2>
                 <div>
                     <WeekBtn onClick={handleRotationMinus}>
-                        <AiOutlineArrowLeft />
+                        <BsFillArrowLeftCircleFill />
                     </WeekBtn>
                     <WeekBtn onClick={handleRotationPlus}>
-                        <AiOutlineArrowRight />
+                        <BsFillArrowRightCircleFill />
                     </WeekBtn>
                 </div>
             </ThisWeek>
@@ -182,7 +188,7 @@ const MainPoster = styled.div`
     ${(props) =>
         props.isMain &&
         css`
-            transform: scale(1.0);
+            transform: scale(1);
             opacity: 1;
         `}
     img {
@@ -241,38 +247,37 @@ const WeekBtn = styled.button`
     }
 `;
 
-const ArrowNext = styled(AiOutlineArrowRight)`
+const ArrowNext = styled(BsFillArrowRightCircleFill)`
     position: absolute;
-    right:0%;
+    right: 0%;
     top: 50%;
     width: 2rem;
     height: 2rem;
     cursor: pointer;
-    z-index:10;
+    z-index: 10;
     color: white;
     border: 1px solid white;
     border-radius: 50%;
 
-    :hover{
-        color:#03af59;
-        border:1px solid #03af59;
+    :hover {
+        color: #03af59;
+        border: 1px solid #03af59;
     }
-`
+`;
 
-const ArrowPrev = styled(AiOutlineArrowLeft)`
+const ArrowPrev = styled(BsFillArrowLeftCircleFill)`
     position: absolute;
-    left:0%;
+    left: 0%;
     top: 50%;
     width: 2rem;
     height: 2rem;
     cursor: pointer;
-    z-index:10;
-    color: white;
+    z-index: 10;
     border: 1px solid white;
     border-radius: 50%;
 
-    :hover{
-        color:#03af59;
-        border:1px solid #03af59;
+    :hover {
+        color: #03af59;
+        border: 1px solid #03af59;
     }
-`
+`;

@@ -11,6 +11,7 @@ const Detail = () => {
     const [movieData, setMovieData] = useState({});
     const movieTitle = location.state;
     console.log(location.state);
+    console.log(getAccessToken());
     useEffect(() => {
         axios
             .get(`/mvi/read?title=${movieTitle}`)
@@ -23,7 +24,11 @@ const Detail = () => {
 
     const handleLikeButton = () => {
         axios
-            .post(`http://localhost:8080/like/${movieTitle}`)
+            .post(`/like/${movieTitle}`,{
+                headers:{
+                    Authorization: `Bearer ${getAccessToken()}`,
+                }
+            })
             .then((res) => console.log(res))
             .catch((err) => console.log(err));
     };
