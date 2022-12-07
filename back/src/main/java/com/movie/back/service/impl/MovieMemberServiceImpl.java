@@ -28,8 +28,8 @@ public class MovieMemberServiceImpl implements MovieMemberService {
     public void saveMovieMember(String email,String title){
 
             memberMovieRepository.save(MemberMovie.builder()
-                            .member(Member.builder().email(email).build())
-                            .boxOfficeId(BoxOffice.builder().title(title).build())
+                            .email(email)
+                            .title(title)
                     .build());
     }
 
