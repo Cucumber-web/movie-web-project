@@ -11,6 +11,8 @@ import com.movie.back.service.LikeService;
 import com.movie.back.service.MemberService;
 import com.movie.back.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -26,6 +28,7 @@ import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class UserController {
@@ -54,7 +57,7 @@ public class UserController {
 
     @PostMapping("/like/{title}")    //토큰 넘겨줘야 실행가능함 토큰과 영화제목을 넘겨주어야 좋아요가 저장됨
     public ResponseEntity<Void> like(@PathVariable String title, HttpServletRequest request){
-
+        log.info("요청 들어옴");
         String tokenStr = memberService.jwtExtract(request);
         Map<String,Object> values = jwtUtil.validateToken(tokenStr);
 

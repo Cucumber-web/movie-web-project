@@ -4,34 +4,57 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { getAccessToken } from "../../storage/Cookie";
 import axios from "axios";
-axios.defaults.headers.common['Authorization'] = getAccessToken();
+axios.defaults.headers.common["Authorization"] = getAccessToken();
 
 const Detail = () => {
     const location = useLocation();
     const [movieData, setMovieData] = useState({});
+    const [isLike, setIsLike] = useState("false");
     const movieTitle = location.state;
-    console.log(location.state);
-    console.log(getAccessToken());
+
     useEffect(() => {
         axios
             .get(`/mvi/read?title=${movieTitle}`)
             .then((res) => {
                 console.log(res);
                 setMovieData(res.data);
+                axios.get(`/like/read?title=${movieTitle}`).then((res) => {
+                    setIsLike(res.data);
+                });
             })
             .catch((err) => console.log(err));
     }, []);
 
-    const handleLikeButton = () => {
-        axios
-            .post(`/like/${movieTitle}`,{
-                headers:{
-                    Authorization: `Bearer ${getAccessToken()}`,
-                }
-            })
-            .then((res) => console.log(res))
-            .catch((err) => console.log(err));
+    const config = {
+        method: "post",
+        url: `/like/${movieTitle}`,
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
     };
+
+    const deleteConfig = {
+        method: "delete",
+        url: `/like/delete?title=${movieTitle}`,
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    };
+
+    const handleLikeButton = () => {
+        if (isLike === "false") {
+            axios(config)
+                .then((res) => console.log(res))
+                .catch((err) => console.log(err));
+        } else {
+            axios(deleteConfig)
+                .then((res) => {
+                    setIsLike(res.data);
+                })
+                .catch((err) => console.log(err));
+        }
+    };
+    console.log(isLike);
     return (
         <div>
             {movieData && (
