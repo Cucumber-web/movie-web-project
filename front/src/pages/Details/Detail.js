@@ -2,14 +2,21 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { getAccessToken, setAccessToken, getCookieToken, setRefreshToken } from "../../storage/Cookie";
+import {
+    getAccessToken,
+    setAccessToken,
+    getCookieToken,
+    setRefreshToken,
+} from "../../storage/Cookie";
 import axios from "axios";
+import { newAccessToken } from "../../module/refreshToken";
 axios.defaults.headers.common["Authorization"] = getAccessToken();
 
 const Detail = () => {
     const location = useLocation();
     const [movieData, setMovieData] = useState({});
-    const [isLike, setIsLike] = useState("false");
+    const [isLike, setIsLike] = useState(false);
+    const [myMovie, setMyMovie] = useState(false);
     const movieTitle = location.state;
 
     const readConfig = {
@@ -28,26 +35,17 @@ const Detail = () => {
                 setMovieData(res.data);
                 axios(readConfig)
                     .then((res) => {
+                        console.log(res);
                         setIsLike(res.data);
                     })
                     .catch((err) => {
-                        if(err.response.status === 403){
-                            axios.post('/refreshToken',{
-                                headers:{
-                                    Authorization: `Bearer ${getCookieToken()}`
-                                }
-                            }).then(res => {
-                                console.log(res);
-                                setAccessToken(res.data.accessToken);
-                                setRefreshToken(res.data.refreshToken);
-                            })
-                        }
+                        newAccessToken(err);
                     });
             })
             .catch((err) => console.log(err));
     }, []);
 
-    const config = {
+    const LikeConfig = {
         method: "post",
         url: `/like/${movieTitle}`,
         headers: {
@@ -55,7 +53,7 @@ const Detail = () => {
         },
     };
 
-    const deleteConfig = {
+    const deleteLikeConfig = {
         method: "delete",
         url: `/like/delete?title=${movieTitle}`,
         headers: {
@@ -63,22 +61,88 @@ const Detail = () => {
         },
     };
 
+    const myMovieConfig = {
+        method: "post",
+        url: `/my/save/${movieTitle}`,
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    };
+
+    const deleteMyMovieConfig = {
+        method: "delete",
+        url: `/my/remove?title=${movieTitle}`,
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    };
+
     const handleLikeButton = () => {
-        if (isLike === "false") {
-            axios(config)
+        if (!isLike) {
+            axios(LikeConfig)
                 .then((res) => {
+                    console.log(res);
                     setIsLike(res.data);
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => {
+                    newAccessToken(err);
+                    axios(LikeConfig)
+                        .then((res) => {
+                            console.log(res);
+                            setIsLike(res.data);
+                        })
+                        .catch((err) => console.log(err));
+                });
         } else {
-            axios(deleteConfig)
+            axios(deleteLikeConfig)
                 .then((res) => {
                     setIsLike(res.data);
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => {
+                    newAccessToken(err);
+                    axios(deleteLikeConfig)
+                        .then((res) => {
+                            console.log(res);
+                            setIsLike(res.data);
+                        })
+                        .catch((err) => console.log(err));
+                });
         }
     };
-    console.log(isLike);
+
+    const handleMyMovieButton = () => {
+        if (!myMovie) {
+            axios(myMovieConfig)
+                .then((res) => {
+                    console.log(res);
+                    setMyMovie(res.data);
+                })
+                .catch((err) => {
+                    newAccessToken(err);
+                    axios(myMovieConfig)
+                        .then((res) => {
+                            console.log(res);
+                            setMyMovie(res.data);
+                        })
+                        .catch((err) => console.log(err));
+                });
+        } else {
+            axios(deleteMyMovieConfig)
+                .then((res) => {
+                    setMyMovie(res.data);
+                })
+                .catch((err) => {
+                    newAccessToken(err);
+                    axios(deleteMyMovieConfig)
+                        .then((res) => {
+                            console.log(res);
+                            setMyMovie(res.data);
+                        })
+                        .catch((err) => console.log(err));
+                });
+        }
+    };
+
     return (
         <div>
             {movieData && (
@@ -89,8 +153,17 @@ const Detail = () => {
                         <DetailInfoWrapper>
                             <DetailTitle>
                                 {movieData.title}
-                                <LikeBox isLike={isLike} onClick={handleLikeButton}>
+                                <LikeBox
+                                    isLike={isLike}
+                                    onClick={handleLikeButton}
+                                >
                                     좋아요
+                                </LikeBox>
+                                <LikeBox
+                                    isLike={myMovie}
+                                    onClick={handleMyMovieButton}
+                                >
+                                    찜 하기
                                 </LikeBox>
                             </DetailTitle>
                             <DetailDesc>
@@ -157,6 +230,5 @@ const LikeBox = styled.div`
     align-items: center;
     width: 5rem;
     height: 3rem;
-    background-color: ${props => props.isLike === "true" ? "red" : "rgba(0,0,0,0.3)"};
-    
+    background-color: ${(props) => (props.isLike ? "red" : "rgba(0,0,0,0.3)")};
 `;
