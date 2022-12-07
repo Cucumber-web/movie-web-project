@@ -32,7 +32,7 @@ class BoxOfficeServiceTest {
     @Test
         // 옵션 적용
     void test2(){
-        boxOfficeRepository.getBoxOfficeList().forEach(System.out::println);
+        System.out.println(boxOfficeRepository.getMovieRead("헤어질 결심"));
     }
 
     @Test
@@ -74,6 +74,7 @@ class BoxOfficeServiceTest {
             //TODO: 좋아요 개수 처리해야함
         }
     }
+<<<<<<< HEAD
 
     @Test
     void test9(){
@@ -83,4 +84,6 @@ class BoxOfficeServiceTest {
                 System.out.println("=============================");
             });
     }
+=======
+>>>>>>> 3999562b00e48afc90d3c0d0a5aa37b7779a6173
 }

@@ -62,6 +62,8 @@ const NavSearch = styled.input`
   padding-left: 2.5rem;
   border: 1px solid #03af59;
   border-radius: 1rem;
+  color: white;
+  text-indent: 1rem;
 `;
 
 const NavSearchIcon = styled(HiMagnifyingGlass)`
@@ -75,8 +77,3 @@ const NavUserIcon = styled(BiUser)`
   height: 40%;
   color: #03af59;
 `;
-
-// const NavUserIcon = styled(BiUser)`
-//   height: 100%;
-//   cursor: pointer;
-// `;

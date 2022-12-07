@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 const SignUp = () => {
   const [isValid, setIsValid] = useState(false);
   const [confirmPw, setConfirmPw] = useState('');
-  const [userInfo, setUserInfo] = useState<UserInfo>({
+  const [userInfo, setUserInfo] = useState({
     email: '',
     password: '',
     gender: '',
@@ -50,7 +50,9 @@ const SignUp = () => {
     if (
       userInfo.email &&
       userInfo.password &&
-      userInfo.password === confirmPw
+      userInfo.password === confirmPw &&
+      userInfo.birth &&
+      userInfo.gender
     ) {
       setIsValid(true);
     } else {

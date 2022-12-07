@@ -33,12 +33,13 @@ public class TokenCheckFilter  extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String path = request.getRequestURI();
+        log.info(path);
 
 //        if(!path.startsWith("/api/")){  //요청경로가 api로 시작하지 않으면 그냥 지나가게 함
 //            filterChain.doFilter(request,response); //필터를 따라 다음 필터로
 //            return;
 //        }
-        if(path.startsWith("/register") || path.startsWith("/mvi/") || path.startsWith("/search/")  ){
+        if(path.startsWith("/register") || path.startsWith("/mvi/") || path.startsWith("/search/") || path.startsWith("/login")){
             filterChain.doFilter(request,response);
             return;
         }
@@ -48,17 +49,20 @@ public class TokenCheckFilter  extends OncePerRequestFilter {
         try{
             Map<String,Object> payload = validateAccessToken(request);
 
-            //email 받기
-          /*  String email = (String)payload.get("email");
-            System.out.println("현재 login한 email ==> "+ email);
+            if(path.startsWith("/quiz")){
+              //  email 받기
+                String email = (String)payload.get("email");
+                System.out.println("현재 login한 email ==> "+ email);
 
-            UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
-                //select 쿼리 한 번 실행할 수 밖에없음
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+                UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
+                    //select 쿼리 한 번 실행할 수 밖에없음
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
 
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            */
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+
+            }
 
             filterChain.doFilter(request,response);
         }catch (AccessTokenException accessTokenException){
