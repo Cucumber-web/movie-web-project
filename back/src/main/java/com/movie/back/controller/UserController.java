@@ -56,14 +56,15 @@ public class UserController {
 
 
     @PostMapping("/like/{title}")    //토큰 넘겨줘야 실행가능함 토큰과 영화제목을 넘겨주어야 좋아요가 저장됨
-    public ResponseEntity<Void> like(@PathVariable String title, HttpServletRequest request){
-        log.info("요청 들어옴");
+    public ResponseEntity<Boolean> like(@PathVariable String title, HttpServletRequest request){
+
         String tokenStr = memberService.jwtExtract(request);
         Map<String,Object> values = jwtUtil.validateToken(tokenStr);
 
         likeService.saveLike((String)values.get("email"),title);
 
-        return  new ResponseEntity<Void>(HttpStatus.OK);
+        return  ResponseEntity.ok(true);
+
     }
 
     @GetMapping("/like/read")       //좋아요를 눌렀으면 트루 아니면 풜스 이상한 값 넘어오면 풜스
@@ -78,13 +79,13 @@ public class UserController {
 
 
     @DeleteMapping("/like/delete")
-    public ResponseEntity<String> deleteLike(@RequestParam String title,HttpServletRequest request){
+    public ResponseEntity<Boolean> deleteLike(@RequestParam String title,HttpServletRequest request){
         String tokenStr = memberService.jwtExtract(request);
         Map<String,Object> values = jwtUtil.validateToken(tokenStr);
 
         likeService.deleteLike((String)values.get("email"),title);
 
-        return ResponseEntity.status(200).body("삭제완료");
+        return ResponseEntity.status(200).body(false);
     }
 
 }
