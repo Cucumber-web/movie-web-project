@@ -181,40 +181,39 @@ public class BoxOfficeService {
 
         List<BoxOfficeDTO> dtoList = new ArrayList<>();
         Page<BoxOffice> boxOffices;
-            if(title != null){
-                boxOffices = boxOfficeRepository.getMovieList(title, PageRequest.of(page,10));
+        if(title != null){
+            boxOffices = boxOfficeRepository.getMovieList(title, PageRequest.of(page,10));
 
-                boxOffices.forEach(boxOffice -> {
-                        dtoList.add(BoxOfficeDTO.builder()
-                                        .title(boxOffice.getTitle())
-                                        .synopsis(boxOffice.getSynopsis())
-                                        .postLink(boxOffice.getPosterLink())
-                                        .actorList(boxOffice.getActorList().stream().map(actorEntity ->
-                                                ActorDTO.builder().actorName(actorEntity.getActorName())
-                                                .actorRole(actorEntity.getActorRole()).build()).collect(Collectors.toList()))
-                                .build());
-                    });
-            }else{
-                boxOffices = boxOfficeRepository.findAll(PageRequest.of(page,10));
+            boxOffices.forEach(boxOffice -> {
+                dtoList.add(BoxOfficeDTO.builder()
+                        .title(boxOffice.getTitle())
+                        .synopsis(boxOffice.getSynopsis())
+                        .postLink(boxOffice.getPosterLink())
+                        .actorList(boxOffice.getActorList().stream().map(actorEntity ->
+                                ActorDTO.builder().actorName(actorEntity.getActorName())
+                                        .actorRole(actorEntity.getActorRole()).build()).collect(Collectors.toList()))
+                        .build());
+            });
+        }else{
+            boxOffices = boxOfficeRepository.findAll(PageRequest.of(page,10));
 
-                boxOffices.stream().collect(Collectors.toList()).forEach(boxOffice -> {
-                    dtoList.add(BoxOfficeDTO.builder()
-                            .title(boxOffice.getTitle())
-                            .synopsis(boxOffice.getSynopsis())
-                            .postLink(boxOffice.getPosterLink())
-                            .actorList(boxOffice.getActorList().stream().map(actorEntity ->
-                                    ActorDTO.builder().actorName(actorEntity.getActorName())
-                                            .actorRole(actorEntity.getActorRole()).build()).collect(Collectors.toList()))
-                            .build());
-                });
-            }
+            boxOffices.stream().collect(Collectors.toList()).forEach(boxOffice -> {
+                dtoList.add(BoxOfficeDTO.builder()
+                        .title(boxOffice.getTitle())
+                        .synopsis(boxOffice.getSynopsis())
+                        .postLink(boxOffice.getPosterLink())
+                        .actorList(boxOffice.getActorList().stream().map(actorEntity ->
+                                ActorDTO.builder().actorName(actorEntity.getActorName())
+                                        .actorRole(actorEntity.getActorRole()).build()).collect(Collectors.toList()))
+                        .build());
+            });
+        }
 
         SearchMovieData searchMovieData = SearchMovieData.builder()
                 .items(dtoList)
                 .totalPage(boxOffices.getTotalPages())
                 .build();
-            return searchMovieData;
+        return searchMovieData;
     }
-
 
 }

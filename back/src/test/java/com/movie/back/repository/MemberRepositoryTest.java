@@ -40,7 +40,7 @@ class MemberRepositoryTest {
 
     @Test
     void 아이디등록하기(){
-        memberRepository.save(Member.builder().email("user")
+        memberRepository.save(Member.builder().email("user22")
                 .password(passwordEncoder.encode("1111"))
                 .roleSet(Set.of(MemberRole.ADMIN))
                 .gender("남")
@@ -102,7 +102,7 @@ class MemberRepositoryTest {
 //                .getMovieSet().forEach(memberMovie -> {
 //                    System.out.println(memberMovie.getBoxOfficeId());
 //        });
-        memberMovieRepository.memberMyMovie("user").forEach(boxOffice -> System.out.println(boxOffice.getTitle()));
+        //memberMovieRepository.memberMyMovie("user").forEach(boxOffice -> System.out.println(boxOffice.getTitle()));
             //이메일을 넣으면 inner join으로 BoxOffice 엔티티 객체를 불러옴
         // inner join 으로 조인키와 pk가 같은 on 을 걸어서 가져옴 - 중복제거 완료
 
@@ -110,7 +110,7 @@ class MemberRepositoryTest {
     @Test
     @Transactional
     void 찜한영화테스트(){
-        myMovieService.getDtoList("user").forEach(System.out::println);
+      //  myMovieService.getDtoList("user").forEach(System.out::println);
     }
 
     @Test
