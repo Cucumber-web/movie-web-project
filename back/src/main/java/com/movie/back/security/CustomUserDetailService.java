@@ -31,7 +31,8 @@ public class CustomUserDetailService implements UserDetailsService {
                         new SimpleGrantedAuthority("ROLE_"+memberRole.name()))
                         .collect(Collectors.toList()),
                 member.getBirth(),
-                member.getGender()
+                member.getGender(),
+                member.getAgeGroup()
             );
         return dto;
     }

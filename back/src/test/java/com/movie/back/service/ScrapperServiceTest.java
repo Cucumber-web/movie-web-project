@@ -20,4 +20,6 @@ class ScrapperServiceTest {
         void test() throws IOException, KobisScrapper.NotScrappedDateException {
                 service.latestBoxOffice().forEach(System.out::println);
         }
+
+
 }

@@ -4,10 +4,7 @@ package com.movie.back.entity;
 import lombok.*;
 import org.hibernate.annotations.BatchSize;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -48,5 +45,9 @@ public class BoxOffice {
     @OneToMany(mappedBy = "boxOffice")
     @Builder.Default
     private Set<LikeGood> likeGoods = new HashSet<>();
+
+    @OneToMany(mappedBy = "boxOffice",cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Quiz> quizList = new ArrayList<>();
 
 }

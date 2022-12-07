@@ -28,7 +28,7 @@ public class Member {
 
         private String gender;
 
-
+        private String ageGroup;
         @Builder.Default
         @ElementCollection(fetch = FetchType.LAZY)
         private Set<MemberRole> roleSet = new HashSet<>();
@@ -37,5 +37,10 @@ public class Member {
         @OneToMany(mappedBy = "member")
         @Builder.Default
         private Set<MemberMovie> movieSet= new HashSet<>();
+
+
+        public void addRole(MemberRole memberRole){
+                this.roleSet.add(memberRole);
+        }
 
 }

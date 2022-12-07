@@ -29,6 +29,6 @@ public class RegisterBody {
         Set<String> roleTypes = Set.of(getRole());
         return new MemberDTO(this.email, this.password,
                 roleTypes.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toUnmodifiableSet()),
-                this.birth, this.getGender());
+                this.birth, this.getGender(),null);
     }
 }
