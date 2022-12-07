@@ -28,7 +28,7 @@ public class MainController {
 
     @GetMapping(value = "/box")    //박스오피스, 10개 출력
     public ResponseEntity<List<BoxOfficeDTO>> readAll(){
-            return ResponseEntity.ok(boxOfficeService.getBoxList());
+        return ResponseEntity.ok(boxOfficeService.getBoxList());
     }
 
     @GetMapping(value = "/read")
@@ -41,7 +41,7 @@ public class MainController {
 
     @PostMapping(value = "",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> register(){
-            return ResponseEntity.ok("post");
+        return ResponseEntity.ok("post");
     }
     @PutMapping(value = "/{movieId}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> modify(
@@ -50,9 +50,7 @@ public class MainController {
     }
     @DeleteMapping(value = "/{movieId}",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Long> remove(@PathVariable("movieId") Long movieId){
-            return ResponseEntity.ok(1L);   //todo: 삭제한 PK가 날아가게
+        return ResponseEntity.ok(1L);   //todo: 삭제한 PK가 날아가게
     }
-
-
 
 }

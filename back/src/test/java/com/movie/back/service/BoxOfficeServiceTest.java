@@ -74,4 +74,16 @@ class BoxOfficeServiceTest {
             //TODO: 좋아요 개수 처리해야함
         }
     }
+<<<<<<< HEAD
+
+    @Test
+    void test9(){
+            boxOfficeService.getLikeMovie().forEach(boxOfficeDTO -> {
+                System.out.println(boxOfficeDTO.getTitle());
+                System.out.println(boxOfficeDTO.getPostLink());
+                System.out.println("=============================");
+            });
+    }
+=======
+>>>>>>> 3999562b00e48afc90d3c0d0a5aa37b7779a6173
 }

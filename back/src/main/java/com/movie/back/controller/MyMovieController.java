@@ -2,6 +2,7 @@ package com.movie.back.controller;
 
 
 import com.movie.back.dto.BoxOfficeDTO;
+import com.movie.back.dto.MyMovieData;
 import com.movie.back.service.MemberService;
 import com.movie.back.service.MovieMemberService;
 import com.movie.back.util.JWTUtil;
@@ -26,14 +27,14 @@ public class MyMovieController {
 
 
         @PostMapping("/save/{title}")
-        public ResponseEntity<String> getSave(@PathVariable String title,HttpServletRequest request){
+        public ResponseEntity<Boolean> getSave(@PathVariable String title,HttpServletRequest request){
 
             String tokenStr = memberService.jwtExtract(request);
             Map<String,Object> values = jwtUtil.validateToken(tokenStr);
 
             myMovieService.saveMovieMember((String)values.get("email"),title);
 
-            return ResponseEntity.ok("저장완료");
+            return ResponseEntity.ok(true);
         }
 
         @GetMapping("/exists")
@@ -44,21 +45,21 @@ public class MyMovieController {
         }
 
         @GetMapping("/list")
-        public ResponseEntity<List<BoxOfficeDTO>> getList(HttpServletRequest request){
+        public ResponseEntity<MyMovieData> getList(HttpServletRequest request, @RequestParam(defaultValue = "0") int page){
             String tokenStr = memberService.jwtExtract(request);
             Map<String,Object> values = jwtUtil.validateToken(tokenStr);
 
-            return ResponseEntity.ok(myMovieService.getDtoList((String)values.get("email")));
+            return ResponseEntity.ok(myMovieService.getDtoList((String)values.get("email"),page));
 
         }
 
         @DeleteMapping("/remove")
-        public ResponseEntity<String> remove(HttpServletRequest request,@RequestParam String title){
+        public ResponseEntity<Boolean> remove(HttpServletRequest request,@RequestParam String title){
                 String tokenStr = memberService.jwtExtract(request);
                 Map<String,Object> values = jwtUtil.validateToken(tokenStr);
 
                 myMovieService.deleteMyMovie((String)values.get("email"),title);
-                return ResponseEntity.ok(null);
+                return ResponseEntity.ok(false);
 
         }
 }
