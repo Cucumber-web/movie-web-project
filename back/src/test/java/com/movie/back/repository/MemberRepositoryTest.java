@@ -2,6 +2,7 @@ package com.movie.back.repository;
 
 import com.movie.back.dto.MemberDTO;
 import com.movie.back.dto.MemberRole;
+import com.movie.back.dto.RegisterBody;
 import com.movie.back.entity.BoxOffice;
 import com.movie.back.entity.Member;
 import com.movie.back.entity.MemberMovie;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -109,5 +111,47 @@ class MemberRepositoryTest {
     @Transactional
     void 찜한영화테스트(){
         myMovieService.getDtoList("user").forEach(System.out::println);
+    }
+
+    @Test
+    void tst(){
+
+        MemberDTO dto = MemberDTO.toDTO(Member.builder().email("user")
+                .password(passwordEncoder.encode("1111"))
+                .roleSet(Set.of(MemberRole.ADMIN))
+                .gender("남")
+                .birth(LocalDateTime.now().minusYears(25).format(DateTimeFormatter.ofPattern("yyyy-MM-dd")))
+                .build());
+        dto.setAgeGroup(dto.getBirth());
+
+        System.out.println(dto);
+        memberRepository.save(MemberDTO.toEntity(dto));
+    }
+
+    @Test
+    @Rollback(value = false)
+    @Transactional
+    void tt(){
+//        RegisterBody registerBody = RegisterBody.builder()
+//                .email("test11")
+//                .password(passwordEncoder.encode("1111"))
+//                .role("ROLE_ADMIN")
+//                .birth("1999-11-11")
+//                .gender("남")
+//                .build();
+//        MemberDTO dto = registerBody.toMemberDTO(registerBody);
+//        dto.setAgeGroup(dto.getBirth());
+//
+//        System.out.println(dto); //DTO  생서앚쪽에 ADMIN 넣엇음
+//        Member member = MemberDTO.toEntity(dto);
+//        System.out.println(" 엔티티화 ==="+member);
+
+      //  memberRepository.save(member);
+
+        Member member =memberRepository.getMemberInfo("test11").get();
+         member.addRole(MemberRole.ADMIN);
+        memberRepository.save(member);
+
+     //   member.getRoleSet().forEach(System.out::println);
     }
 }

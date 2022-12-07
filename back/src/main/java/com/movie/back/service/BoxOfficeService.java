@@ -5,6 +5,7 @@ import com.movie.back.data.cdata.Actor;
 import com.movie.back.data.cdata.MovieCode;
 import com.movie.back.dto.ActorDTO;
 import com.movie.back.dto.BoxOfficeDTO;
+import com.movie.back.dto.SearchMovieData;
 import com.movie.back.entity.ActorEntity;
 import com.movie.back.entity.BoxOffice;
 import com.movie.back.entity.BoxStillImage;
@@ -13,9 +14,12 @@ import com.movie.back.repository.BoxOfficeRepository;
 import com.movie.back.repository.BoxStillImageRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -173,10 +177,14 @@ public class BoxOfficeService {
     }
 
     @Transactional
-    public List<BoxOfficeDTO> getSearchMovieList(String title){ //제목이 있으면 그거와 비슷한 요소들 없으면 전체
-            List<BoxOfficeDTO> dtoList = new ArrayList<>();
+    public SearchMovieData getSearchMovieList(String title,int page){ //제목이 있으면 그거와 비슷한 요소들 없으면 전체
+
+        List<BoxOfficeDTO> dtoList = new ArrayList<>();
+        Page<BoxOffice> boxOffices;
             if(title != null){
-                    boxOfficeRepository.getMovieList(title).forEach(boxOffice -> {
+                boxOffices = boxOfficeRepository.getMovieList(title, PageRequest.of(page,10));
+
+                boxOffices.forEach(boxOffice -> {
                         dtoList.add(BoxOfficeDTO.builder()
                                         .title(boxOffice.getTitle())
                                         .synopsis(boxOffice.getSynopsis())
@@ -187,7 +195,9 @@ public class BoxOfficeService {
                                 .build());
                     });
             }else{
-                boxOfficeRepository.findAll().forEach(boxOffice -> {
+                boxOffices = boxOfficeRepository.findAll(PageRequest.of(page,10));
+
+                boxOffices.stream().collect(Collectors.toList()).forEach(boxOffice -> {
                     dtoList.add(BoxOfficeDTO.builder()
                             .title(boxOffice.getTitle())
                             .synopsis(boxOffice.getSynopsis())
@@ -198,7 +208,12 @@ public class BoxOfficeService {
                             .build());
                 });
             }
-            return dtoList;
+
+        SearchMovieData searchMovieData = SearchMovieData.builder()
+                .items(dtoList)
+                .totalPage(boxOffices.getTotalPages())
+                .build();
+            return searchMovieData;
     }
 
 

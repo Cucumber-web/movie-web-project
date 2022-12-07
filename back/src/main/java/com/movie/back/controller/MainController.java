@@ -38,6 +38,7 @@ public class MainController {
     }
 
 
+
     @PostMapping(value = "",consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> register(){
             return ResponseEntity.ok("post");
