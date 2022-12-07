@@ -38,8 +38,6 @@ public class LikeServiceImpl implements LikeService {
                         , Member.builder().email(email).build());
         }
 
-
-        @Transactional
         @Override
         public void deleteLike(String email, String title) {
             likeRepository.deleteById(likeRepository.likeElement(BoxOffice.builder()

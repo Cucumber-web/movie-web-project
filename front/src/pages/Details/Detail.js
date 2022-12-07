@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { getAccessToken } from "../../storage/Cookie";
+import { getAccessToken, setAccessToken, getCookieToken, setRefreshToken } from "../../storage/Cookie";
 import axios from "axios";
 axios.defaults.headers.common["Authorization"] = getAccessToken();
 
@@ -12,15 +12,37 @@ const Detail = () => {
     const [isLike, setIsLike] = useState("false");
     const movieTitle = location.state;
 
+    const readConfig = {
+        method: "get",
+        url: `/like/read?title=${movieTitle}`,
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    };
+
     useEffect(() => {
         axios
             .get(`/mvi/read?title=${movieTitle}`)
             .then((res) => {
                 console.log(res);
                 setMovieData(res.data);
-                axios.get(`/like/read?title=${movieTitle}`).then((res) => {
-                    setIsLike(res.data);
-                });
+                axios(readConfig)
+                    .then((res) => {
+                        setIsLike(res.data);
+                    })
+                    .catch((err) => {
+                        if(err.response.status === 403){
+                            axios.post('/refreshToken',{
+                                headers:{
+                                    Authorization: `Bearer ${getCookieToken()}`
+                                }
+                            }).then(res => {
+                                console.log(res);
+                                setAccessToken(res.data.accessToken);
+                                setRefreshToken(res.data.refreshToken);
+                            })
+                        }
+                    });
             })
             .catch((err) => console.log(err));
     }, []);
@@ -44,7 +66,9 @@ const Detail = () => {
     const handleLikeButton = () => {
         if (isLike === "false") {
             axios(config)
-                .then((res) => console.log(res))
+                .then((res) => {
+                    setIsLike(res.data);
+                })
                 .catch((err) => console.log(err));
         } else {
             axios(deleteConfig)
@@ -65,7 +89,7 @@ const Detail = () => {
                         <DetailInfoWrapper>
                             <DetailTitle>
                                 {movieData.title}
-                                <LikeBox onClick={handleLikeButton}>
+                                <LikeBox isLike={isLike} onClick={handleLikeButton}>
                                     좋아요
                                 </LikeBox>
                             </DetailTitle>
@@ -133,5 +157,6 @@ const LikeBox = styled.div`
     align-items: center;
     width: 5rem;
     height: 3rem;
-    background-color: rgba(205, 207, 204, 0.7);
+    background-color: ${props => props.isLike === "true" ? "red" : "rgba(0,0,0,0.3)"};
+    
 `;
