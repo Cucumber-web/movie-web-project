@@ -38,7 +38,7 @@ pipeline{
                     echo 'Repository clone failure!'
 
                     slackSend(channel: "#front-end", token: "slack-token", color: "danger",
-                     message: ":rotating_light: Front-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":rotating_light: Front-End Build Failed! - ${env.JOB_NAME} (${env.BUILD_NUMBER})\n<${env.BUILD_URL}>")
                 }
                 success{
                     echo 'Repository clone success!'
@@ -62,7 +62,7 @@ pipeline{
                     echo 'React build failure!'
 
                     slackSend(channel: "#front-end", token: "slack-token", color: "danger",
-                     message: ":rotating_light: Front-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":rotating_light: Front-End Build Failed! - ${env.JOB_NAME} (${env.BUILD_NUMBER})\n<${env.BUILD_URL}>")
                 }
                 success{
                     echo 'React build success!'
@@ -84,7 +84,7 @@ pipeline{
                     echo 'Docker image build failure!'
 
                     slackSend(channel: "#front-end", token: "slack-token", color: "danger",
-                     message: ":rotating_light: Front-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":rotating_light: Front-End Build Failed! - ${env.JOB_NAME} (${env.BUILD_NUMBER})\n<${env.BUILD_URL}>")
                 }
                 success{
                     echo 'Docker image build success!'
@@ -112,7 +112,7 @@ pipeline{
                     echo 'Docker Image Push failure!'
 
                     slackSend(channel: "#front-end", token: "slack-token", color: "danger",
-                     message: ":rotating_light: Front-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":rotating_light: Front-End Build Failed! - ${env.JOB_NAME} (${env.BUILD_NUMBER})\n<${env.BUILD_URL}>")
                 }
                 success{
                     echo 'Docker Image Push Success!'
@@ -146,7 +146,7 @@ pipeline{
                     echo 'Kubernetes Manifest Update failure!'
 
                     slackSend(channel: "#front-end", token: "slack-token", color: "danger",
-                     message: ":rotating_light: Front-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":rotating_light: Front-End Build Failed! - ${env.JOB_NAME} (${env.BUILD_NUMBER})\n<${env.BUILD_URL}>")
                 }
                 success{
                     echo 'Kubernetes Manifest Update Success!'
