@@ -42,8 +42,13 @@ public class LikeServiceImpl implements LikeService {
         @Transactional
         @Override
         public void deleteLike(String email, String title) {
-            likeRepository.deleteById(likeRepository.likeElement(BoxOffice.builder()
-                    .title(title).build(), Member.builder().email(email).build())
-                    .orElseThrow(RuntimeException::new).getId());
+            boolean exist = likeRepository.likeElement(BoxOffice.builder()
+                            .title(title).build(), Member.builder().email(email).build())
+                    .isPresent();
+
+            if(exist){
+                likeRepository.deleteById(likeRepository.likeElement(BoxOffice.builder()
+                        .title(title).build(), Member.builder().email(email).build()).get().getId());
+            }
         }
 }

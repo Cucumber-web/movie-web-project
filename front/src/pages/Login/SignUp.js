@@ -50,7 +50,9 @@ const SignUp = () => {
     if (
       userInfo.email &&
       userInfo.password &&
-      userInfo.password === confirmPw
+      userInfo.password === confirmPw &&
+      userInfo.birth &&
+      userInfo.gender
     ) {
       setIsValid(true);
     } else {
