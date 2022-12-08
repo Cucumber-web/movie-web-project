@@ -18,5 +18,7 @@ public class QuizDTO {
     private String movieTitle;
 
     private List<QuizItems> quizItems;
+    private String correct;
+    private String key;
 
 }

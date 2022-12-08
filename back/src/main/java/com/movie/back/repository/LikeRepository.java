@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface LikeRepository extends JpaRepository<LikeGood,Long> {
@@ -24,4 +25,9 @@ public interface LikeRepository extends JpaRepository<LikeGood,Long> {
 
     @Query("delete from LikeGood l where l.boxOffice = :boxOffice and l.member = :member")
     void deleteLike(@Param("boxOffice") BoxOffice boxOffice,@Param("member") Member member);
+
+
+    @Query("select l from LikeGood l where l.member.email in" +
+            " (select m from Member m where m.ageGroup = :ageGroup)")
+    List<LikeGood> likeGoodOrderBy(String ageGroup);
 }
