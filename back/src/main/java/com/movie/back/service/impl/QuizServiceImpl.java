@@ -11,7 +11,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -24,25 +27,39 @@ public class QuizServiceImpl implements QuizService {
         List<QuizDTO> quizDTOList = new ArrayList<>();
         boxOfficeRepository.getQuizeBoxOffice(title)
                 .getQuizList().forEach(quiz -> {
-                        quizDTOList.add(QuizDTO.builder()
-                                        .id(quiz.getId())
-                                        .quizTitle(quiz.getTitle())
-                                        .movieTitle(quiz.getMovieTitle())
-                                .build());
+
+                quizDTOList.add(QuizDTO.builder()
+                                .id(quiz.getId())
+                                .quizTitle(quiz.getTitle())
+                                .movieTitle(quiz.getMovieTitle())
+                        .build());
         });
         return quizDTOList;
     }
 
-    public void saveQuiz(String movieTitle,String email,String quizTitle,List<QuizItems> quizItems){
-        Quiz quiz =Quiz.builder()
-                .movieTitle(movieTitle)
-                .email(email)
-                .title(quizTitle)
-                .build();
+    public List<String> getItems(String quizTitle){
+     //       var list =quizRepository.getQuizByQuizTitle(quizTitle).get().getQuizItems().stream().collect(Collectors.toList());
+       //     Collections.sort(list);
+       // return list;
+        return null;
+    }
+
+    public void saveQuiz(String movieTitle,String email,String quizTitle ,List<QuizItems> quizItems,String correct){
+            Quiz quiz =Quiz.builder()
+                    .movieTitle(movieTitle)
+                    .email(email)
+                    .title(quizTitle)
+                    .build();
 
         quizItems.forEach(quizItem -> {
-             quiz.addQuizItem(quizItem.getItem());
+             if(quizItem.getItem().equals(correct)){
+                 quiz.addQuizItem(quizItem.getItem(),quizItem.getKey(),true);
+             }else{
+                 quiz.addQuizItem(quizItem.getItem(),quizItem.getKey(),false);
+             }
         });
         quizRepository.save(quiz);
     }
+
+
 }

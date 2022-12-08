@@ -12,6 +12,7 @@ import com.movie.back.entity.BoxStillImage;
 import com.movie.back.repository.ActorRepository;
 import com.movie.back.repository.BoxOfficeRepository;
 import com.movie.back.repository.BoxStillImageRepository;
+import com.movie.back.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -21,10 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -36,6 +34,9 @@ public class BoxOfficeService {
     private final BoxOfficeRepository boxOfficeRepository;
     private final BoxStillImageRepository boxStillImageRepository;
     private final ActorRepository actorRepository;
+
+    private final LikeRepository likeRepository;
+
 
     private final ScrapperService scrapperService;
 
@@ -214,6 +215,19 @@ public class BoxOfficeService {
                 .totalPage(boxOffices.getTotalPages())
                 .build();
         return searchMovieData;
+    }
+
+    public List<BoxOfficeDTO> likeOrderByAgeGroup(String ageGroup){
+        Set<BoxOfficeDTO> set = new HashSet<>();
+        likeRepository.likeGoodOrderBy(ageGroup).forEach(likeGood -> {
+            set.add(BoxOfficeDTO.builder()
+                    .title(likeGood.getBoxOffice().getTitle())
+                    .postLink(likeGood.getBoxOffice().getPosterLink())
+                    .build());
+        });
+        return set.stream()
+                .collect(Collectors.toList())
+                .subList(0,Math.min(set.size(),10));
     }
 
 }

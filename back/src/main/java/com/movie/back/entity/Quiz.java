@@ -36,13 +36,21 @@ public class Quiz {
 
     private String title;
 
+
     @Builder.Default
-    @ElementCollection(fetch = FetchType.LAZY)
-    private Set<String> quizItems = new HashSet<>();
+    @OneToMany(mappedBy ="quiz", cascade = {CascadeType.ALL},
+            fetch = FetchType.LAZY,
+            orphanRemoval = true)
+    private Set<QuizItems> quizItems = new HashSet<>();
 
 
-    public void addQuizItem(String item){
-        this.quizItems.add(item);
+    public void addQuizItem(String item,String key,boolean correct){
+        quizItems.add(
+                QuizItems.builder().itemTitle(item)
+                         .correct(correct)
+                        .keyNumber(key)
+                        .quiz(this)
+                .build());
     }
 
 }

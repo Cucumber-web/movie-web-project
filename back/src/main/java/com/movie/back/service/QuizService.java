@@ -9,6 +9,8 @@ public interface QuizService {
 
     public List<QuizDTO> getQuiz(String title);
 
-    public void saveQuiz(String movieTitle,String email,String quizTitle,List<QuizItems> quizItems);
+    public void saveQuiz(String movieTitle,String email,String quizTitle ,List<QuizItems> quizItems,String correct);
+
+    public List<String> getItems(String quizTitle);
 }
 
