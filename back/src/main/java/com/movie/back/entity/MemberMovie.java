@@ -1,9 +1,6 @@
 package com.movie.back.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
+@ToString
 public class MemberMovie { //찜한영화
 
     @Id
@@ -20,13 +18,22 @@ public class MemberMovie { //찜한영화
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="member_id")
+    @JoinColumn(name="member_id",insertable = false,updatable = false)
+    @ToString.Exclude
     private Member member;
 
     @ManyToOne
-    @JoinColumn(name="boxOffice_id")
+    @JoinColumn(name="boxOffice_id",insertable = false,updatable = false)
     private BoxOffice boxOfficeId;  //이건 단방향 영화정보가 이 정보를 알 필요가 없음
 
+    @Column(name = "member_id")
+    private String email;
 
+    @Column(name="boxOffice_id")
+    private String title;
+
+    public void changeMember(Member member){
+        this.member = member;
+    }
 
 }

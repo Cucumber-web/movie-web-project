@@ -2,6 +2,7 @@ package com.movie.back.controller;
 
 
 import com.movie.back.dto.BoxOfficeDTO;
+import com.movie.back.dto.SearchMovieData;
 import com.movie.back.service.BoxOfficeService;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
@@ -28,7 +29,9 @@ public class SearchMovieController {
         }
 
         @GetMapping("/list")
-        public ResponseEntity<List<BoxOfficeDTO>> getSearchMovie(@RequestParam(required = false) String title){
-                return ResponseEntity.ok(boxOfficeService.getSearchMovieList(title));
+        public ResponseEntity<SearchMovieData> getSearchMovie(@RequestParam(required = false) String title
+                ,@RequestParam(required = false,defaultValue = "0") int page){
+
+                return ResponseEntity.ok(boxOfficeService.getSearchMovieList(title,page));
         }
 }

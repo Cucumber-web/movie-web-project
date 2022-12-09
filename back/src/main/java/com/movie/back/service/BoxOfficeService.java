@@ -5,22 +5,24 @@ import com.movie.back.data.cdata.Actor;
 import com.movie.back.data.cdata.MovieCode;
 import com.movie.back.dto.ActorDTO;
 import com.movie.back.dto.BoxOfficeDTO;
+import com.movie.back.dto.SearchMovieData;
 import com.movie.back.entity.ActorEntity;
 import com.movie.back.entity.BoxOffice;
 import com.movie.back.entity.BoxStillImage;
 import com.movie.back.repository.ActorRepository;
 import com.movie.back.repository.BoxOfficeRepository;
 import com.movie.back.repository.BoxStillImageRepository;
+import com.movie.back.repository.LikeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.swing.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -32,6 +34,9 @@ public class BoxOfficeService {
     private final BoxOfficeRepository boxOfficeRepository;
     private final BoxStillImageRepository boxStillImageRepository;
     private final ActorRepository actorRepository;
+
+    private final LikeRepository likeRepository;
+
 
     private final ScrapperService scrapperService;
 
@@ -90,7 +95,7 @@ public class BoxOfficeService {
                     .getStillImage().stream().map(boxStillImage -> boxStillImage.getImageLink())
                     .collect(Collectors.toList());
             if(!still.isEmpty()){
-                resultStill = still.subList(0,10);
+                resultStill = still.subList(0, still.size());
             }
         return BoxOfficeDTO.builder()
                 .title(boxOffice.getTitle())
@@ -173,33 +178,56 @@ public class BoxOfficeService {
     }
 
     @Transactional
-    public List<BoxOfficeDTO> getSearchMovieList(String title){ //제목이 있으면 그거와 비슷한 요소들 없으면 전체
-            List<BoxOfficeDTO> dtoList = new ArrayList<>();
-            if(title != null){
-                    boxOfficeRepository.getMovieList(title).forEach(boxOffice -> {
-                        dtoList.add(BoxOfficeDTO.builder()
-                                        .title(boxOffice.getTitle())
-                                        .synopsis(boxOffice.getSynopsis())
-                                        .postLink(boxOffice.getPosterLink())
-                                        .actorList(boxOffice.getActorList().stream().map(actorEntity ->
-                                                ActorDTO.builder().actorName(actorEntity.getActorName())
-                                                .actorRole(actorEntity.getActorRole()).build()).collect(Collectors.toList()))
-                                .build());
-                    });
-            }else{
-                boxOfficeRepository.findAll().forEach(boxOffice -> {
-                    dtoList.add(BoxOfficeDTO.builder()
-                            .title(boxOffice.getTitle())
-                            .synopsis(boxOffice.getSynopsis())
-                            .postLink(boxOffice.getPosterLink())
-                            .actorList(boxOffice.getActorList().stream().map(actorEntity ->
-                                    ActorDTO.builder().actorName(actorEntity.getActorName())
-                                            .actorRole(actorEntity.getActorRole()).build()).collect(Collectors.toList()))
-                            .build());
-                });
-            }
-            return dtoList;
+    public SearchMovieData getSearchMovieList(String title,int page){ //제목이 있으면 그거와 비슷한 요소들 없으면 전체
+
+        List<BoxOfficeDTO> dtoList = new ArrayList<>();
+        Page<BoxOffice> boxOffices;
+        if(title != null){
+            boxOffices = boxOfficeRepository.getMovieList(title, PageRequest.of(page,10));
+
+            boxOffices.forEach(boxOffice -> {
+                dtoList.add(BoxOfficeDTO.builder()
+                        .title(boxOffice.getTitle())
+                        .synopsis(boxOffice.getSynopsis())
+                        .postLink(boxOffice.getPosterLink())
+                        .actorList(boxOffice.getActorList().stream().map(actorEntity ->
+                                ActorDTO.builder().actorName(actorEntity.getActorName())
+                                        .actorRole(actorEntity.getActorRole()).build()).collect(Collectors.toList()))
+                        .build());
+            });
+        }else{
+            boxOffices = boxOfficeRepository.findAll(PageRequest.of(page,10));
+
+            boxOffices.stream().collect(Collectors.toList()).forEach(boxOffice -> {
+                dtoList.add(BoxOfficeDTO.builder()
+                        .title(boxOffice.getTitle())
+                        .synopsis(boxOffice.getSynopsis())
+                        .postLink(boxOffice.getPosterLink())
+                        .actorList(boxOffice.getActorList().stream().map(actorEntity ->
+                                ActorDTO.builder().actorName(actorEntity.getActorName())
+                                        .actorRole(actorEntity.getActorRole()).build()).collect(Collectors.toList()))
+                        .build());
+            });
+        }
+
+        SearchMovieData searchMovieData = SearchMovieData.builder()
+                .items(dtoList)
+                .totalPage(boxOffices.getTotalPages())
+                .build();
+        return searchMovieData;
     }
 
+    public List<BoxOfficeDTO> likeOrderByAgeGroup(String ageGroup){
+        Set<BoxOfficeDTO> set = new HashSet<>();
+        likeRepository.likeGoodOrderBy(ageGroup).forEach(likeGood -> {
+            set.add(BoxOfficeDTO.builder()
+                    .title(likeGood.getBoxOffice().getTitle())
+                    .postLink(likeGood.getBoxOffice().getPosterLink())
+                    .build());
+        });
+        return set.stream()
+                .collect(Collectors.toList())
+                .subList(0,Math.min(set.size(),10));
+    }
 
 }

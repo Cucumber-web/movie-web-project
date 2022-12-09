@@ -1,11 +1,16 @@
 package com.movie.back.repository;
 
+import com.movie.back.dto.BoxOfficeDTO;
 import com.movie.back.entity.BoxOffice;
 import com.movie.back.entity.LikeGood;
 import com.movie.back.entity.Member;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @SpringBootTest
@@ -14,7 +19,11 @@ class LikeRepositoryTest {
     @Autowired
     LikeRepository likeRepository;
 
+    @Autowired
+    MemberRepository memberRepository;
 
+    @Autowired
+    QuizRepository quizRepository;
     @Test
     void saveTest(){
             likeRepository.save(LikeGood.builder()
@@ -36,4 +45,21 @@ class LikeRepositoryTest {
         );
 
     }
+
+    @Test
+    @Transactional
+    void 라이크오더바이(){
+        Set<BoxOfficeDTO> set = new HashSet<>();
+        likeRepository.likeGoodOrderBy(Integer.toString(30)).forEach(likeGood -> {
+                    set.add(BoxOfficeDTO.builder()
+                                    .title(likeGood.getBoxOffice().getTitle())
+                                    .postLink(likeGood.getBoxOffice().getPosterLink())
+                            .build());
+        });
+
+        set.forEach(System.out::println);
+        System.out.println(set.size());
+    }
+
+
 }

@@ -74,4 +74,10 @@ class BoxOfficeServiceTest {
             //TODO: 좋아요 개수 처리해야함
         }
     }
+
+    @Test
+    @Transactional
+    void 라이크테스트(){
+            boxOfficeService.likeOrderByAgeGroup("30").forEach(System.out::println);
+    }
 }

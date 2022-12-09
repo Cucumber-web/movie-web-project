@@ -1,14 +1,15 @@
 package com.movie.back.entity;
 
 
+import com.movie.back.dto.MemberRole;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Builder
@@ -27,10 +28,21 @@ public class Member {
 
         private String gender;
 
-        private String role;
+        private String ageGroup;
+
+
+        @Builder.Default
+        @ElementCollection(fetch = FetchType.LAZY)
+        private Set<MemberRole> roleSet = new HashSet<>();
 
 
         @OneToMany(mappedBy = "member")
-        private List<MemberMovie> memberMovieList= new ArrayList<>();
+        @Builder.Default
+        private Set<MemberMovie> movieSet= new HashSet<>();
+
+
+        public void addRole(MemberRole memberRole){
+                this.roleSet.add(memberRole);
+        }
 
 }

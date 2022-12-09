@@ -22,6 +22,7 @@ public class MemberService {
 
     public MemberDTO memberRegister(MemberDTO memberDTO){
             memberDTO.setPassword(passwordEncoder.encode(memberDTO.getPassword()));
+        System.out.println(MemberDTO.toEntity(memberDTO));
             return MemberDTO.toDTO(memberRepository.save(MemberDTO.toEntity(memberDTO)));
     }
 
@@ -36,5 +37,15 @@ public class MemberService {
         }
 
         return tokenStr;
+    }
+
+    public MemberDTO getMember(String email){
+        Member member = memberRepository.getMemberInfo(email).orElse(null);
+        if(member != null){
+            return MemberDTO.toDTO(member);
+        }else{
+            return null;
+        }
+
     }
 }

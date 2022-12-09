@@ -2,8 +2,11 @@ package com.movie.back.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.movie.back.dto.BoxOfficeDTO;
+import com.movie.back.dto.MemberDTO;
 import com.movie.back.service.BoxOfficeService;
 import com.movie.back.service.ImageService;
+import com.movie.back.service.MemberService;
+import com.movie.back.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.core.io.Resource;
@@ -12,11 +15,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -26,9 +31,14 @@ public class MainController {
 
     private final BoxOfficeService boxOfficeService;
 
+    private final MemberService memberService;
+
+    private final JWTUtil jwtUtil;
+
+
     @GetMapping(value = "/box")    //박스오피스, 10개 출력
     public ResponseEntity<List<BoxOfficeDTO>> readAll(){
-            return ResponseEntity.ok(boxOfficeService.getBoxList());
+        return ResponseEntity.ok(boxOfficeService.getBoxList());
     }
 
     @GetMapping(value = "/read")
@@ -37,20 +47,24 @@ public class MainController {
         return ResponseEntity.ok(boxOfficeService.getReadMovie(title));
     }
 
+    @GetMapping(value="/like")
+    public ResponseEntity<List<BoxOfficeDTO>> likeOrderBy(HttpServletRequest request){
+        Optional<String> header = Optional.of(request.getHeader("Authorization"));
 
-    @PostMapping(value = "",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> register(){
-            return ResponseEntity.ok("post");
+        if(header.isPresent()){
+            String tokenStr = memberService.jwtExtract(request);
+            Map<String,Object> values = jwtUtil.validateToken(tokenStr);
+            MemberDTO memberDTO = memberService.getMember((String)values.get("email"));
+
+            return ResponseEntity.ok(boxOfficeService.likeOrderByAgeGroup(memberDTO.getAgeGroup()));
+        }
+
+
+        return ResponseEntity.ok(null);
     }
-    @PutMapping(value = "/{movieId}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> modify(
-            @PathVariable("movieId") Long movieId){
-        return ResponseEntity.ok("put");
-    }
-    @DeleteMapping(value = "/{movieId}",consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Long> remove(@PathVariable("movieId") Long movieId){
-            return ResponseEntity.ok(1L);   //todo: 삭제한 PK가 날아가게
-    }
+
+
+
 
 
 

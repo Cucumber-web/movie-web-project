@@ -49,17 +49,20 @@ public class TokenCheckFilter  extends OncePerRequestFilter {
         try{
             Map<String,Object> payload = validateAccessToken(request);
 
-            //email 받기
-          /*  String email = (String)payload.get("email");
-            System.out.println("현재 login한 email ==> "+ email);
+            if(path.startsWith("/quiz")){
+              //  email 받기
+                String email = (String)payload.get("email");
+                System.out.println("현재 login한 email ==> "+ email);
 
-            UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
-                //select 쿼리 한 번 실행할 수 밖에없음
-            UsernamePasswordAuthenticationToken authenticationToken =
-                    new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+                UserDetails userDetails = customUserDetailService.loadUserByUsername(email);
+                    //select 쿼리 한 번 실행할 수 밖에없음
+                UsernamePasswordAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
 
-            SecurityContextHolder.getContext().setAuthentication(authenticationToken);
-            */
+                SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+
+
+            }
 
             filterChain.doFilter(request,response);
         }catch (AccessTokenException accessTokenException){

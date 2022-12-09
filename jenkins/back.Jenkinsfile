@@ -21,7 +21,7 @@ pipeline{
             post{
                 always{
                     slackSend(channel: "#back-end", token: "slack-token", color: "#0000FF",
-                     message: ":bell: Back-End Build Started! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":bell: Back-End Build Started! - ${env.JOB_NAME} (${env.BUILD_NUMBER})")
                     
                     /*
                     slackSend(channel: "#infra", token: "slack-token", color: "#0000FF",
@@ -42,7 +42,7 @@ pipeline{
                     echo 'Repository clone failure!'
 
                     slackSend(channel: "#back-end", token: "slack-token", color: "danger",
-                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} (${env.BUILD_NUMBER})\n<${env.BUILD_URL}>")
                 }
                 success{
                     echo 'Repository clone success!'
@@ -64,7 +64,7 @@ pipeline{
                     echo 'Gradle jar build failure!'
 
                     slackSend(channel: "#back-end", token: "slack-token", color: "danger",
-                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} (${env.BUILD_NUMBER})\n<${env.BUILD_URL}>")
                 }
                 success{
                     echo 'Gradle jar build success!'
@@ -95,7 +95,7 @@ pipeline{
                     echo 'Docker image build failure!'
 
                     slackSend(channel: "#back-end", token: "slack-token", color: "danger",
-                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} (${env.BUILD_NUMBER})\n<${env.BUILD_URL}>")
                 }
                 success{
                     echo 'Docker image build success!'
@@ -123,7 +123,7 @@ pipeline{
                     echo 'Docker Image Push failure!'
 
                     slackSend(channel: "#back-end", token: "slack-token", color: "danger",
-                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} (${env.BUILD_NUMBER})\n<${env.BUILD_URL}>")
                 }
                 success{
                     echo 'Docker Image Push Success!'
@@ -141,7 +141,7 @@ pipeline{
                     git config --global user.email "uh9222959@gmail.com"
                     git config --global user.name "UhyeongJo"
                 '''
-
+                sh "git pull origin main"
                 sh "sed -i 's/cucumber-back:.*\$/cucumber-back:${currentBuild.number}/g' back-deployment.yaml"
                 sh "git add back-deployment.yaml"
                 sh "git commit -m '[Update] back-end ${currentBuild.number} image versioning'"
@@ -156,13 +156,13 @@ pipeline{
                     echo 'Kubernetes Manifest Update failure!'
 
                     slackSend(channel: "#back-end", token: "slack-token", color: "danger",
-                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":rotating_light: Back-End Build Failed! - ${env.JOB_NAME} (${env.BUILD_NUMBER})\n<${env.BUILD_URL}>")
                 }
                 success{
                     echo 'Kubernetes Manifest Update Success!'
 
                     slackSend(channel: "#back-end", token: "slack-token", color: "good",
-                     message: ":white_check_mark: Back-End Build Success! - ${env.JOB_NAME} ${env.BUILD_NUMBER})")
+                     message: ":white_check_mark: Back-End Build Success! - ${env.JOB_NAME} (${env.BUILD_NUMBER})")
                 }
             }
         }
