@@ -58,7 +58,21 @@ class QuizRepositoryTest {
     @Test
     @Transactional
     void 문제확인(){
-        quizRepository.quizDetail("이것이 22퀴즈입니다").get().getQuizItems().forEach(System.out::println);
+        String correct = null;
+
+        boxOfficeRepository.getQuizeBoxOffice("데시벨").getQuizList().forEach(quiz -> {
+            System.out.println("퀴즈 제목 =====> "+quiz.getTitle());
+            quiz.getQuizItems().forEach(quizItem -> {
+                System.out.print(quizItem.getKeyNumber()+"번 문항");
+                System.out.println(quizItem.getItemTitle());
+
+            });
+
+
+        });
+
+        System.out.println("여기서 퀴즈가 나옴-------");
+        quizRepository.quizDetail("이것이 퀴즈입니다").get().getQuizItems().forEach(System.out::println);
     }
 
 }

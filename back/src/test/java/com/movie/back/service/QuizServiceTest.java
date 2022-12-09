@@ -30,15 +30,7 @@ class QuizServiceTest {
     @Test
     @Transactional
     void 퀴즈문항테스트(){
-        quizService.getItems("이것이 데시벨에 퀴즈입니다").forEach(s -> {
-            if(s.startsWith("1")){
-                System.out.println("1번 문항"+s);
-            }else if(s.startsWith("2")){
-                System.out.println("2번 문항"+s);
-            }else if(s.startsWith("3")){
-                System.out.println("3번 문항"+s);
-            }
-        });
+
     }
 
     @Test

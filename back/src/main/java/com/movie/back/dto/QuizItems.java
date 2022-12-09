@@ -14,4 +14,6 @@ public class QuizItems {
         private String key;
         private String item;
 
+        private boolean correct;
+
 }

@@ -40,6 +40,6 @@ public interface BoxOfficeRepository extends JpaRepository<BoxOffice,String> {
     @Query("select b from BoxOffice b where b.title = :title")
     public BoxOffice getQuizeBoxOffice(@Param("title") String title);
 
-    @Query("select b from BoxOffice b join fetch b.likeGoods order by b.likeGoods.size asc ")
+    @Query("select b from BoxOffice b join fetch b.likeGoods order by size(b.likeGoods) asc ")
     public List<BoxOffice> getLikeList();
 }

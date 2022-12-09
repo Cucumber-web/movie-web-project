@@ -1,19 +1,23 @@
 package com.movie.back.service.impl;
 
 
+import com.movie.back.dto.MemberRole;
 import com.movie.back.dto.QuizDTO;
 import com.movie.back.dto.QuizItems;
+import com.movie.back.entity.Member;
 import com.movie.back.entity.Quiz;
 import com.movie.back.repository.BoxOfficeRepository;
+import com.movie.back.repository.MemberRepository;
 import com.movie.back.repository.QuizRepository;
+import com.movie.back.security.exception.AccessTokenException;
+import com.movie.back.service.MemberService;
 import com.movie.back.service.QuizService;
+import com.movie.back.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import javax.servlet.http.HttpServletRequest;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,25 +27,70 @@ public class QuizServiceImpl implements QuizService {
     private final BoxOfficeRepository boxOfficeRepository;
     private final QuizRepository quizRepository;
 
+    private final MemberRepository memberRepository;
+
+    private final JWTUtil jwtUtil;
+
+
+
     public List<QuizDTO> getQuiz(String title){
         List<QuizDTO> quizDTOList = new ArrayList<>();
         boxOfficeRepository.getQuizeBoxOffice(title)
                 .getQuizList().forEach(quiz -> {
 
-                quizDTOList.add(QuizDTO.builder()
-                                .id(quiz.getId())
-                                .quizTitle(quiz.getTitle())
-                                .movieTitle(quiz.getMovieTitle())
-                        .build());
+                    quizDTOList.add(QuizDTO.builder()
+                                    .id(quiz.getId())
+                                    .quizTitle(quiz.getTitle())
+                                    .movieTitle(quiz.getMovieTitle())
+                                    .quizItems(quiz.getQuizItems().stream().map(quizItems -> QuizItems.builder()
+                                            .key(quizItems.getKeyNumber())
+                                            .correct(quizItems.isCorrect())
+                                            .item(quizItems.getItemTitle())
+                                            .build()).collect(Collectors.toList()))
+                            .build());
         });
         return quizDTOList;
     }
 
-    public List<String> getItems(String quizTitle){
-     //       var list =quizRepository.getQuizByQuizTitle(quizTitle).get().getQuizItems().stream().collect(Collectors.toList());
-       //     Collections.sort(list);
-       // return list;
-        return null;
+    public List<QuizItems> getItems(String id){
+        List<QuizItems> itemsList = new ArrayList<>();
+        quizRepository.quizDetailById(Long.parseLong(id)).orElseThrow(RuntimeException::new)
+                    .getQuizItems().forEach(quizItem ->{
+                            itemsList.add(QuizItems.builder()
+                                            .item(quizItem.getItemTitle())
+                                            .key(quizItem.getKeyNumber())
+                                    .build());
+                    });
+        return itemsList;
+    }
+
+    @Override
+    public boolean getCheckQuiz(String item) {
+
+
+        return false;
+    }
+
+    @Override
+    public boolean getAddRoleQuiz(HttpServletRequest request) { //권한이 없으면 추가하고 있으면 그냥 빠져나옴
+        String token = jwtExtract(request);
+        Map<String,Object> jwt = jwtUtil.validateToken(token);
+
+        var member = memberRepository.getMemberInfo((String)jwt.get("email"));
+        Member result;
+        member.ifPresent(memberInfo -> {
+            memberInfo.getRoleSet().forEach(memberRole -> {
+                        if (memberRole != MemberRole.ADMIN) {
+                            memberInfo.addRole(MemberRole.ADMIN);
+                            memberRepository.save(memberInfo);
+                        } else {
+                            return;
+                        }
+                    }
+                    );
+        });
+
+        return true;
     }
 
     public void saveQuiz(String movieTitle,String email,String quizTitle ,List<QuizItems> quizItems,String correct){
@@ -59,6 +108,18 @@ public class QuizServiceImpl implements QuizService {
              }
         });
         quizRepository.save(quiz);
+    }
+    public String jwtExtract(HttpServletRequest request){
+        String headerStr = request.getHeader("Authorization");
+
+        String tokenType = headerStr.substring(0,6);
+        String tokenStr = headerStr.substring(7);
+
+        if(tokenType.equalsIgnoreCase("Bearer") == false){
+            throw new AccessTokenException(AccessTokenException.TOKEN_ERROR.BADTYPE);
+        }
+
+        return tokenStr;
     }
 
 
