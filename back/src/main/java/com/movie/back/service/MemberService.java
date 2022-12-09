@@ -38,4 +38,14 @@ public class MemberService {
 
         return tokenStr;
     }
+
+    public MemberDTO getMember(String email){
+        Member member = memberRepository.getMemberInfo(email).orElse(null);
+        if(member != null){
+            return MemberDTO.toDTO(member);
+        }else{
+            return null;
+        }
+
+    }
 }

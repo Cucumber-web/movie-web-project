@@ -22,6 +22,9 @@ class QuizRepositoryTest {
     @Autowired
     private BoxOfficeRepository boxOfficeRepository;
 
+    @Autowired
+    private QuizItemsRepository quizItemsRepository;
+
 
     @Test
     void 퀴즈생성하기(){
@@ -46,19 +49,16 @@ class QuizRepositoryTest {
                 quiz.getQuizItems().forEach(System.out::println);
         });
     }
+
     @Test
-    void 저장테스트(){
-        Quiz quiz = Quiz.builder()
-                .email("user22")
-                .movieTitle("데시벨")
-                .title("이건테스트용222")
-                .build();
-
-        quiz.addQuizItem("1번문항입니다");
-
-        quiz.addQuizItem("2번문항입니다");
-
-        quiz.addQuizItem("3번문항입니다");
-        quizRepository.save(quiz);
+    void 삭제(){
+        quizRepository.deleteAll();
     }
+
+    @Test
+    @Transactional
+    void 문제확인(){
+        quizRepository.quizDetail("이것이 22퀴즈입니다").get().getQuizItems().forEach(System.out::println);
+    }
+
 }
