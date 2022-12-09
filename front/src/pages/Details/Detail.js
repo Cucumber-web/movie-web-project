@@ -3,10 +3,7 @@ import { useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import {
-    getAccessToken,
-    setAccessToken,
-    getCookieToken,
-    setRefreshToken,
+    getAccessToken
 } from "../../storage/Cookie";
 import axios from "axios";
 import { newAccessToken } from "../../module/refreshToken";
