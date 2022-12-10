@@ -6,7 +6,6 @@ import { getAccessToken } from "../../storage/Cookie";
 import axios from "axios";
 import { newAccessToken } from "../../module/refreshToken";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-axios.defaults.headers.common["Authorization"] = getAccessToken();
 
 const Detail = () => {
     const location = useLocation();
@@ -169,7 +168,7 @@ const Detail = () => {
                                 <p>#모헝 #스릴러 #판타지</p>
                             </MovieDetailInfo>
                             <Synopsis>
-                                <p>{movieData.synopsis}</p>
+                                <p>{movieData?.synopsis}</p>
                             </Synopsis>
                             <ActorAndReview>
                                 <p>

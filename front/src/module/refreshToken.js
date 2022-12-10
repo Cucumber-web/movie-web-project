@@ -26,6 +26,7 @@ const newAccessToken = (err) => {
             console.log(res);
             setAccessToken(res.data.accessToken);
             setRefreshToken(res.data.refreshToken);
+            window.location.reload();
         });
     }
 };

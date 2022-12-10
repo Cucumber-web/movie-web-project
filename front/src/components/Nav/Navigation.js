@@ -4,14 +4,12 @@ import { BiUser } from "react-icons/bi";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
 
 const Navigation = () => {
     const location = useLocation();
     const navigate = useNavigate();
     const [path] = useState(location.pathname);
     const [navHidden, setNavHidden] = useState(false);
-    const [searchResult, setSearchResult] = useState([])
     const [input, setInput] = useState('');
 
     useEffect(() => {
@@ -22,10 +20,6 @@ const Navigation = () => {
 
     const handleSearch = (e) => {
         setInput(e.target.value);
-        axios
-            .get(`/search/list?title=${input}`)
-            .then((res) => setSearchResult(res.data.item))
-            .catch((err) => console.log(err));
     };
 
     const handleSearchSubmit = (e) => {
@@ -35,12 +29,12 @@ const Navigation = () => {
 
     return (
         <NavWrapper>
-            <h1>Logo</h1>
+            <h1 onClick={() => navigate('/')}>Logo</h1>
             <NavSearchWrapper onSubmit={handleSearchSubmit} hidden={navHidden}>
                 <NavSearchIcon />
                 <NavSearch onChange={handleSearch}/>
             </NavSearchWrapper>
-            <NavUserIcon />
+            <NavUserIcon onClick={() => navigate('/login')}/>
         </NavWrapper>
     );
 };

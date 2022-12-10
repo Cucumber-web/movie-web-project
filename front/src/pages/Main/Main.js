@@ -79,7 +79,7 @@ const Main = () => {
                                 alt="quiz imag"
                                 onClick={() =>
                                     navigate("/detail", {
-                                        state: { title: props.title },
+                                        state:  props.title ,
                                     })
                                 }
                             />
