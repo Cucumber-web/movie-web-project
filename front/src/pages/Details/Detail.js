@@ -106,6 +106,7 @@ const Detail = () => {
         }
     };
 
+    //찜하기
     const handleMyMovieButton = () => {
         if (!myMovie) {
             axios(myMovieConfig)
@@ -139,12 +140,16 @@ const Detail = () => {
         }
     };
 
+    const handleImageError = (e) => {
+        e.target.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/660px-No-Image-Placeholder.svg.png?20200912122019";
+      }
+
     return (
         <div>
             {movieData && (
                 <>
                     <DetailWrapper>
-                        <ImageWrapper src={movieData.postLink} />
+                        <ImageWrapper src={movieData.postLink} onError={handleImageError} />
                         <MovieInfo>
                             <TitleLike>
                                 <Title>
@@ -258,7 +263,7 @@ const Title = styled.div`
     align-items: center;
     height: 1.3rem;
     h2 {
-        font-size: 1.7rem;
+        font-size: 1.5rem;
         font-weight: 700;
         color: white;
     }
@@ -269,7 +274,7 @@ const TitleSmall = styled.div`
     justify-content: flex-end;
     align-items: center;
     flex-direction: column;
-    width: 3rem;
+    width: 4rem;
     height: 100%;
     p {
         font-size: 0.5rem;
