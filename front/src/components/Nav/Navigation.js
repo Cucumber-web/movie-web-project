@@ -2,15 +2,17 @@ import React from "react";
 import styled, { css } from "styled-components";
 import { BiUser } from "react-icons/bi";
 import { HiMagnifyingGlass } from "react-icons/hi2";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
 const Navigation = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [path] = useState(location.pathname);
     const [navHidden, setNavHidden] = useState(false);
-    const [search, setSearch] = useState("");
+    const [searchResult, setSearchResult] = useState([])
+    const [input, setInput] = useState('');
 
     useEffect(() => {
         if (path === "/login" || path === "/signup") {
@@ -19,19 +21,24 @@ const Navigation = () => {
     }, [location]);
 
     const handleSearch = (e) => {
-        setSearch(e.target.value);
+        setInput(e.target.value);
         axios
-            .get(`/search/list?title=${e.target.value}`)
-            .then((res) => console.log(res))
+            .get(`/search/list?title=${input}`)
+            .then((res) => setSearchResult(res.data.item))
             .catch((err) => console.log(err));
     };
+
+    const handleSearchSubmit = (e) => {
+        e.preventDefault();
+        navigate('/movieSearch', {state: input});
+    }
 
     return (
         <NavWrapper>
             <h1>Logo</h1>
-            <NavSearchWrapper hidden={navHidden}>
+            <NavSearchWrapper onSubmit={handleSearchSubmit} hidden={navHidden}>
                 <NavSearchIcon />
-                <NavSearch onChange={handleSearch} />
+                <NavSearch onChange={handleSearch}/>
             </NavSearchWrapper>
             <NavUserIcon />
         </NavWrapper>
@@ -52,7 +59,7 @@ const NavWrapper = styled.div`
     }
 `;
 
-const NavSearchWrapper = styled.div`
+const NavSearchWrapper = styled.form`
     ${(props) =>
         props.hidden &&
         css`

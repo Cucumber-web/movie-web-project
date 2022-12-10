@@ -5,6 +5,7 @@ const Navigation = lazy(() => import('./components/Nav/Navigation'));
 const Detail = lazy(() => import('./pages/Details/Detail'));
 const SignUp = lazy(() => import('./pages/Login/SignUp'));
 const Main = lazy(() => import('./pages/Main/Main'));
+const Search = lazy(() => import('./pages/Search/Search'));
 
 const Router = () => {
   return (
@@ -16,6 +17,7 @@ const Router = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/signup/*" element={<SignUp />} />
           <Route path="/detail" element={<Detail />} />
+          <Route path='/movieSearch' element={<Search />}/>
         </Routes>
       </BrowserRouter>
     </>
