@@ -3,9 +3,10 @@ import styled, { css } from "styled-components";
 import Slider from "react-slick";
 import { useEffect, useState } from "react";
 import { Planet } from "react-planet";
-import { BsFillArrowLeftCircleFill, BsFillArrowRightCircleFill } from "react-icons/bs";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { PrevArrow, NextArrow } from "../../components/Button";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -30,6 +31,8 @@ const Main = () => {
         slidesToShow: 3,
         centerMode: true,
         centerPadding: 0,
+        nextArrow:<PrevArrow />,
+        prevArrow: <NextArrow />,
         beforeChange: (current, next) => setImageIndex(next),
     };
     console.log(movie);
@@ -90,10 +93,10 @@ const Main = () => {
                 <h2>이번 주에 상영하는 영화</h2>
                 <div>
                     <WeekBtn onClick={handleRotationMinus}>
-                        <BsFillArrowLeftCircleFill />
+                        <IoIosArrowBack />
                     </WeekBtn>
                     <WeekBtn onClick={handleRotationPlus}>
-                        <BsFillArrowRightCircleFill />
+                        <IoIosArrowForward />
                     </WeekBtn>
                 </div>
             </ThisWeek>
@@ -234,50 +237,23 @@ const WeekBtn = styled.button`
     justify-content: center;
     width: 3rem;
     height: 3rem;
-    border: 1px solid #03af59;
+    border: 1px solid white;
     border-radius: 50%;
 
     & + & {
         margin-left: 2rem;
     }
     svg {
-        width: 2rem;
-        height: 2rem;
-        color: #03af59;
+        width: 1rem;
+        height: 1rem;
+        color: white;
     }
-`;
-
-const ArrowNext = styled(BsFillArrowRightCircleFill)`
-    position: absolute;
-    right: 0%;
-    top: 50%;
-    width: 2rem;
-    height: 2rem;
-    cursor: pointer;
-    z-index: 10;
-    color: white;
-    border: 1px solid white;
-    border-radius: 50%;
-
     :hover {
-        color: #03af59;
         border: 1px solid #03af59;
+        svg {
+            color: #03af59;
+        }
     }
 `;
 
-const ArrowPrev = styled(BsFillArrowLeftCircleFill)`
-    position: absolute;
-    left: 0%;
-    top: 50%;
-    width: 2rem;
-    height: 2rem;
-    cursor: pointer;
-    z-index: 10;
-    border: 1px solid white;
-    border-radius: 50%;
 
-    :hover {
-        color: #03af59;
-        border: 1px solid #03af59;
-    }
-`;
