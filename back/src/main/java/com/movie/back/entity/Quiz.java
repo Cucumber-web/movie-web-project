@@ -34,6 +34,7 @@ public class Quiz {
     @Column(name ="email")
     private String email;
 
+
     private String title;
 
 
@@ -46,7 +47,8 @@ public class Quiz {
 
     public void addQuizItem(String item,String key,boolean correct){
         quizItems.add(
-                QuizItems.builder().itemTitle(item)
+                QuizItems.builder()
+                        .itemTitle(item)
                          .correct(correct)
                         .keyNumber(key)
                         .quiz(this)

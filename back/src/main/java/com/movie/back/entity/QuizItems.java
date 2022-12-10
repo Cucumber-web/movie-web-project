@@ -14,6 +14,9 @@ import javax.persistence.*;
 public class QuizItems {
 
         @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
+
         private String itemTitle;
 
         private boolean correct;

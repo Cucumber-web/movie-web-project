@@ -29,6 +29,8 @@ public class Member {
         private String gender;
 
         private String ageGroup;
+
+
         @Builder.Default
         @ElementCollection(fetch = FetchType.LAZY)
         private Set<MemberRole> roleSet = new HashSet<>();

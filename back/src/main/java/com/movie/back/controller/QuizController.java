@@ -2,6 +2,7 @@ package com.movie.back.controller;
 
 
 import com.movie.back.dto.QuizDTO;
+import com.movie.back.dto.QuizItems;
 import com.movie.back.service.MemberService;
 import com.movie.back.service.QuizService;
 import com.movie.back.util.JWTUtil;
@@ -26,23 +27,36 @@ public class QuizController {
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/quiz/save")   //
-    public ResponseEntity<Void> saveQuiz(HttpServletRequest request,
+    public ResponseEntity<Boolean> saveQuiz(HttpServletRequest request,
                                            @RequestBody QuizDTO quizDTO){
              String token = memberService.jwtExtract(request);
              Map<String,Object> map = jwtUtil.validateToken(token);
              quizService.saveQuiz(quizDTO.getMovieTitle(),(String) map.get("email"), quizDTO.getQuizTitle(),quizDTO.getQuizItems(),quizDTO.getCorrect());
             //TODO 여기에 퀴즈 문항들도 추가해서 저장을 해야한다.
-           return  new ResponseEntity<Void>(HttpStatus.OK);
+           return ResponseEntity.ok(true);
     }//saveQuiz(String movieTitle,String email,String quizTitle)
 
     @GetMapping("/mvi/problem")
     public ResponseEntity<List<QuizDTO>> getQuiz(@RequestParam String title){
             return ResponseEntity.ok(quizService.getQuiz(title));
     }
-    @GetMapping("/solution")
-    public ResponseEntity<Boolean> checkSolution(@RequestParam(required = true) String solution
-                                                 ,@RequestParam(required = true) String quizTitle){
-        //TODO: 고쳐야함
-        return ResponseEntity.ok(true);
+
+    @GetMapping("/items")   //quiz 는 Context 방문하기에 한번더 쿼리가 일어남 그거 방지위함
+    public ResponseEntity<List<QuizItems>> getQuizItems(@RequestParam String id){
+
+            return ResponseEntity.ok(quizService.getItems(id));
+    }
+
+    @GetMapping("/add/role")        //답맞추기
+    public ResponseEntity<Boolean> checkSolution(@RequestParam(required = true) Boolean bool
+                                                 ,HttpServletRequest request){
+       if(bool){    //권한있는지 확인하고 있으면 통과 없으면 추가
+           return ResponseEntity.ok(quizService.getAddRoleQuiz(request));
+
+       }else{
+           //틀린경우
+           return ResponseEntity.ok(false);
+       }
+
     }
 }

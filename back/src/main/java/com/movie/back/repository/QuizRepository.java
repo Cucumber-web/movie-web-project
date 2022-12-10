@@ -21,4 +21,7 @@ public interface QuizRepository extends JpaRepository<Quiz,Long> {
         //퀴즈 자세히보기
         @Query("select q from Quiz q join fetch q.quizItems where q.title = :quizTitle")
         public Optional<Quiz> quizDetail(@Param("quizTitle") String title);
+
+        @Query("select q from Quiz q join fetch q.quizItems where q.id = :id")
+        public Optional<Quiz> quizDetailById(@Param("id") Long id);
 }
