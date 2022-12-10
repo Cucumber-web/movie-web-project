@@ -10,11 +10,11 @@ spring:
     validationQuery: SELECT 1
     tomcat.max-wait: 60000
 
-#  datasource:
-#    url: jdbc:mysql://localhost:3306/movie
-#    username: root
-#    password: black159
-#    driver-class-name: com.mysql.cj.jdbc.Driver
+ # datasource:
+  #url: jdbc:mysql://localhost:3306/movie
+  #  username: wookim
+  #  password: 1234
+  #  d river-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
