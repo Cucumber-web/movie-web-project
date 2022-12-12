@@ -32,7 +32,7 @@ public class QuizController {
              String token = memberService.jwtExtract(request);
              Map<String,Object> map = jwtUtil.validateToken(token);
              quizService.saveQuiz(quizDTO.getMovieTitle(),(String) map.get("email"), quizDTO.getQuizTitle(),quizDTO.getQuizItems(),quizDTO.getCorrect());
-            //TODO 여기에 퀴즈 문항들도 추가해서 저장을 해야한다.
+
            return ResponseEntity.ok(true);
     }//saveQuiz(String movieTitle,String email,String quizTitle)
 
@@ -58,5 +58,12 @@ public class QuizController {
            return ResponseEntity.ok(false);
        }
 
+    }
+    @DeleteMapping("/quiz/delete")
+    public ResponseEntity<Boolean> deleteQuiz(@RequestParam(required = true) String id,HttpServletRequest request){
+            String token = memberService.jwtExtract(request);
+            Map<String,Object> map = jwtUtil.validateToken(token);
+
+            return ResponseEntity.ok(quizService.deleteQuizFeature(id,(String)map.get("email")));
     }
 }
