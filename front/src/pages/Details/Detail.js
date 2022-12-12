@@ -273,8 +273,9 @@ const TitleSmall = styled.div`
     justify-content: flex-end;
     align-items: center;
     flex-direction: column;
-    width: 4rem;
+    width: 2.4rem;
     height: 100%;
+    overflow: auto;
     p {
         font-size: 0.5rem;
         color: white;

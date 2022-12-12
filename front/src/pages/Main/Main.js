@@ -31,11 +31,11 @@ const Main = () => {
         slidesToShow: 3,
         centerMode: true,
         centerPadding: 0,
-        nextArrow:<PrevArrow />,
-        prevArrow: <NextArrow />,
+        nextArrow:<NextArrow />,
+        prevArrow: <PrevArrow />,
         beforeChange: (current, next) => setImageIndex(next),
     };
-    console.log(movie);
+    
     useEffect(() => {
         axios
             .get("/mvi/box")
@@ -131,7 +131,7 @@ const Main = () => {
 export default Main;
 
 const MainWrapper = styled.section`
-    width: 90%;
+    width: 80%;
     height: 30rem;
     margin: 0 auto;
 `;
