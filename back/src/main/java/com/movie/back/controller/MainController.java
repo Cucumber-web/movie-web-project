@@ -16,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.Option;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
@@ -49,18 +50,17 @@ public class MainController {
 
     @GetMapping(value="/like")
     public ResponseEntity<List<BoxOfficeDTO>> likeOrderBy(HttpServletRequest request){
-        Optional<String> header = Optional.of(request.getHeader("Authorization"));
-
-        if(header.isPresent()){
-            String tokenStr = memberService.jwtExtract(request);
-            Map<String,Object> values = jwtUtil.validateToken(tokenStr);
+        try{
+            String token = memberService.jwtExtract(request);
+            Map<String,Object> values = jwtUtil.validateToken(token);
             MemberDTO memberDTO = memberService.getMember((String)values.get("email"));
 
             return ResponseEntity.ok(boxOfficeService.likeOrderByAgeGroup(memberDTO.getAgeGroup()));
+        }catch (NullPointerException e){
+            return ResponseEntity.ok(boxOfficeService.getListOrderBy());
         }
 
 
-        return ResponseEntity.ok(null);
     }
 
 

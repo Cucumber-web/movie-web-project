@@ -21,6 +21,7 @@ public class BoxOfficeDTO {
         private String postLink;
         private String synopsis;
         private String date;
+        private double rating;
         private List<ActorDTO> actorList;
         private List<String> stillImage;
 

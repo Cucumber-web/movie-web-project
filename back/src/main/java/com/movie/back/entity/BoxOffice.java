@@ -30,6 +30,7 @@ public class BoxOffice {
 
     private String date;
 
+
     @OneToMany(mappedBy = "boxOfficeId")
     @Builder.Default
     private List<BoxStillImage> stillImage =new ArrayList<>();
@@ -50,5 +51,14 @@ public class BoxOffice {
     @OneToMany(mappedBy = "boxOffice",cascade = CascadeType.ALL)
     @Builder.Default
     private List<Quiz> quizList = new ArrayList<>();
+
+    @OneToMany(mappedBy = "boxOffice",orphanRemoval = true
+            ,cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<MovieRating> ratings = new ArrayList<>();
+
+    public void addRating(MovieRating rating){
+            ratings.add(rating);
+    }
 
 }
