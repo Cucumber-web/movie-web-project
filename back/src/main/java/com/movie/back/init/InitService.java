@@ -10,20 +10,15 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 
-@Service
+//@Service
 @RequiredArgsConstructor
-public class InitService implements ApplicationListener<ContextRefreshedEvent> {
-
-    private final BoxOfficeService boxOfficeService;
-    @Override
-    public void onApplicationEvent(ContextRefreshedEvent event) {
-        try {
-            System.out.println("DB 값 주입실행");
-            boxOfficeService.saveBoxMovie();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (KobisScrapper.NotScrappedDateException e) {
-            throw new RuntimeException(e);
-        }
-    }
+//public class InitService implements ApplicationListener<ContextRefreshedEvent> {
+public class InitService{
+//    private final BoxOfficeService boxOfficeService;
+//    @Override
+//    public void onApplicationEvent(ContextRefreshedEvent event) {
+//        try {
+//            System.out.println("DB 값 주입실행");
+//            boxOfficeService.saveBoxMovie();
+//    }
 }

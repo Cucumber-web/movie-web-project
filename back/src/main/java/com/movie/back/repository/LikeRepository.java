@@ -6,6 +6,7 @@ import com.movie.back.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.security.core.parameters.P;
 
 import java.util.List;
 import java.util.Optional;
@@ -29,5 +30,5 @@ public interface LikeRepository extends JpaRepository<LikeGood,Long> {
 
     @Query("select l from LikeGood l where l.member.email in" +
             " (select m from Member m where m.ageGroup = :ageGroup)")
-    List<LikeGood> likeGoodOrderBy(String ageGroup);
+    List<LikeGood> likeGoodOrderBy(@Param("ageGroup") String ageGroup);
 }

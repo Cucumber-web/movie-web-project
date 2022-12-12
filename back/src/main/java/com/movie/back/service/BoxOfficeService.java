@@ -9,10 +9,8 @@ import com.movie.back.dto.SearchMovieData;
 import com.movie.back.entity.ActorEntity;
 import com.movie.back.entity.BoxOffice;
 import com.movie.back.entity.BoxStillImage;
-import com.movie.back.repository.ActorRepository;
-import com.movie.back.repository.BoxOfficeRepository;
-import com.movie.back.repository.BoxStillImageRepository;
-import com.movie.back.repository.LikeRepository;
+import com.movie.back.entity.MovieRating;
+import com.movie.back.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -22,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.nio.DoubleBuffer;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -37,7 +36,7 @@ public class BoxOfficeService {
 
     private final LikeRepository likeRepository;
 
-
+    private final RatingRepository ratingRepository;
     private final ScrapperService scrapperService;
 
     public void saveBoxMovie() throws IOException, KobisScrapper.NotScrappedDateException {
@@ -90,6 +89,14 @@ public class BoxOfficeService {
 
     public BoxOfficeDTO getReadMovie(String title){
             BoxOffice boxOffice = boxOfficeRepository.getMovieRead(title);
+            List<Double> ratings = ratingRepository.getRatingByTitle(title);
+            double resultRating = 0.0;
+            for(double rating : ratings){
+                resultRating += rating;
+            }
+
+            resultRating = resultRating/ratings.size();
+
         List<String> resultStill = null;
             List<String> still = boxOffice
                     .getStillImage().stream().map(boxStillImage -> boxStillImage.getImageLink())
@@ -103,6 +110,7 @@ public class BoxOfficeService {
                 .synopsis(boxOffice.getSynopsis())
                 .stillImage(resultStill)
                 .postLink(boxOffice.getPosterLink())
+                .rating(resultRating)
                 .rank(boxOffice.getRanking())
                 .actorList(boxOffice.getActorList().stream().map(actorEntity -> ActorDTO.builder()
                         .actorName(actorEntity.getActorName())
@@ -230,4 +238,30 @@ public class BoxOfficeService {
                 .subList(0,Math.min(set.size(),10));
     }
 
+    public boolean setMovieRating(String title,String email,double rating){
+        MovieRating existRating = ratingRepository.getRating(email,title);
+        if(existRating != null){
+            existRating.setRating(rating);
+                ratingRepository.save(existRating);
+        }else{
+            ratingRepository.save(MovieRating.builder()
+                    .email(email)
+                    .movieTitle(title)
+                    .rating(rating)
+                    .build());
+        }
+        return true;
+    }
+
+    public List<BoxOfficeDTO> getListOrderBy(){
+        List<BoxOfficeDTO> dtoList = new ArrayList<>();
+
+        boxOfficeRepository.getLikeList().forEach(boxOffice -> {
+                dtoList.add(BoxOfficeDTO.builder()
+                        .title(boxOffice.getTitle())
+                                .postLink(boxOffice.getPosterLink())
+                        .build());
+        });
+        return dtoList;
+    }
 }
