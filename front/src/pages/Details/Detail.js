@@ -4,13 +4,23 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { getAccessToken } from "../../storage/Cookie";
 import axios from "axios";
-axios.defaults.headers.common["Authorization"] = getAccessToken();
+import { newAccessToken } from "../../module/refreshToken";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 const Detail = () => {
     const location = useLocation();
     const [movieData, setMovieData] = useState({});
-    const [isLike, setIsLike] = useState("false");
+    const [isLike, setIsLike] = useState(false);
+    const [myMovie, setMyMovie] = useState(false);
     const movieTitle = location.state;
+
+    const readConfig = {
+        method: "get",
+        url: `/like/read?title=${movieTitle}`,
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    };
 
     useEffect(() => {
         axios
@@ -18,14 +28,19 @@ const Detail = () => {
             .then((res) => {
                 console.log(res);
                 setMovieData(res.data);
-                axios.get(`/like/read?title=${movieTitle}`).then((res) => {
-                    setIsLike(res.data);
-                });
+                axios(readConfig)
+                    .then((res) => {
+                        console.log(res);
+                        setIsLike(res.data);
+                    })
+                    .catch((err) => {
+                        newAccessToken(err);
+                    });
             })
             .catch((err) => console.log(err));
     }, []);
 
-    const config = {
+    const LikeConfig = {
         method: "post",
         url: `/like/${movieTitle}`,
         headers: {
@@ -33,7 +48,7 @@ const Detail = () => {
         },
     };
 
-    const deleteConfig = {
+    const deleteLikeConfig = {
         method: "delete",
         url: `/like/delete?title=${movieTitle}`,
         headers: {
@@ -41,45 +56,159 @@ const Detail = () => {
         },
     };
 
+    const myMovieConfig = {
+        method: "post",
+        url: `/my/save/${movieTitle}`,
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    };
+
+    const deleteMyMovieConfig = {
+        method: "delete",
+        url: `/my/remove?title=${movieTitle}`,
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    };
+
     const handleLikeButton = () => {
-        if (isLike === "false") {
-            axios(config)
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
+        if (!isLike) {
+            axios(LikeConfig)
+                .then((res) => {
+                    console.log(res);
+                    setIsLike(res.data);
+                })
+                .catch((err) => {
+                    newAccessToken(err);
+                    axios(LikeConfig)
+                        .then((res) => {
+                            console.log(res);
+                            setIsLike(res.data);
+                        })
+                        .catch((err) => console.log(err));
+                });
         } else {
-            axios(deleteConfig)
+            axios(deleteLikeConfig)
                 .then((res) => {
                     setIsLike(res.data);
                 })
-                .catch((err) => console.log(err));
+                .catch((err) => {
+                    newAccessToken(err);
+                    axios(deleteLikeConfig)
+                        .then((res) => {
+                            console.log(res);
+                            setIsLike(res.data);
+                        })
+                        .catch((err) => console.log(err));
+                });
         }
     };
-    console.log(isLike);
+
+    //찜하기
+    const handleMyMovieButton = () => {
+        if (!myMovie) {
+            axios(myMovieConfig)
+                .then((res) => {
+                    console.log(res);
+                    setMyMovie(res.data);
+                })
+                .catch((err) => {
+                    newAccessToken(err);
+                    axios(myMovieConfig)
+                        .then((res) => {
+                            console.log(res);
+                            setMyMovie(res.data);
+                        })
+                        .catch((err) => console.log(err));
+                });
+        } else {
+            axios(deleteMyMovieConfig)
+                .then((res) => {
+                    setMyMovie(res.data);
+                })
+                .catch((err) => {
+                    newAccessToken(err);
+                    axios(deleteMyMovieConfig)
+                        .then((res) => {
+                            console.log(res);
+                            setMyMovie(res.data);
+                        })
+                        .catch((err) => console.log(err));
+                });
+        }
+    };
+
+    const handleImageError = (e) => {
+        e.target.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/660px-No-Image-Placeholder.svg.png?20200912122019";
+      }
+
     return (
         <div>
             {movieData && (
                 <>
-                    <h1>{movieTitle}</h1>
                     <DetailWrapper>
-                        <ImageWrapper src={movieData.postLink} />
-                        <DetailInfoWrapper>
-                            <DetailTitle>
-                                {movieData.title}
-                                <LikeBox onClick={handleLikeButton}>
-                                    좋아요
-                                </LikeBox>
-                            </DetailTitle>
-                            <DetailDesc>
-                                <p>{movieData.synopsis}</p>
-                            </DetailDesc>
-                        </DetailInfoWrapper>
-                        {/* {movieData.stillImage &&
-                        movieData.stillImage
-                            .slice(0, 9)
-                            .map((props) => (
-                                <ImageWrapper src={props} alt="still image" />
-                            ))} */}
+                        <ImageWrapper src={movieData.postLink} onError={handleImageError} />
+                        <MovieInfo>
+                            <TitleLike>
+                                <Title>
+                                    <h2>{movieTitle} | </h2>
+                                    <TitleSmall>
+                                        <div />
+                                        <p>{movieTitle}</p>
+                                    </TitleSmall>
+                                </Title>
+                                <LikeBtn onClick={handleLikeButton}>
+                                    {isLike ? <FullHeart /> : <Heart />}
+                                    <p>좋아요</p>
+                                </LikeBtn>
+                            </TitleLike>
+                            <MovieDetailInfo>
+                                <p>12세 이상 관람가 . 10월 12일 . 2시간20분</p>
+                                <p>#모헝 #스릴러 #판타지</p>
+                            </MovieDetailInfo>
+                            <Synopsis>
+                                <p>{movieData?.synopsis}</p>
+                            </Synopsis>
+                            <ActorAndReview>
+                                <p>
+                                    출연 |{" "}
+                                    {movieData?.actorList
+                                        ?.slice(0, 4)
+                                        .map((props) => props.actorName + " ")}
+                                </p>
+                                <ReviewBtnWrapper>
+                                    <ReviewBtn>리뷰 쓰기 &#62;</ReviewBtn>
+                                    <ReviewBtn>퀴즈 풀기 &#62;</ReviewBtn>
+                                </ReviewBtnWrapper>
+                            </ActorAndReview>
+                        </MovieInfo>
                     </DetailWrapper>
+                    <UnderContentWrapper>
+                        <LikeGraph>
+                            <TestGraph/>
+                        </LikeGraph>
+                        <VideoWrapper>
+                            <VideoTitle>예고편</VideoTitle>
+                            <VideoOutLine>
+                                <Video/>
+                                <Video/>
+                                <Video/>
+                            </VideoOutLine>
+                        </VideoWrapper> 
+                        <GreenLine/>
+                        <VideoWrapper>
+                            <StillImageTitle>
+                                <p>Photo</p>
+                                <h3>더보기 &#62;</h3>
+                            </StillImageTitle>
+                            <StillImageWrapper>
+                                {movieData.stillImage?.slice(0,6).map((props, idx) => (
+                                    <img src={props} key={idx} alt="still"/>
+                                ))}
+                            </StillImageWrapper>
+                        </VideoWrapper>
+                    </UnderContentWrapper>                  
                 </>
             )}
         </div>
@@ -90,19 +219,10 @@ export default Detail;
 
 const DetailWrapper = styled.div`
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     width: 100vw;
     height: 80vh;
-    border: 1px solid white;
-`;
-
-const DetailInfoWrapper = styled.div`
-    display: flex;
-    justify-content: space-around;
-    flex-direction: column;
-    width: 40%;
-    height: 33rem;
 `;
 
 const ImageWrapper = styled.img`
@@ -110,28 +230,215 @@ const ImageWrapper = styled.img`
     height: 33rem;
 `;
 
-const DetailTitle = styled.h2`
+const MovieInfo = styled.div`
+    width: 25rem;
+    height: 33rem;
+    margin-left: 2rem;
+`;
+const TitleLike = styled.div`
     display: flex;
     justify-content: space-between;
-    font-size: 1.5rem;
-    color: white;
-`;
-
-const DetailDesc = styled.div`
-    display: flex;
     align-items: center;
-    justify-content: center;
     width: 100%;
-    height: 12rem;
-    padding: 1rem;
-    background-color: rgba(205, 207, 204, 0.7);
 `;
 
-const LikeBox = styled.div`
+const LikeBtn = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
     width: 5rem;
-    height: 3rem;
-    background-color: rgba(205, 207, 204, 0.7);
+    height: 2.5rem;
+    border-radius: 0.3rem;
+    background-color: #03af59;
+    p {
+        color: ${(props) => (props.isLike ? "red" : "white")};
+        font-size: 0.8rem;
+    }
 `;
+
+const Title = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 1.3rem;
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+    }
+`;
+
+const TitleSmall = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    flex-direction: column;
+    width: 4rem;
+    height: 100%;
+    p {
+        font-size: 0.5rem;
+        color: white;
+    }
+`;
+
+const Heart = styled(AiOutlineHeart)`
+    width: 1.2rem;
+    height: 1.2rem;
+    color: white;
+    margin-right: 0.3rem;
+`;
+
+const FullHeart = styled(AiFillHeart)`
+    width: 1.2rem;
+    height: 1.2rem;
+    color: red;
+    margin-right: 0.3rem;
+`;
+
+const MovieDetailInfo = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 5rem;
+    padding-top: 0.8rem;
+    border-bottom: 1px solid #03af59;
+    p {
+        margin-bottom: 0.3rem;
+        font-size: 0.9rem;
+        color: white;
+    }
+`;
+
+const Synopsis = styled.div`
+    width: 100%;
+    height: 15rem;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #03af59;
+
+    p {
+        font-size: 0.9rem;
+        color: white;
+    }
+`;
+
+const ActorAndReview = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    height: 10.5rem;
+    padding-top: 1rem;
+    p {
+        color: white;
+    }
+`;
+
+const ReviewBtn = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 25%;
+    height: 2.5rem;
+    border-radius: 1rem;
+    margin: 0 1rem 0 1rem;
+    background-color: #e8ac4b;
+    color: white;
+`;
+
+const ReviewBtnWrapper = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+`;
+
+const UnderContentWrapper = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content:center;
+    align-items: center;
+    width: 100%;
+`
+const TestGraph = styled.div`
+    width: 90%;
+    height: 90%;
+    background-color:#535353;
+    margin: 0 auto;
+`
+
+const LikeGraph = styled.div`
+    width: 50%;
+    height: 20rem;
+    border-bottom: 1px solid #03af59;
+`
+const VideoWrapper =styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 60%;
+    height: 20rem;
+    margin-top: 2rem;
+`
+
+const GreenLine = styled.div`
+    width: 30rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    border:0.5px solid #03af03;
+`
+
+const VideoTitle = styled.h2`
+    width: 100%;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: white;
+`
+const Video = styled.div`
+    width: 30%;
+    height: 10rem;
+    border: 1px solid white;
+    margin-left:1rem;
+`
+
+const VideoOutLine = styled.div`
+    display: flex;
+    justify-content: center;
+    width: 100%;
+`
+
+const StillImageWrapper = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-left: 7rem;
+    img {
+        width: 15rem;
+        height: 13rem;
+        margin-right:1rem;
+        margin-top: 1rem;
+    }
+`
+
+const StillImageTitle = styled.div`
+    display: flex;
+    justify-content: space-between;
+    align-items:center;
+    width: 100%;
+    height: 3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+
+    p {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: white;
+    }
+
+    h3{
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #03af03;
+    }
+`
