@@ -130,6 +130,7 @@ pipeline{
                     git config --global user.email "uh9222959@gmail.com"
                     git config --global user.name "UhyeongJo"
                 '''
+                sleep 30
 
                 sh "git pull origin main"
                 sh "sed -i 's/cucumber-front:.*\$/cucumber-front:${currentBuild.number}/g' front-deployment.yaml"
