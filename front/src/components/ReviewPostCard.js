@@ -13,10 +13,15 @@ const ReviewPostCard = ({ title }) => {
 
     const postConfig = {
       method: "post",
-      url: `/comment/save?content=${desc}&movieTitle=${movieTitle}&spoiler=${checked}`,
+      url: `/comments/save`,
       headers: {
           Authorization: `Bearer ${getAccessToken()}`,
       },
+      data:{
+        content:desc,
+        movieTitle:movieTitle,
+        spoiler:checked
+      }
     };
 
     const ratingConfig = {

@@ -1,29 +1,57 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { RxDoubleArrowUp, RxDoubleArrowDown } from "react-icons/rx";
 import ReviewCard from "../../components/ReviewCard";
 import ReviewPostCard from "../../components/ReviewPostCard";
+import axios from "axios";
+import { getAccessToken } from "../../storage/Cookie";
 
-const ReviewBox = ({title}) => {
-    const [isOpen, setIsOpen] = useState(false);
+const ReviewBox = ({
+    title,
+    isOpen,
+    writeReview,
+    handleIsOpen,
+    setWriteReview,
+}) => {
+    const [reviewList, setReviewList] = useState([]);
 
-    const handleIsOpen = () => {
-      setIsOpen(prev => !prev);
-    }
+    const listConfig = {
+        method: "get",
+        url: "/comments/list",
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    };
+    console.log(reviewList);
+    useEffect(() => {
+        axios(listConfig)
+            .then((res) => setReviewList(res.data.dtoList))
+            .catch((err) => console.log(err));
+    }, []);
+
+    const handleDownArrow = () => {
+        handleIsOpen();
+        setWriteReview(false);
+    };
+
     return (
         <ReviewWrapper>
             <ReviewTitleWrapper>
                 <ReviewTitle>
                     <h2>리뷰보기</h2>
-                    <p>총 1건</p>
+                    <p>총 {reviewList.length}건</p>
                 </ReviewTitle>
-                {isOpen ? <DownArrow onClick={handleIsOpen}/> : <UpArrow onClick={handleIsOpen}/>}
+                {isOpen ? (
+                    <DownArrow onClick={handleDownArrow} />
+                ) : (
+                    <UpArrow onClick={handleIsOpen} />
+                )}
             </ReviewTitleWrapper>
             <ReviewContent isOpen={isOpen}>
-              <ReviewPostCard title={title}/>
-              <ReviewCard/>
-              <ReviewCard/>
-              <ReviewCard/>
+                {writeReview && <ReviewPostCard title={title} />}
+                {reviewList?.map((props) => (
+                    <ReviewCard key={props.id} {...props} />
+                ))}
             </ReviewContent>
         </ReviewWrapper>
     );
@@ -40,7 +68,6 @@ const ReviewWrapper = styled.div`
     bottom: 0;
     right: 0;
     width: 25rem;
-    border: 1px solid black;
     border-radius: 2rem 0 0 0;
     background-color: #f3f4f8;
 `;
@@ -77,15 +104,14 @@ const DownArrow = styled(RxDoubleArrowDown)`
 
 const ReviewContent = styled.div`
     display: flex;
-    align-items: center;
-    justify-content:center;
+    align-items: flex-start;
+    justify-content: center;
     flex-wrap: wrap;
-    padding-top: ${props => props.isOpen ? "1rem" : "0"};
+    padding-top: ${(props) => (props.isOpen ? "1rem" : "0")};
     width: 100%;
-    height: ${props => props.isOpen ? "20rem" : "0"};
+    height: ${(props) => (props.isOpen ? "20rem" : "0")};
     transition: all 0.5s ease-in-out;
     overflow-y: scroll;
-    
 `;
 
 const ReviewTitleWrapper = styled.div`
@@ -94,4 +120,4 @@ const ReviewTitleWrapper = styled.div`
     justify-content: space-around;
     width: 100%;
     height: 4rem;
-`
+`;
