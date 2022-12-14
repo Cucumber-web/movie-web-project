@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { getAccessToken } from "../../storage/Cookie";
@@ -10,9 +10,12 @@ import ReviewBox from '../Review/ReviewBox';
 
 const Detail = () => {
     const location = useLocation();
+    const navigate = useNavigate();
     const [movieData, setMovieData] = useState({});
     const [isLike, setIsLike] = useState(false);
     const [myMovie, setMyMovie] = useState(false);
+    const [isOpen, setIsOpen] = useState(false);
+    const [writeReview, setWriteReview] = useState(false);
     const movieTitle = location.state;
 
     const readConfig = {
@@ -72,6 +75,10 @@ const Detail = () => {
             Authorization: `Bearer ${getAccessToken()}`,
         },
     };
+
+    const handleIsOpen = () => {
+        setIsOpen(prev => !prev);
+      }
 
     const handleLikeButton = () => {
         if (!isLike) {
@@ -140,10 +147,18 @@ const Detail = () => {
         }
     };
 
+    const handleQuiz = () => {
+        navigate('/quiz',{state:movieTitle});
+    }
+
     const handleImageError = (e) => {
         e.target.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/660px-No-Image-Placeholder.svg.png?20200912122019";
       }
-
+    
+    const handleWriteRevuew =() => {
+        setWriteReview(true);
+        setIsOpen(true);
+    }
     return (
         <TotalWrapper>
             {movieData && (
@@ -153,7 +168,7 @@ const Detail = () => {
                         <MovieInfo>
                             <TitleLike>
                                 <Title>
-                                    <h2>{movieTitle} | </h2>
+                                    <h2>{movieTitle}</h2>
                                 </Title>
                                 <LikeBtn onClick={handleLikeButton}>
                                     {isLike ? <FullHeart /> : <Heart />}
@@ -175,8 +190,8 @@ const Detail = () => {
                                         .map((props) => props.actorName + " ")}
                                 </p>
                                 <ReviewBtnWrapper>
-                                    <ReviewBtn>리뷰 쓰기 &#62;</ReviewBtn>
-                                    <ReviewBtn>퀴즈 풀기 &#62;</ReviewBtn>
+                                    <ReviewBtn onClick={handleWriteRevuew}>리뷰 쓰기 &#62;</ReviewBtn>
+                                    <ReviewBtn onClick={handleQuiz}>퀴즈 풀기 &#62;</ReviewBtn>
                                 </ReviewBtnWrapper>
                             </ActorAndReview>
                         </MovieInfo>
@@ -206,7 +221,7 @@ const Detail = () => {
                             </StillImageWrapper>
                         </VideoWrapper>
                     </UnderContentWrapper>                  
-                    <ReviewBox title={movieTitle}/>
+                    <ReviewBox isOpen={isOpen} writeReview={writeReview} setWriteReview={setWriteReview} title={movieTitle} handleIsOpen={handleIsOpen}/>
                 </>
             )}
             
