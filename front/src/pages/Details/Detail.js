@@ -6,6 +6,7 @@ import { getAccessToken } from "../../storage/Cookie";
 import axios from "axios";
 import { newAccessToken } from "../../module/refreshToken";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import ReviewBox from '../Review/ReviewBox';
 
 const Detail = () => {
     const location = useLocation();
@@ -144,7 +145,7 @@ const Detail = () => {
       }
 
     return (
-        <div>
+        <TotalWrapper>
             {movieData && (
                 <>
                     <DetailWrapper>
@@ -153,10 +154,6 @@ const Detail = () => {
                             <TitleLike>
                                 <Title>
                                     <h2>{movieTitle} | </h2>
-                                    <TitleSmall>
-                                        <div />
-                                        <p>{movieTitle}</p>
-                                    </TitleSmall>
                                 </Title>
                                 <LikeBtn onClick={handleLikeButton}>
                                     {isLike ? <FullHeart /> : <Heart />}
@@ -165,7 +162,7 @@ const Detail = () => {
                             </TitleLike>
                             <MovieDetailInfo>
                                 <p>12세 이상 관람가 . 10월 12일 . 2시간20분</p>
-                                <p>#모헝 #스릴러 #판타지</p>
+                                <p>#모험 #스릴러 #판타지</p>
                             </MovieDetailInfo>
                             <Synopsis>
                                 <p>{movieData?.synopsis}</p>
@@ -209,13 +206,20 @@ const Detail = () => {
                             </StillImageWrapper>
                         </VideoWrapper>
                     </UnderContentWrapper>                  
+                    <ReviewBox title={movieTitle}/>
                 </>
             )}
-        </div>
+            
+        </TotalWrapper>
     );
 };
 
 export default Detail;
+
+const TotalWrapper = styled.div`
+    position: relative;
+    width: 100vw;
+`
 
 const DetailWrapper = styled.div`
     display: flex;
@@ -268,18 +272,19 @@ const Title = styled.div`
     }
 `;
 
-const TitleSmall = styled.div`
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: column;
-    width: 4rem;
-    height: 100%;
-    p {
-        font-size: 0.5rem;
-        color: white;
-    }
-`;
+// const TitleSmall = styled.div`
+//     display: flex;
+//     justify-content: flex-end;
+//     align-items: center;
+//     flex-direction: column;
+//     width: 2.4rem;
+//     height: 100%;
+//     overflow: auto;
+//     p {
+//         font-size: 0.5rem;
+//         color: white;
+//     }
+// `;
 
 const Heart = styled(AiOutlineHeart)`
     width: 1.2rem;
