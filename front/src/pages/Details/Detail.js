@@ -7,7 +7,7 @@ import axios from "axios";
 import { newAccessToken } from "../../module/refreshToken";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import ReviewBox from "../Review/ReviewBox";
-import YouTube from "react-youtube";
+import Video from "../../components/Video";
 
 const Detail = () => {
     const location = useLocation();
@@ -17,7 +17,12 @@ const Detail = () => {
     const [myMovie, setMyMovie] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [writeReview, setWriteReview] = useState(false);
+    const [preview, setPreview] = useState([]);
     const movieTitle = location.state;
+
+    const searchMovie = movieTitle + " 예고편";
+
+    const URL = `https://www.googleapis.com/youtube/v3/search?q=${encodeURI(searchMovie)}&part=snippet&key=AIzaSyAqDMHQfWrxXCG4-f74DGq-eNopv4HwogA&type=video&regionCode=KR&maxResults=3`
 
     const readConfig = {
         method: "get",
@@ -45,10 +50,8 @@ const Detail = () => {
             .catch((err) => console.log(err));
 
         axios
-            .get(
-                "https://www.googleapis.com/youtube/v3/playlists?part=snippet&channelId=UC2-VHbcGqGxNRUv0YIekMkA&maxResults=50&key=AIzaSyAqDMHQfWrxXCG4-f74DGq-eNopv4HwogA"
-            )
-            .then((res) => console.log(res))
+            .get(URL)
+            .then((res) => setPreview(res.data.items))
             .catch((err) => console.log(err));
     }, []);
 
@@ -168,8 +171,6 @@ const Detail = () => {
         setWriteReview(true);
         setIsOpen(true);
     };
-    const iframe = document.querySelectorAll('.videoPlayer');
-    console.log(iframe);
     return (
         <TotalWrapper>
             {movieData && (
@@ -221,47 +222,9 @@ const Detail = () => {
                         <VideoWrapper>
                             <VideoTitle>예고편</VideoTitle>
                             <VideoOutLine>
-                                <Video
-                                    videoId='PLxHyjlxPEgjVJbS-264Wn3Kiuxea58SSx'
-                                    iframeClassName="videoPlayer"
-                                    opts={{
-                                        width: "300",
-                                        height: "150",
-                                        playerVars: {
-                                            autoplay: 1, //자동재생 O
-                                            rel: 0, //관련 동영상 표시하지 않음 (근데 별로 쓸모 없는듯..)
-                                            modestbranding: 1, // 컨트롤 바에 youtube 로고를 표시하지 않음
-                                        },
-                                    }}
-                                    onEnd={(e)=>{e.target.stopVideo(0);}} 
-                                />
-                                <Video
-                                    videoId='PLxHyjlxPEgjVJbS-264Wn3Kiuxea58SSx'
-                                    iframeClassName="videoPlayer"
-                                    opts={{
-                                        width: "300",
-                                        height: "150",
-                                        playerVars: {
-                                            autoplay: 1, //자동재생 O
-                                            rel: 0, //관련 동영상 표시하지 않음 (근데 별로 쓸모 없는듯..)
-                                            modestbranding: 1, // 컨트롤 바에 youtube 로고를 표시하지 않음
-                                        },
-                                    }}
-                                />
-                                <Video
-                                    allow-presentation
-                                    videoId='PLxHyjlxPEgjVJbS-264Wn3Kiuxea58SSx'
-                                    iframeClassName="videoPlayer"
-                                    opts={{
-                                        width: "300",
-                                        height: "150",
-                                        playerVars: {
-                                            autoplay: 1, //자동재생 O
-                                            rel: 0, //관련 동영상 표시하지 않음 (근데 별로 쓸모 없는듯..)
-                                            modestbranding: 1, // 컨트롤 바에 youtube 로고를 표시하지 않음
-                                        },
-                                    }}
-                                />
+                                {preview?.map((props,idx) => (
+                                    <Video videoId={props.id.videoId}/>
+                                ))}
                             </VideoOutLine>
                         </VideoWrapper>
                         <GreenLine />
@@ -481,10 +444,6 @@ const VideoTitle = styled.h2`
     font-size: 1.5rem;
     font-weight: 600;
     color: white;
-`;
-const Video = styled(YouTube)`
-    border: 1px solid white;
-    margin-left: 1rem;
 `;
 
 const VideoOutLine = styled.div`
