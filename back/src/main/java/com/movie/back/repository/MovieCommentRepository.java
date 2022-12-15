@@ -16,4 +16,6 @@ public interface MovieCommentRepository extends JpaRepository<MovieComments,Long
     @EntityGraph(attributePaths = "rating")
     @Query("select c from MovieComments c where c.boxOffice.title = :title")
     public Page<MovieComments> findAllWithRating(Pageable pageable,@Param("title")String title);
+
+
 }

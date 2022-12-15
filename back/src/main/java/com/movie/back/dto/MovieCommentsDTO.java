@@ -29,5 +29,7 @@ public class MovieCommentsDTO {
 
         private String rating;
 
+        private boolean blind;
+
 
 }
