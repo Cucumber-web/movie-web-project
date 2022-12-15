@@ -33,6 +33,14 @@ const Detail = () => {
         },
     };
 
+    const emailConfig = {
+        method: 'get',
+        url:'/user',
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    }
+
     useEffect(() => {
         axios
             .get(`/mvi/read?title=${movieTitle}`)
@@ -53,11 +61,10 @@ const Detail = () => {
             .then((res) => setPreview(res.data.items))
             .catch((err) => console.log(err));
 
-        axios.get('/user',{
-            headers:{
-                Authorization: getAccessToken()
-            }
-        }).then(res => setUserEmail(res.data)).catch(err => console.log(err))
+        axios(emailConfig).then(res => {
+            console.log(res);
+            setUserEmail(res.data)
+        }).catch(err => console.log(err))
     }, []);
 
     const LikeConfig = {

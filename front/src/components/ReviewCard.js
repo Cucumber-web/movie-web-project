@@ -2,11 +2,13 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Rating } from "@mui/material";
 import { BiDotsVerticalRounded } from "react-icons/bi";
-import {MdAutoFixNormal} from 'react-icons/md';
+import { MdAutoFixNormal } from "react-icons/md";
 import { AiFillStar } from "react-icons/ai";
-import {BsTrash} from 'react-icons/bs';
+import { BsTrash } from "react-icons/bs";
+import { getAccessToken } from "../storage/Cookie";
+import axios from "axios";
 
-const ReviewCard = ({ spoiler, content, rating, userEmail,email }) => {
+const ReviewCard = ({ id,spoiler, content, rating, userEmail, email, blind }) => {
     const [isSpoiler, setIsSpoiler] = useState(spoiler);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -18,7 +20,17 @@ const ReviewCard = ({ spoiler, content, rating, userEmail,email }) => {
         setIsOpen((prev) => !prev);
     };
 
-    const handleReport = () => {};
+    const reportConfig = {
+      method: 'post',
+      url: `/comments/denger/${id}`,
+      headers:{
+        Authorization: `Bearer ${getAccessToken()}`,
+      }
+    }
+
+    const handleReport = () => {
+      axios(reportConfig).then(res => console.log(res)).catch(err => console.log(err));
+    };
 
     return (
         <CardWrapper>
@@ -33,30 +45,34 @@ const ReviewCard = ({ spoiler, content, rating, userEmail,email }) => {
                 <BiDotsVerticalRounded onClick={handleOnClick} />
                 {isOpen && (
                     <FixDeleteBox>
-                        <h2>수정하기 <MdAutoFixNormal/></h2>
-                        <h4>삭제하기 <BsTrash/></h4>
-                        {userEmail !== email && <h3>신고하기</h3>}
+                        <h2>
+                            수정하기 <MdAutoFixNormal />
+                        </h2>
+                        <h4>
+                            삭제하기 <BsTrash />
+                        </h4>
+                        {userEmail !== email && <h3 onClick={handleReport}>신고하기</h3>}
                     </FixDeleteBox>
                 )}
             </CardTitle>
             <h1>{content}</h1>
-            {
-                isSpoiler && (
-                    <Spoiler>
-                        <h2>
-                            해당 리뷰에는 <strong>스포일러</strong>가 포함되어
-                            있습니다
-                        </h2>
-                        <h2>그래도 확인하시겠습니까?</h2>
-                        <MoreBtn onClick={handleSpoiler}>더보기</MoreBtn>
-                    </Spoiler>
-                )
-                /* (<Spoiler>
+            {isSpoiler && (
+                <Spoiler>
+                    <h2>
+                        해당 리뷰에는 <strong>스포일러</strong>가 포함되어
+                        있습니다
+                    </h2>
+                    <h2>그래도 확인하시겠습니까?</h2>
+                    <MoreBtn onClick={handleSpoiler}>더보기</MoreBtn>
+                </Spoiler>
+            )}
+            {blind && (
+                <Spoiler>
                     <h2>
                         해당 리뷰는 <strong>블라인드 </strong>처리 되었습니다.
                     </h2>
-                </Spoiler> */
-            }
+                </Spoiler>
+            )}
         </CardWrapper>
     );
 };
@@ -126,11 +142,11 @@ const FixDeleteBox = styled.div`
     background-color: white;
 
     h4 {
-      color :red;
+        color: red;
     }
 
     h3 {
-      color: orange;
+        color: orange;
     }
 `;
 const Star = styled(AiFillStar)`
