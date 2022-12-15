@@ -83,4 +83,11 @@ public class CommentController {
                         return ResponseEntity.ok(false); //사용자가 다른 사용자일떄 바뀌지 않음
                 }
         }
+
+
+        @PostMapping("/comments/denger/{id}")
+        public ResponseEntity<Boolean> dengerNumberAdd(@PathVariable Long id){
+                        commentsService.blindNumberAdd(id);
+                        return ResponseEntity.ok(true);
+        }
 }

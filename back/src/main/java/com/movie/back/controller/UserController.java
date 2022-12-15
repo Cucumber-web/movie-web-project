@@ -88,4 +88,13 @@ public class UserController {
         return ResponseEntity.status(200).body(false);
     }
 
+    @GetMapping("/user")
+    public ResponseEntity<String> emailGet(HttpServletRequest request){
+        String tokenStr = memberService.jwtExtract(request);
+        Map<String,Object> values = jwtUtil.validateToken(tokenStr);
+
+        return ResponseEntity.ok((String)values.get("email"));
+    }
+
+
 }

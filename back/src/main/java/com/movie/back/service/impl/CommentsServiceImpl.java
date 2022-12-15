@@ -33,6 +33,7 @@ public class CommentsServiceImpl implements CommentsService {
                                         .content(movieComments.getContent())
                                         .rating(movieComments.getRating().getRating().toString())
                                         .spoiler(movieComments.isSpoiler())
+                                        .blind(movieComments.isBlind())
                                         .createdAt(movieComments.getCreatedAt())
                                 .build());
                     }
@@ -88,6 +89,20 @@ public class CommentsServiceImpl implements CommentsService {
             movieCommentRepository.findById(id).ifPresent(MovieComments::addBlindNumber);
         return true;
     }
+
+
+    public boolean blindNumberAdd(Long id){
+            MovieComments movieComments =
+                    movieCommentRepository.findById(id).orElseThrow(RuntimeException::new);
+
+            if(movieComments.addBlindNumber() > 3){
+                movieComments.blindProcessing();
+            };
+
+            movieCommentRepository.save(movieComments);
+
+            return true;
+        }
 
 
 }

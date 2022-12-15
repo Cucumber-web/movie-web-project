@@ -73,16 +73,13 @@ public class MovieComments {
         }
 
         public void blindProcessing(){
-                if(this.blindNumber > 3){
-                       this.blind = true;
-                }else{
-                        this.blind = false;
-                }
+                this.blind = true;
         }
         public void blindNumberInit(){
                 this.blindNumber = 0;
         }
-        public void addBlindNumber(){
+        public Integer addBlindNumber(){
                 this.blindNumber++;
+                return this.blindNumber;
         }
 }

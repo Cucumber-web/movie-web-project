@@ -15,4 +15,5 @@ public interface CommentsService {
     public boolean deleteCom(Long id,String email);
 
     public boolean blindPlus(Long id);
+    public boolean blindNumberAdd(Long id);
 }
