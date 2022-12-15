@@ -17,11 +17,9 @@ const ReviewBox = ({
 
     const listConfig = {
         method: "get",
-        url: "/comments/list",
-        headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-        },
+        url: `/mvi/comments/list?title=${title}`
     };
+    
     console.log(reviewList);
     useEffect(() => {
         axios(listConfig)
