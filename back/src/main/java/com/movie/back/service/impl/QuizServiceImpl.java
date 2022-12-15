@@ -15,6 +15,7 @@ import com.movie.back.service.QuizService;
 import com.movie.back.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -89,6 +90,19 @@ public class QuizServiceImpl implements QuizService {
                     }
                     );
         });
+
+        return true;
+    }
+
+    @Override
+    @Transactional
+    public boolean deleteQuizFeature(String id,String email) {
+        Quiz quiz = quizRepository.findById(Long.parseLong(id)).orElseThrow(RuntimeException::new);
+        if(quiz.getEmail().equals(email)){
+            quizRepository.deleteById(Long.parseLong(id));
+        }else{
+            return false;
+        }
 
         return true;
     }
