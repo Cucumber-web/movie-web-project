@@ -47,6 +47,11 @@ const Main = () => {
             });
     }, []);
 
+    const handleImageError = (e) => {
+        e.target.src =
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/660px-No-Image-Placeholder.svg.png?20200912122019";
+    };
+
     return (
         <MainOutHeightWrapper>
             <MainWrapper>
@@ -64,7 +69,7 @@ const Main = () => {
                             >
                                 <img
                                     src={props.postLink}
-                                    
+                                    onError={handleImageError}
                                     alt={props.title}
                                 />
                             </MainPoster>
@@ -85,6 +90,7 @@ const Main = () => {
                                         state:  props.title ,
                                     })
                                 }
+                                onError={handleImageError}
                             />
                         ))}
                 </QuizImgWrapper>
@@ -119,6 +125,7 @@ const Main = () => {
                             <PostImageWrapper
                                 src={props?.postLink}
                                 alt="post"
+                                onError={handleImageError}
                             />
                         </div>
                     ))}

@@ -12,7 +12,7 @@ import Video from "../../components/Video";
 const Detail = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [movieData, setMovieData] = useState({});
+    const [movieData, setMovieData] = useState([]);
     const [isLike, setIsLike] = useState(false);
     const [myMovie, setMyMovie] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
@@ -36,11 +36,9 @@ const Detail = () => {
         axios
             .get(`/mvi/read?title=${movieTitle}`)
             .then((res) => {
-                console.log(res);
                 setMovieData(res.data);
                 axios(readConfig)
                     .then((res) => {
-                        console.log(res);
                         setIsLike(res.data);
                     })
                     .catch((err) => {
@@ -95,14 +93,12 @@ const Detail = () => {
         if (!isLike) {
             axios(LikeConfig)
                 .then((res) => {
-                    console.log(res);
                     setIsLike(res.data);
                 })
                 .catch((err) => {
                     newAccessToken(err);
                     axios(LikeConfig)
                         .then((res) => {
-                            console.log(res);
                             setIsLike(res.data);
                         })
                         .catch((err) => console.log(err));
@@ -116,7 +112,6 @@ const Detail = () => {
                     newAccessToken(err);
                     axios(deleteLikeConfig)
                         .then((res) => {
-                            console.log(res);
                             setIsLike(res.data);
                         })
                         .catch((err) => console.log(err));
@@ -129,14 +124,12 @@ const Detail = () => {
         if (!myMovie) {
             axios(myMovieConfig)
                 .then((res) => {
-                    console.log(res);
                     setMyMovie(res.data);
                 })
                 .catch((err) => {
                     newAccessToken(err);
                     axios(myMovieConfig)
                         .then((res) => {
-                            console.log(res);
                             setMyMovie(res.data);
                         })
                         .catch((err) => console.log(err));
@@ -150,7 +143,6 @@ const Detail = () => {
                     newAccessToken(err);
                     axios(deleteMyMovieConfig)
                         .then((res) => {
-                            console.log(res);
                             setMyMovie(res.data);
                         })
                         .catch((err) => console.log(err));
@@ -222,8 +214,8 @@ const Detail = () => {
                         <VideoWrapper>
                             <VideoTitle>예고편</VideoTitle>
                             <VideoOutLine>
-                                {preview?.map((props,idx) => (
-                                    <Video videoId={props.id.videoId}/>
+                                {preview?.slice(0,3).map((props,idx) => (
+                                    <Video videoId={props.id.videoId} key={idx}/>
                                 ))}
                             </VideoOutLine>
                         </VideoWrapper>
@@ -234,15 +226,18 @@ const Detail = () => {
                                 <h3>더보기 &#62;</h3>
                             </StillImageTitle>
                             <StillImageWrapper>
-                                {movieData.stillImage
+                                {movieData.length !== 0 ? movieData.stillImage
                                     ?.slice(0, 6)
                                     .map((props, idx) => (
                                         <img
                                             src={props}
                                             key={idx}
                                             alt="still"
+                                            onError={handleImageError}
                                         />
-                                    ))}
+                                    )) : (
+                                        <p>스틸이미지가 존재하지 않습니다.</p>
+                                    )}
                             </StillImageWrapper>
                         </VideoWrapper>
                     </UnderContentWrapper>
