@@ -18,6 +18,7 @@ const Detail = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [writeReview, setWriteReview] = useState(false);
     const [preview, setPreview] = useState([]);
+    const [userEmail, setUserEmail] = useState('');
     const movieTitle = location.state;
 
     const searchMovie = movieTitle + " 예고편";
@@ -51,6 +52,12 @@ const Detail = () => {
             .get(URL)
             .then((res) => setPreview(res.data.items))
             .catch((err) => console.log(err));
+
+        axios.get('/user',{
+            headers:{
+                Authorization: getAccessToken()
+            }
+        }).then(res => setUserEmail(res.data)).catch(err => console.log(err))
     }, []);
 
     const LikeConfig = {
@@ -242,6 +249,7 @@ const Detail = () => {
                         </VideoWrapper>
                     </UnderContentWrapper>
                     <ReviewBox
+                        userEmail={userEmail}
                         isOpen={isOpen}
                         writeReview={writeReview}
                         setWriteReview={setWriteReview}
