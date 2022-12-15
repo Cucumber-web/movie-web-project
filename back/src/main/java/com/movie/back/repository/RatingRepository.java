@@ -20,4 +20,7 @@ public interface RatingRepository extends JpaRepository<MovieRating,Long> {
     @EntityGraph(attributePaths = "member")
     @Query("select r from MovieRating r where r.member.email = :email and r.boxOffice.title = :title")
     public MovieRating getRating(@Param("email") String email,@Param("title") String title);
+
+
+
 }
