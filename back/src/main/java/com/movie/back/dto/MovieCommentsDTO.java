@@ -27,6 +27,7 @@ public class MovieCommentsDTO {
 
         private LocalDateTime createdAt;
 
+        private String rating;
 
 
 }

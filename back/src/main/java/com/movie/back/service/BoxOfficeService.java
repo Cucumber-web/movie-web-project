@@ -238,19 +238,18 @@ public class BoxOfficeService {
                 .subList(0,Math.min(set.size(),10));
     }
 
-    public boolean setMovieRating(String title,String email,double rating){
+    public Long setMovieRating(String title,String email,double rating){
         MovieRating existRating = ratingRepository.getRating(email,title);
         if(existRating != null){
             existRating.setRating(rating);
-                ratingRepository.save(existRating);
+              return ratingRepository.save(existRating).getId();
         }else{
-            ratingRepository.save(MovieRating.builder()
+            return ratingRepository.save(MovieRating.builder()
                     .email(email)
                     .movieTitle(title)
                     .rating(rating)
-                    .build());
+                    .build()).getId();
         }
-        return true;
     }
 
     public List<BoxOfficeDTO> getListOrderBy(){

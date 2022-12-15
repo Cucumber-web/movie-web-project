@@ -27,9 +27,10 @@ public class RatingController {
             , @PathVariable("rating") String rating, HttpServletRequest request){
                String token = memberService.jwtExtract(request);
                Map<String,Object> jwt = jwtUtil.validateToken(token);
+                boxOfficeService.setMovieRating(title
+                        ,(String)jwt.get("email")
+                        ,Double.parseDouble(rating));
 
-               return ResponseEntity.ok(boxOfficeService.setMovieRating(title
-                       ,(String)jwt.get("email")
-                        ,Double.parseDouble(rating)));
+               return ResponseEntity.ok(true);
     }
 }
