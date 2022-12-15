@@ -6,7 +6,8 @@ import { getAccessToken } from "../../storage/Cookie";
 import axios from "axios";
 import { newAccessToken } from "../../module/refreshToken";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import ReviewBox from '../Review/ReviewBox';
+import ReviewBox from "../Review/ReviewBox";
+import Video from "../../components/Video";
 
 const Detail = () => {
     const location = useLocation();
@@ -16,7 +17,12 @@ const Detail = () => {
     const [myMovie, setMyMovie] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [writeReview, setWriteReview] = useState(false);
+    const [preview, setPreview] = useState([]);
     const movieTitle = location.state;
+
+    const searchMovie = movieTitle + " 예고편";
+
+    const URL = `https://www.googleapis.com/youtube/v3/search?q=${encodeURI(searchMovie)}&part=snippet&key=AIzaSyAqDMHQfWrxXCG4-f74DGq-eNopv4HwogA&type=video&regionCode=KR&maxResults=3`
 
     const readConfig = {
         method: "get",
@@ -41,6 +47,11 @@ const Detail = () => {
                         newAccessToken(err);
                     });
             })
+            .catch((err) => console.log(err));
+
+        axios
+            .get(URL)
+            .then((res) => setPreview(res.data.items))
             .catch((err) => console.log(err));
     }, []);
 
@@ -77,8 +88,8 @@ const Detail = () => {
     };
 
     const handleIsOpen = () => {
-        setIsOpen(prev => !prev);
-      }
+        setIsOpen((prev) => !prev);
+    };
 
     const handleLikeButton = () => {
         if (!isLike) {
@@ -148,23 +159,27 @@ const Detail = () => {
     };
 
     const handleQuiz = () => {
-        navigate('/quiz',{state:movieTitle});
-    }
+        navigate("/quiz", { state: movieTitle });
+    };
 
     const handleImageError = (e) => {
-        e.target.src = "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/660px-No-Image-Placeholder.svg.png?20200912122019";
-      }
-    
-    const handleWriteRevuew =() => {
+        e.target.src =
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/660px-No-Image-Placeholder.svg.png?20200912122019";
+    };
+
+    const handleWriteRevuew = () => {
         setWriteReview(true);
         setIsOpen(true);
-    }
+    };
     return (
         <TotalWrapper>
             {movieData && (
                 <>
                     <DetailWrapper>
-                        <ImageWrapper src={movieData.postLink} onError={handleImageError} />
+                        <ImageWrapper
+                            src={movieData.postLink}
+                            onError={handleImageError}
+                        />
                         <MovieInfo>
                             <TitleLike>
                                 <Title>
@@ -190,41 +205,56 @@ const Detail = () => {
                                         .map((props) => props.actorName + " ")}
                                 </p>
                                 <ReviewBtnWrapper>
-                                    <ReviewBtn onClick={handleWriteRevuew}>리뷰 쓰기 &#62;</ReviewBtn>
-                                    <ReviewBtn onClick={handleQuiz}>퀴즈 풀기 &#62;</ReviewBtn>
+                                    <ReviewBtn onClick={handleWriteRevuew}>
+                                        리뷰 쓰기 &#62;
+                                    </ReviewBtn>
+                                    <ReviewBtn onClick={handleQuiz}>
+                                        퀴즈 풀기 &#62;
+                                    </ReviewBtn>
                                 </ReviewBtnWrapper>
                             </ActorAndReview>
                         </MovieInfo>
                     </DetailWrapper>
                     <UnderContentWrapper>
                         <LikeGraph>
-                            <TestGraph/>
+                            <TestGraph />
                         </LikeGraph>
                         <VideoWrapper>
                             <VideoTitle>예고편</VideoTitle>
                             <VideoOutLine>
-                                <Video/>
-                                <Video/>
-                                <Video/>
+                                {preview?.map((props,idx) => (
+                                    <Video videoId={props.id.videoId}/>
+                                ))}
                             </VideoOutLine>
-                        </VideoWrapper> 
-                        <GreenLine/>
+                        </VideoWrapper>
+                        <GreenLine />
                         <VideoWrapper>
                             <StillImageTitle>
                                 <p>Photo</p>
                                 <h3>더보기 &#62;</h3>
                             </StillImageTitle>
                             <StillImageWrapper>
-                                {movieData.stillImage?.slice(0,6).map((props, idx) => (
-                                    <img src={props} key={idx} alt="still"/>
-                                ))}
+                                {movieData.stillImage
+                                    ?.slice(0, 6)
+                                    .map((props, idx) => (
+                                        <img
+                                            src={props}
+                                            key={idx}
+                                            alt="still"
+                                        />
+                                    ))}
                             </StillImageWrapper>
                         </VideoWrapper>
-                    </UnderContentWrapper>                  
-                    <ReviewBox isOpen={isOpen} writeReview={writeReview} setWriteReview={setWriteReview} title={movieTitle} handleIsOpen={handleIsOpen}/>
+                    </UnderContentWrapper>
+                    <ReviewBox
+                        isOpen={isOpen}
+                        writeReview={writeReview}
+                        setWriteReview={setWriteReview}
+                        title={movieTitle}
+                        handleIsOpen={handleIsOpen}
+                    />
                 </>
             )}
-            
         </TotalWrapper>
     );
 };
@@ -234,7 +264,7 @@ export default Detail;
 const TotalWrapper = styled.div`
     position: relative;
     width: 100vw;
-`
+`;
 
 const DetailWrapper = styled.div`
     display: flex;
@@ -376,23 +406,23 @@ const ReviewBtnWrapper = styled.div`
 const UnderContentWrapper = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content:center;
+    justify-content: center;
     align-items: center;
     width: 100%;
-`
+`;
 const TestGraph = styled.div`
     width: 90%;
     height: 90%;
-    background-color:#535353;
+    background-color: #535353;
     margin: 0 auto;
-`
+`;
 
 const LikeGraph = styled.div`
     width: 50%;
     height: 20rem;
     border-bottom: 1px solid #03af59;
-`
-const VideoWrapper =styled.div`
+`;
+const VideoWrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -400,33 +430,27 @@ const VideoWrapper =styled.div`
     width: 60%;
     height: 20rem;
     margin-top: 2rem;
-`
+`;
 
 const GreenLine = styled.div`
     width: 30rem;
     margin-top: 2rem;
     margin-bottom: 2rem;
-    border:0.5px solid #03af03;
-`
+    border: 0.5px solid #03af03;
+`;
 
 const VideoTitle = styled.h2`
     width: 100%;
     font-size: 1.5rem;
     font-weight: 600;
     color: white;
-`
-const Video = styled.div`
-    width: 30%;
-    height: 10rem;
-    border: 1px solid white;
-    margin-left:1rem;
-`
+`;
 
 const VideoOutLine = styled.div`
     display: flex;
     justify-content: center;
     width: 100%;
-`
+`;
 
 const StillImageWrapper = styled.div`
     display: flex;
@@ -436,15 +460,15 @@ const StillImageWrapper = styled.div`
     img {
         width: 15rem;
         height: 13rem;
-        margin-right:1rem;
+        margin-right: 1rem;
         margin-top: 1rem;
     }
-`
+`;
 
 const StillImageTitle = styled.div`
     display: flex;
     justify-content: space-between;
-    align-items:center;
+    align-items: center;
     width: 100%;
     height: 3rem;
     padding-left: 1rem;
@@ -456,9 +480,9 @@ const StillImageTitle = styled.div`
         color: white;
     }
 
-    h3{
+    h3 {
         font-size: 1.3rem;
         font-weight: 600;
         color: #03af03;
     }
-`
+`;
