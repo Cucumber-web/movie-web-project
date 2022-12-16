@@ -4,6 +4,7 @@ package com.movie.back.controller;
 import com.movie.back.dto.CommentsData;
 import com.movie.back.dto.MovieCommentsDTO;
 import com.movie.back.entity.MovieComments;
+import com.movie.back.service.BoxOfficeService;
 import com.movie.back.service.CommentsService;
 import com.movie.back.service.MemberService;
 import com.movie.back.util.JWTUtil;
@@ -23,11 +24,19 @@ public class CommentController {
         private final JWTUtil jwtUtil;
         private final CommentsService commentsService;
 
+        private final BoxOfficeService boxOfficeService;
 
 
-        @GetMapping("/comments/list")
-        public ResponseEntity<CommentsData> getList(@RequestParam(defaultValue = "0") int page){
-            return ResponseEntity.ok(commentsService.getDTOList(page));
+
+
+        @GetMapping("/mvi/comments/list")
+        public ResponseEntity<CommentsData> getList(@RequestParam(defaultValue = "0") int page,@RequestParam String title){
+            return ResponseEntity.ok(commentsService.getDTOList(page,title));
+        }
+
+        @GetMapping("/mvi/blind")
+        public ResponseEntity<Boolean> getBlind(@RequestParam Long id){
+                return ResponseEntity.ok(true);
         }
 
         @PostMapping("/comments/save")
@@ -35,7 +44,13 @@ public class CommentController {
                 String token = memberService.jwtExtract(httpServletRequest);
                 Map<String,Object> result = jwtUtil.validateToken(token);
                 dto.setEmail((String)result.get("email"));
-                commentsService.saveComments(dto);
+
+                Long ratingId = boxOfficeService.setMovieRating(dto.getMovieTitle()
+                        ,(String)result.get("email")
+                        ,Double.parseDouble(dto.getRating()));
+
+
+                commentsService.saveComments(dto,ratingId);
 
                 return ResponseEntity.ok(true);
         }
@@ -46,6 +61,10 @@ public class CommentController {
                 Map<String,Object> result = jwtUtil.validateToken(token);
                 dto.setEmail((String)result.get("email"));
 
+                Long ratingId = boxOfficeService.setMovieRating(dto.getMovieTitle()
+                        ,(String)result.get("email")
+                        ,Double.parseDouble(dto.getRating()));
+                System.out.println("Rating: "+ratingId);
                 if(commentsService.modifyComment(dto)){
                         return ResponseEntity.ok(true);
                 }else{
@@ -63,5 +82,12 @@ public class CommentController {
                 }else{
                         return ResponseEntity.ok(false); //사용자가 다른 사용자일떄 바뀌지 않음
                 }
+        }
+
+
+        @PostMapping("/comments/denger/{id}")
+        public ResponseEntity<Boolean> dengerNumberAdd(@PathVariable Long id){
+                        commentsService.blindNumberAdd(id);
+                        return ResponseEntity.ok(true);
         }
 }

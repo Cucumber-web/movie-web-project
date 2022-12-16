@@ -17,5 +17,7 @@ public interface QuizService {
     public boolean getCheckQuiz(String item);
 
     public boolean getAddRoleQuiz(HttpServletRequest request);
+
+    public boolean deleteQuizFeature(String id,String email);
 }
 

@@ -36,6 +36,11 @@ public class MovieComments {
         @ToString.Exclude
         private Member member;
 
+        @OneToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name="rating_id",insertable = false,updatable = false)
+        private MovieRating rating;
+
+
         @Column(name = "boxoffice_id")
         private String movieTitle;
 
@@ -46,9 +51,14 @@ public class MovieComments {
         @Column(columnDefinition = "TEXT")
         private String content;
 
-
+        @Column(name = "rating_id")
+        private Long ratingId;
 
         private boolean spoiler;
+
+        private boolean blind;
+
+        private int blindNumber;
 
         @CreatedDate
         private LocalDateTime createdAt;
@@ -60,5 +70,16 @@ public class MovieComments {
         public void changeComments(String content,boolean spoiler){
                 this.content = content;
                 this.spoiler = spoiler;
+        }
+
+        public void blindProcessing(){
+                this.blind = true;
+        }
+        public void blindNumberInit(){
+                this.blindNumber = 0;
+        }
+        public Integer addBlindNumber(){
+                this.blindNumber++;
+                return this.blindNumber;
         }
 }
