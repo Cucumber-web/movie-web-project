@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import LinearProgress from '@mui/material/LinearProgress';
 import Box from '@mui/material/Box';
@@ -8,6 +8,7 @@ import { getAccessToken } from "../storage/Cookie";
 
 const Quiz = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const title = location.state;
   const [quizStart, setQuizStart] = useState(false);
   const [current, setCurrent] = useState(0);
@@ -33,6 +34,7 @@ const Quiz = () => {
       <>
         <MovieTitle><strong>{title}</strong>에 대한 퀴즈를 풀어보시겠습니까?</MovieTitle>
         <QuizBtn onClick={handleQuizStart}>시작하기</QuizBtn>
+        <CreateQuiz onClick={() => navigate('/quizCreate',{state: title})}>퀴즈 만들러 가기 &gt;</CreateQuiz>
       </>
     }
     {quizStart &&
@@ -88,4 +90,11 @@ const TestBtn = styled.button`
   width: 5rem;
   height: 2rem;
   background-color:blue;
+`
+
+const CreateQuiz = styled.p`
+  color: #03af59;
+  text-decoration: underline;
+  margin-top: 1rem;
+  cursor: pointer;
 `

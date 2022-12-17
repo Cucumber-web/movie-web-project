@@ -7,6 +7,7 @@ const SignUp = lazy(() => import('./pages/Login/SignUp'));
 const Main = lazy(() => import('./pages/Main/Main'));
 const Search = lazy(() => import('./pages/Search/Search'));
 const Quiz = lazy(() => import('./pages/Quiz'));
+const QuizCreate = lazy(() => import('./pages/QuizCreate'));
 
 const Router = () => {
   return (
@@ -20,6 +21,7 @@ const Router = () => {
           <Route path="/detail" element={<Detail />} />
           <Route path='/movieSearch' element={<Search />}/>
           <Route path='/quiz' element={<Quiz/>}/>
+          <Route path='/quizCreate' element={<QuizCreate/>}/>
         </Routes>
       </BrowserRouter>
     </>

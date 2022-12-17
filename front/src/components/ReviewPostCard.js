@@ -20,7 +20,8 @@ const ReviewPostCard = ({ title }) => {
       data:{
         content:desc,
         movieTitle:movieTitle,
-        spoiler:checked
+        spoiler:checked,
+        rating:value
       }
     };
 

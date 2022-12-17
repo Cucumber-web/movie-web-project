@@ -7,6 +7,7 @@ import axios from "axios";
 import { getAccessToken } from "../../storage/Cookie";
 
 const ReviewBox = ({
+    userEmail,
     title,
     isOpen,
     writeReview,
@@ -17,11 +18,9 @@ const ReviewBox = ({
 
     const listConfig = {
         method: "get",
-        url: "/comments/list",
-        headers: {
-            Authorization: `Bearer ${getAccessToken()}`,
-        },
+        url: `/mvi/comments/list?title=${title}`
     };
+    
     console.log(reviewList);
     useEffect(() => {
         axios(listConfig)
@@ -50,7 +49,7 @@ const ReviewBox = ({
             <ReviewContent isOpen={isOpen}>
                 {writeReview && <ReviewPostCard title={title} />}
                 {reviewList?.map((props) => (
-                    <ReviewCard key={props.id} {...props} />
+                    <ReviewCard key={props.id} {...props} userEmail={userEmail}/>
                 ))}
             </ReviewContent>
         </ReviewWrapper>

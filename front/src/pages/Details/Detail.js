@@ -12,12 +12,13 @@ import Video from "../../components/Video";
 const Detail = () => {
     const location = useLocation();
     const navigate = useNavigate();
-    const [movieData, setMovieData] = useState({});
+    const [movieData, setMovieData] = useState([]);
     const [isLike, setIsLike] = useState(false);
     const [myMovie, setMyMovie] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
     const [writeReview, setWriteReview] = useState(false);
     const [preview, setPreview] = useState([]);
+    const [userEmail, setUserEmail] = useState('');
     const movieTitle = location.state;
 
     const searchMovie = movieTitle + " 예고편";
@@ -32,15 +33,21 @@ const Detail = () => {
         },
     };
 
+    const emailConfig = {
+        method: 'get',
+        url:'/user',
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    }
+
     useEffect(() => {
         axios
             .get(`/mvi/read?title=${movieTitle}`)
             .then((res) => {
-                console.log(res);
                 setMovieData(res.data);
                 axios(readConfig)
                     .then((res) => {
-                        console.log(res);
                         setIsLike(res.data);
                     })
                     .catch((err) => {
@@ -53,6 +60,11 @@ const Detail = () => {
             .get(URL)
             .then((res) => setPreview(res.data.items))
             .catch((err) => console.log(err));
+
+        axios(emailConfig).then(res => {
+            console.log(res);
+            setUserEmail(res.data)
+        }).catch(err => console.log(err))
     }, []);
 
     const LikeConfig = {
@@ -95,14 +107,12 @@ const Detail = () => {
         if (!isLike) {
             axios(LikeConfig)
                 .then((res) => {
-                    console.log(res);
                     setIsLike(res.data);
                 })
                 .catch((err) => {
                     newAccessToken(err);
                     axios(LikeConfig)
                         .then((res) => {
-                            console.log(res);
                             setIsLike(res.data);
                         })
                         .catch((err) => console.log(err));
@@ -116,7 +126,6 @@ const Detail = () => {
                     newAccessToken(err);
                     axios(deleteLikeConfig)
                         .then((res) => {
-                            console.log(res);
                             setIsLike(res.data);
                         })
                         .catch((err) => console.log(err));
@@ -129,14 +138,12 @@ const Detail = () => {
         if (!myMovie) {
             axios(myMovieConfig)
                 .then((res) => {
-                    console.log(res);
                     setMyMovie(res.data);
                 })
                 .catch((err) => {
                     newAccessToken(err);
                     axios(myMovieConfig)
                         .then((res) => {
-                            console.log(res);
                             setMyMovie(res.data);
                         })
                         .catch((err) => console.log(err));
@@ -150,7 +157,6 @@ const Detail = () => {
                     newAccessToken(err);
                     axios(deleteMyMovieConfig)
                         .then((res) => {
-                            console.log(res);
                             setMyMovie(res.data);
                         })
                         .catch((err) => console.log(err));
@@ -222,8 +228,8 @@ const Detail = () => {
                         <VideoWrapper>
                             <VideoTitle>예고편</VideoTitle>
                             <VideoOutLine>
-                                {preview?.map((props,idx) => (
-                                    <Video videoId={props.id.videoId}/>
+                                {preview?.slice(0,3).map((props,idx) => (
+                                    <Video videoId={props.id.videoId} key={idx}/>
                                 ))}
                             </VideoOutLine>
                         </VideoWrapper>
@@ -234,19 +240,23 @@ const Detail = () => {
                                 <h3>더보기 &#62;</h3>
                             </StillImageTitle>
                             <StillImageWrapper>
-                                {movieData.stillImage
+                                {movieData.length !== 0 ? movieData.stillImage
                                     ?.slice(0, 6)
                                     .map((props, idx) => (
                                         <img
                                             src={props}
                                             key={idx}
                                             alt="still"
+                                            onError={handleImageError}
                                         />
-                                    ))}
+                                    )) : (
+                                        <p>스틸이미지가 존재하지 않습니다.</p>
+                                    )}
                             </StillImageWrapper>
                         </VideoWrapper>
                     </UnderContentWrapper>
                     <ReviewBox
+                        userEmail={userEmail}
                         isOpen={isOpen}
                         writeReview={writeReview}
                         setWriteReview={setWriteReview}
