@@ -75,4 +75,10 @@ class QuizRepositoryTest {
         quizRepository.quizDetail("이것이 퀴즈입니다").get().getQuizItems().forEach(System.out::println);
     }
 
+    @Test
+    @Transactional
+    void 쿼리줄이는퀴즈테스트(){
+        quizRepository.getQuizByMovieTitle("데시벨").forEach(System.out::println);
+    }
+
 }
