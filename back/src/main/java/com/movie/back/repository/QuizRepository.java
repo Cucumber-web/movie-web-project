@@ -1,6 +1,7 @@
 package com.movie.back.repository;
 
 import com.movie.back.entity.Quiz;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -24,4 +25,9 @@ public interface QuizRepository extends JpaRepository<Quiz,Long> {
 
         @Query("select q from Quiz q join fetch q.quizItems where q.id = :id")
         public Optional<Quiz> quizDetailById(@Param("id") Long id);
+
+
+        @EntityGraph(attributePaths = "quizItems")
+        @Query("select q from Quiz q where q.boxOffice.title = :title")
+        public List<Quiz> getQuizByMovieTitle(@Param("title") String title);
 }

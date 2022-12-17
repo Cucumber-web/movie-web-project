@@ -20,6 +20,7 @@ class QuizServiceTest {
 
 
     @Test
+    @Transactional
     void 서비스퀴즈테스트(){
 
             quizService.getQuiz("데시벨").forEach(System.out::println);

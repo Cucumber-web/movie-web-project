@@ -36,8 +36,7 @@ public class QuizServiceImpl implements QuizService {
 
     public List<QuizDTO> getQuiz(String title){
         List<QuizDTO> quizDTOList = new ArrayList<>();
-        boxOfficeRepository.getQuizeBoxOffice(title)
-                .getQuizList().forEach(quiz -> {
+        quizRepository.getQuizByMovieTitle(title).forEach(quiz -> {
 
                     quizDTOList.add(QuizDTO.builder()
                                     .id(quiz.getId())
@@ -115,11 +114,11 @@ public class QuizServiceImpl implements QuizService {
                     .build();
 
         quizItems.forEach(quizItem -> {
-             if(quizItem.getItem().equals(correct)){
-                 quiz.addQuizItem(quizItem.getItem(),quizItem.getKey(),true);
-             }else{
-                 quiz.addQuizItem(quizItem.getItem(),quizItem.getKey(),false);
-             }
+                if(quizItem.getKey().equals(correct)){
+                    quiz.addQuizItem(quizItem.getItem(),quizItem.getKey(),true);
+                }else{
+                    quiz.addQuizItem(quizItem.getItem(),quizItem.getKey(),false);
+                }
         });
         quizRepository.save(quiz);
     }
