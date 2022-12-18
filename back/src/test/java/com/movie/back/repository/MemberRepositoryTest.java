@@ -6,6 +6,7 @@ import com.movie.back.dto.RegisterBody;
 import com.movie.back.entity.BoxOffice;
 import com.movie.back.entity.Member;
 import com.movie.back.entity.MemberMovie;
+import com.movie.back.service.MemberService;
 import com.movie.back.service.MovieMemberService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,9 @@ class MemberRepositoryTest {
 
     @Autowired
     MovieMemberService myMovieService;
+
+    @Autowired
+    MemberService memberService;
 
     @Test
     void 아이디등록하기(){
@@ -153,5 +157,22 @@ class MemberRepositoryTest {
         memberRepository.save(member);
 
      //   member.getRoleSet().forEach(System.out::println);
+    }
+
+
+    @Test
+    @Transactional
+    void 유저정보뿌리는기능(){
+        Member member = memberRepository.getMemberInfo("user").get();
+        System.out.print("권한 확인하기 - ");
+        member.getRoleSet().forEach(System.out::println);
+        System.out.println("이메일 확인하기 - "+member.getEmail());
+        System.out.println("생년월일-"+member.getBirth());
+        System.out.println("성별-"+member.getGender());
+
+        //TODO: 여기서부터 찜한영화 만든 퀴즈 적은 리뷰를 가져와야한다.
+        member.getMovieSet().forEach(memberMovie -> {   //찜한영화임 MemberMovie와 BoxOffce 를 join 하여 가져온다.
+            System.out.println(memberMovie.getTitle());   //이것도 fetch 조인이지만 영화에 딸린 연관관계를 다 가져옴 거를필요가있음
+        }); //posterlink, title, 필요함 
     }
 }
