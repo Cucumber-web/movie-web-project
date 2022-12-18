@@ -30,7 +30,7 @@ public class MemberMovie { //찜한영화
     private String email;
 
     @Column(name="boxOffice_id")
-    private String title;
+    private String title;       //이 값을 가져오면 join
 
     public void changeMember(Member member){
         this.member = member;
