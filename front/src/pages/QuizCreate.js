@@ -12,7 +12,7 @@ import { newAccessToken } from "../module/refreshToken";
 const QuizCreate = () => {
     const location = useLocation();
     const [QuizTitle, setQuizTitle] = useState("");
-    const [correct, setCorrect] = useState(1);
+    const [correct, setCorrect] = useState("1");
     const [firstQuiz, setFirstQuiz] = useState('');
     const [secondQuiz, setSecondQuiz] = useState('');
     const [thirdQuiz, setThirdQuiz] = useState('');
