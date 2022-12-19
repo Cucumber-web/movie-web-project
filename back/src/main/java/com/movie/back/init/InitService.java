@@ -14,7 +14,7 @@ import java.io.IOException;
 
 //@Service
 @RequiredArgsConstructor
-@Component
+//@Component
 public class InitService implements ApplicationListener<ContextRefreshedEvent> {
     private final BoxOfficeService boxOfficeService;
     @Override
