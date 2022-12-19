@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movie.back.data.MemberRequest;
 import com.movie.back.dto.MemberDTO;
 import com.movie.back.dto.RegisterBody;
+import com.movie.back.dto.myData.ResponseMyDataDTO;
 import com.movie.back.security.exception.AccessTokenException;
 import com.movie.back.service.LikeService;
 import com.movie.back.service.MemberService;
@@ -94,6 +95,14 @@ public class UserController {
         Map<String,Object> values = jwtUtil.validateToken(tokenStr);
 
         return ResponseEntity.ok((String)values.get("email"));
+    }
+
+    @GetMapping("/user/detail")
+    public ResponseEntity<ResponseMyDataDTO> userDetail(HttpServletRequest request){
+        String tokenStr = memberService.jwtExtract(request);
+        Map<String,Object> values = jwtUtil.validateToken(tokenStr);
+
+        return ResponseEntity.ok(memberService.myPageData((String)values.get("email")));
     }
 
 

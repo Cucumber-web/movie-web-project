@@ -51,4 +51,12 @@ class MemberMovieRepositoryTest {
         System.out.println( memberMovieRepository.existysMyMovie("아바타","user"));
     }
 
+    @Test
+    void 찜한영화저장하기(){
+        memberMovieRepository.save(MemberMovie.builder()
+                        .title("데시벨")   //영화제목
+                        .email("user")  //해당 이메일
+                .build());
+    }
+
 }

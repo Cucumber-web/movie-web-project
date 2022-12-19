@@ -42,6 +42,13 @@ class MemberRepositoryTest {
     @Autowired
     MemberService memberService;
 
+    @Autowired
+    QuizRepository quizRepository;
+
+    @Autowired
+    MovieCommentRepository movieCommentRepository;
+
+
     @Test
     void 아이디등록하기(){
         memberRepository.save(Member.builder().email("user22")
@@ -165,14 +172,21 @@ class MemberRepositoryTest {
     void 유저정보뿌리는기능(){
         Member member = memberRepository.getMemberInfo("user").get();
         System.out.print("권한 확인하기 - ");
-        member.getRoleSet().forEach(System.out::println);
-        System.out.println("이메일 확인하기 - "+member.getEmail());
-        System.out.println("생년월일-"+member.getBirth());
-        System.out.println("성별-"+member.getGender());
+        member.getRoleSet().forEach(System.out::println);   //권한타입
+        System.out.println("이메일 확인하기 - "+member.getEmail());    //이메일타입
+        System.out.println("생년월일-"+member.getBirth());  //생년월일 String
+        System.out.println("성별-"+member.getGender());   //성별
 
         //TODO: 여기서부터 찜한영화 만든 퀴즈 적은 리뷰를 가져와야한다.
+        System.out.println("찜한 영화들 - ");
         member.getMovieSet().forEach(memberMovie -> {   //찜한영화임 MemberMovie와 BoxOffce 를 join 하여 가져온다.
-            System.out.println(memberMovie.getTitle());   //이것도 fetch 조인이지만 영화에 딸린 연관관계를 다 가져옴 거를필요가있음
-        }); //posterlink, title, 필요함 
+            System.out.println(memberMovie.getBoxOfficeId().getPosterLink());   //이것도 fetch 조인이지만 영화에 딸린 연관관계를 다 가져옴 거를필요가있음
+            System.out.println(memberMovie.getBoxOfficeId().getTitle());    //posterLink title을 담은 데이터리스트
+        }); //posterlink, title, 필요함
+        System.out.print("퀴즈들 - ");
+        quizRepository.getQuizByEmail(member.getEmail()).forEach(System.out::println);  //퀴즈와 퀴즈 아이템 데이터를 받는 리스트
+
+        System.out.println("작성리뷰들 - ");
+        movieCommentRepository.findAllWithRatingByUser(member.getEmail()).forEach(System.out::println); //리뷰 리스트로가져오면 될듯함
     }
 }

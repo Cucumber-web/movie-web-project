@@ -30,4 +30,9 @@ public interface QuizRepository extends JpaRepository<Quiz,Long> {
         @EntityGraph(attributePaths = "quizItems")
         @Query("select q from Quiz q where q.boxOffice.title = :title")
         public List<Quiz> getQuizByMovieTitle(@Param("title") String title);
+
+
+        @EntityGraph(attributePaths = "quizItems")
+        @Query("select q from Quiz q where q.email = :email")
+        public List<Quiz> getQuizByEmail(@Param("email") String email);
 }
