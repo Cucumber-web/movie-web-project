@@ -26,8 +26,8 @@ public class LikeServiceImpl implements LikeService {
         public void saveLike(String email,String title){
 
             likeRepository.save(LikeGood.builder()
-                            .boxOffice(BoxOffice.builder().title(title).build())
-                            .member(Member.builder().email(email).build())
+                            .movieTitle(title)
+                            .email(email)
                     .build());
 
             log.info("{} 가 {} 에 좋아요를 눌렀음",email,title);
