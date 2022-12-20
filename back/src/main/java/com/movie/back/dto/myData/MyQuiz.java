@@ -3,6 +3,8 @@ package com.movie.back.dto.myData;
 
 import lombok.*;
 
+import java.util.Set;
+
 @Setter
 @Getter
 @NoArgsConstructor
@@ -15,5 +17,7 @@ public class MyQuiz {
     private String movieTitle;
 
     private String quizName;
+
+    private Set<String> quizItems;
 
 }

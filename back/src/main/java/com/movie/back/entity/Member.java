@@ -35,6 +35,10 @@ public class Member {
         @ElementCollection(fetch = FetchType.LAZY)
         private Set<MemberRole> roleSet = new HashSet<>();
 
+        @OneToMany(mappedBy = "member")
+        @Builder.Default
+        private List<LikeGood> likeGoods = new ArrayList<>();
+
 
         @OneToMany(mappedBy = "member")
         @Builder.Default

@@ -58,7 +58,7 @@ public class MainController {
             MemberDTO memberDTO = memberService.getMember((String)values.get("email"));
 
             return ResponseEntity.ok(boxOfficeService.likeOrderByAgeGroup(memberDTO.getAgeGroup()));
-        }catch (NullPointerException e){
+        }catch (NullPointerException e){   //토큰만료에러남
             return ResponseEntity.ok(boxOfficeService.getListOrderBy());
         }
 

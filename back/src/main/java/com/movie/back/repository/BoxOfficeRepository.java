@@ -33,7 +33,7 @@ public interface BoxOfficeRepository extends JpaRepository<BoxOffice,String> {
 
 
     @Query("select distinct b from BoxOffice b join fetch b.likeGoods"+
-            " where b.ranking is null order by b.likeGoods.size desc")
+            " where b.ranking is null order by size(b.likeGoods) desc")
     public List<BoxOffice> getLikeMovieList(Pageable pageable);
 
     @EntityGraph(attributePaths = "quizList")
@@ -45,6 +45,7 @@ public interface BoxOfficeRepository extends JpaRepository<BoxOffice,String> {
     @Query("select b from BoxOffice b order by size(b.quizList) desc ")
     public List<BoxOffice> getQuizeBoxOfficeOrderBy(Pageable pageable);
 
-    @Query("select b from BoxOffice b join fetch b.likeGoods order by size(b.likeGoods) asc ")
-    public List<BoxOffice> getLikeList();
+    @Query("select distinct b from BoxOffice b join fetch b.likeGoods order by size(b.likeGoods) desc ")
+    public List<BoxOffice> getLikeList(Pageable pageable);
+
 }

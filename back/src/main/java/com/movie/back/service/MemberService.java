@@ -94,10 +94,14 @@ public class MemberService {
 
 
             quizRepository.getQuizByEmail(member.getEmail()).forEach(quiz -> {
+
                                   quizList.add(MyQuiz.builder()
                                             .id(quiz.getId())
                                             .movieTitle(quiz.getMovieTitle())
                                             .quizName(quiz.getTitle())
+                                                  .quizItems(quiz.getQuizItems().stream()
+                                                          .map(quizItems -> quizItems.getItemTitle())
+                                                          .collect(Collectors.toUnmodifiableSet()))
                                     .build());
             });
             responseMyDataDTO.setQuizDTOList(quizList);

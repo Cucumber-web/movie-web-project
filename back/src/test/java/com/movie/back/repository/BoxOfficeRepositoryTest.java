@@ -19,7 +19,7 @@ class BoxOfficeRepositoryTest {
     @Test
     @Transactional
     void test(){
-        boxOfficeRepository.getLikeList().subList(0,10).forEach(System.out::println);
+        boxOfficeRepository.getLikeList(PageRequest.of(0,10)).subList(0,10).forEach(System.out::println);
     }
 
 

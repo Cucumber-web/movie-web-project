@@ -4,6 +4,7 @@ import com.movie.back.dto.BoxOfficeDTO;
 import com.movie.back.entity.BoxOffice;
 import com.movie.back.entity.LikeGood;
 import com.movie.back.entity.Member;
+import com.movie.back.service.BoxOfficeService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -24,6 +25,10 @@ class LikeRepositoryTest {
 
     @Autowired
     QuizRepository quizRepository;
+
+
+    @Autowired
+    BoxOfficeService boxOfficeService;
     @Test
     void saveTest(){
             likeRepository.save(LikeGood.builder()
@@ -62,4 +67,9 @@ class LikeRepositoryTest {
     }
 
 
+    @Test
+    @Transactional
+    void test13(){
+        boxOfficeService.likeOrderByAgeGroup("30").forEach(System.out::println);
+    }
 }

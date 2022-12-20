@@ -1,6 +1,7 @@
 package com.movie.back.controller.advice;
 
 
+import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,9 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 public class ControllerAdviceProcess {
 
 
-        @ExceptionHandler(Exception.class)
-        public String errorHandler(Exception e){
-            return "잘못된 값이 들어옴";
+        @ExceptionHandler(NullPointerException.class)
+        public boolean errorHandler(Exception e){
+            return false;
         }
 
        // @ResponseStatus(HttpStatus.NOT_FOUND)
@@ -25,6 +26,11 @@ public class ControllerAdviceProcess {
         @ExceptionHandler(NoHandlerFoundException.class)
         public ResponseEntity<String> handle404(NoHandlerFoundException exception) {
             return ResponseEntity.ok("<h3>404</h3>");    //404에러시 404 값이 넘어가게 바꿈
+        }
+
+        @ExceptionHandler(ExpiredJwtException.class)
+        public ResponseEntity<String> expirecdToken(){
+            return ResponseEntity.status(403).body("Expired Token");
         }
 
 }

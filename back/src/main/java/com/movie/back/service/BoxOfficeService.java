@@ -227,14 +227,15 @@ public class BoxOfficeService {
 
     public List<BoxOfficeDTO> likeOrderByAgeGroup(String ageGroup){
         Set<BoxOfficeDTO> set = new HashSet<>();
-        likeRepository.likeGoodOrderBy(ageGroup).forEach(likeGood -> {
+       // //TODO: 열개로 할 것인가 말 것인가 그것이 고민이다 최대 10개
+
+        likeRepository.likeGoodAgeGroup(ageGroup).forEach(likeGood -> {
             set.add(BoxOfficeDTO.builder()
                     .title(likeGood.getBoxOffice().getTitle())
                     .postLink(likeGood.getBoxOffice().getPosterLink())
                     .build());
         });
-        return set.stream()
-                .collect(Collectors.toList())
+        return new ArrayList<>(set)
                 .subList(0,Math.min(set.size(),10));
     }
 
@@ -255,7 +256,7 @@ public class BoxOfficeService {
     public List<BoxOfficeDTO> getListOrderBy(){
         List<BoxOfficeDTO> dtoList = new ArrayList<>();
 
-        boxOfficeRepository.getLikeList().forEach(boxOffice -> {
+        boxOfficeRepository.getLikeList(PageRequest.of(0,10)).forEach(boxOffice -> {
                 dtoList.add(BoxOfficeDTO.builder()
                         .title(boxOffice.getTitle())
                                 .postLink(boxOffice.getPosterLink())
