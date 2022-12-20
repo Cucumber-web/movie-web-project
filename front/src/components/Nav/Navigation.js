@@ -4,6 +4,7 @@ import { BiUser } from "react-icons/bi";
 import { HiMagnifyingGlass } from "react-icons/hi2";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { getAccessToken } from '../../storage/Cookie';
 
 const Navigation = () => {
     const location = useLocation();
@@ -27,6 +28,14 @@ const Navigation = () => {
         navigate('/movieSearch', {state: input});
     }
 
+    const handleNavUser = () => {
+        if(getAccessToken()){
+            navigate('/userDetail');
+        } else {
+            navigate('/login');
+        }
+    }
+
     return (
         <NavWrapper>
             <h1 onClick={() => navigate('/')}>Logo</h1>
@@ -34,7 +43,7 @@ const Navigation = () => {
                 <NavSearchIcon />
                 <NavSearch onChange={handleSearch}/>
             </NavSearchWrapper>
-            <NavUserIcon onClick={() => navigate('/login')}/>
+            <NavUserIcon onClick={handleNavUser}/>
         </NavWrapper>
     );
 };
