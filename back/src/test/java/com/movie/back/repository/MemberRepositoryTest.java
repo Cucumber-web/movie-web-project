@@ -189,4 +189,9 @@ class MemberRepositoryTest {
         System.out.println("작성리뷰들 - ");
         movieCommentRepository.findAllWithRatingByUser(member.getEmail()).forEach(System.out::println); //리뷰 리스트로가져오면 될듯함
     }
+    @Test
+    void 테스터(){
+        memberRepository.memberAgeGroup("30").forEach(member -> {
+        });
+    }
 }
