@@ -9,7 +9,7 @@ import { getAccessToken } from "../storage/Cookie";
 import axios from "axios";
 
 const ReviewCard = ({ id,spoiler, content, rating, userEmail, email, blind }) => {
-    const [isSpoiler, setIsSpoiler] = useState(spoiler);
+    const [isSpoiler, setIsSpoiler] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
     const handleSpoiler = () => {
