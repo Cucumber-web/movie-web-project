@@ -15,6 +15,7 @@ const UserDetail = () => {
             Authorization: `Bearer ${getAccessToken()}`,
         },
     };
+
     useEffect(() => {
         axios(userInfoConfig)
             .then((res) => setUserInfo(res.data))
@@ -23,6 +24,23 @@ const UserDetail = () => {
                 console.log(err);
             });
     }, []);
+
+    const handleDeleteMyMovie = (title) => {
+        const removeConfig = {
+            method: "delete",
+            url: `/my/remove?title=${title}`,
+            headers: {
+                Authorization: `Bearer ${getAccessToken()}`,
+            },
+        };
+
+        axios(removeConfig)
+            .then((res) => {
+                window.location.reload();
+                console.log(res)
+            })
+            .catch((err) => console.log(err));
+    };
 
     console.log(userInfo);
     return (
@@ -34,7 +52,7 @@ const UserDetail = () => {
                 <UserTitle>
                     <UserEmail>{userInfo.email} 님 어서오세요!</UserEmail>
                     <UserBirth>
-                        {userInfo.birth} | {userInfo.gender}성
+                        {userInfo.birth} | {userInfo.gender}
                     </UserBirth>
                 </UserTitle>
                 <UserLikeMovie>
@@ -44,7 +62,11 @@ const UserDetail = () => {
                             <MovieCard key={idx}>
                                 <img src={props.posterLink} alt={props.title} />
                                 <p>{props.title}</p>
-                                <LikeHeart />
+                                <LikeHeart
+                                    onClick={() =>
+                                        handleDeleteMyMovie(props.title)
+                                    }
+                                />
                             </MovieCard>
                         ))}
                     </LikeMovieList>
@@ -54,21 +76,24 @@ const UserDetail = () => {
                     <UserReviewCardWrapper>
                         {userInfo?.commentsDTOList?.map((props, idx) => (
                             <UserReviewCard key={idx}>
-                                <ReviewCard content={props.content} rating={props.rating}></ReviewCard>
+                                <ReviewCard
+                                    content={props.content}
+                                    rating={props.rating}
+                                ></ReviewCard>
                             </UserReviewCard>
                         ))}
                     </UserReviewCardWrapper>
                 </UserReview>
                 <UserQuiz>
-                  <UserLikeTitle>지금까지 만든 퀴즈</UserLikeTitle>
-                  {userInfo?.quizDTOList?.map((props) => (
-                    <>
-                      <QuizTitle>
-                        <h2>{props.movieTitle}</h2>
-                        <p>삭제하기</p>
-                      </QuizTitle>
-                      <QuizDesc>{props.quizName}</QuizDesc>
-                    </>
+                    <UserLikeTitle>지금까지 만든 퀴즈</UserLikeTitle>
+                    {userInfo?.quizDTOList?.map((props) => (
+                        <>
+                            <QuizTitle>
+                                <h2>{props.movieTitle}</h2>
+                                <p>삭제하기</p>
+                            </QuizTitle>
+                            <QuizDesc>{props.quizName}</QuizDesc>
+                        </>
                     ))}
                 </UserQuiz>
             </DetailContent>
@@ -144,7 +169,7 @@ const LikeMovieList = styled.div`
     align-items: center;
     justify-content: flex-start;
     flex-wrap: wrap;
-    width: 100%;
+    width: 120%;
     margin-top: 2rem;
 `;
 const MovieCard = styled.div`
@@ -153,11 +178,12 @@ const MovieCard = styled.div`
     justify-content: center;
     flex-direction: column;
     width: 9rem;
+    height:18rem;
     margin-right: 1rem;
 
     img {
         width: 100%;
-        height: 90%;
+        height: 15rem;
         margin-bottom: 0.5rem;
     }
 
@@ -190,35 +216,32 @@ const UserReviewCard = styled.div`
 `;
 
 const UserQuiz = styled.div`
-  display: flex;
-  align-items:flex-start;
-  flex-direction: column;
-  justify-content: flex-start;
-  width: 100%;
-  margin-top: 2rem;
-  
-`
+    display: flex;
+    align-items: flex-start;
+    flex-direction: column;
+    justify-content: flex-start;
+    width: 100%;
+    margin-top: 2rem;
+`;
 const QuizTitle = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  margin-top: 2rem;
-  
-  h2{
-    color: white;
-    font-size: 1.1rem;
-  }
-  p{
-    color: #03af59;
-    text-decoration: underline;
-  }
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    margin-top: 2rem;
 
-`
+    h2 {
+        color: white;
+        font-size: 1.1rem;
+    }
+    p {
+        color: #03af59;
+        text-decoration: underline;
+    }
+`;
 
 const QuizDesc = styled.h3`
-  margin-top:1rem;
-  margin-left:1rem;
-  color: #F3F4F8;
-
-`
+    margin-top: 1rem;
+    margin-left: 1rem;
+    color: #f3f4f8;
+`;

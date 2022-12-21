@@ -18,12 +18,14 @@ const Detail = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [writeReview, setWriteReview] = useState(false);
     const [preview, setPreview] = useState([]);
-    const [userEmail, setUserEmail] = useState('');
+    const [userEmail, setUserEmail] = useState("");
     const movieTitle = location.state;
 
     const searchMovie = movieTitle + " 예고편";
 
-    const URL = `https://www.googleapis.com/youtube/v3/search?q=${encodeURI(searchMovie)}&part=snippet&key=AIzaSyAqDMHQfWrxXCG4-f74DGq-eNopv4HwogA&type=video&regionCode=KR&maxResults=3`
+    const URL = `https://www.googleapis.com/youtube/v3/search?q=${encodeURI(
+        searchMovie
+    )}&part=snippet&key=${process.env.REACT_APP_youtubeKey}&type=video&regionCode=KR&maxResults=3`;
 
     const readConfig = {
         method: "get",
@@ -34,12 +36,12 @@ const Detail = () => {
     };
 
     const emailConfig = {
-        method: 'get',
-        url:'/user',
+        method: "get",
+        url: "/user",
         headers: {
             Authorization: `Bearer ${getAccessToken()}`,
         },
-    }
+    };
 
     useEffect(() => {
         axios
@@ -48,6 +50,7 @@ const Detail = () => {
                 setMovieData(res.data);
                 axios(readConfig)
                     .then((res) => {
+                        console.log(res);
                         setIsLike(res.data);
                     })
                     .catch((err) => {
@@ -61,10 +64,21 @@ const Detail = () => {
             .then((res) => setPreview(res.data.items))
             .catch((err) => console.log(err));
 
-        axios(emailConfig).then(res => {
-            console.log(res);
-            setUserEmail(res.data)
-        }).catch(err => console.log(err))
+        axios(emailConfig)
+            .then((res) => {
+                console.log(res);
+                setUserEmail(res.data);
+            })
+            .catch((err) => console.log(err));
+
+        axios
+            .get(`/my/exists?title=${movieTitle}`,{
+                headers:{
+                    Authorization:`Bearer ${getAccessToken()}`
+                }
+            })
+            .then((res) => setMyMovie(res.data))
+            .catch((err) => console.log(err));
     }, []);
 
     const LikeConfig = {
@@ -191,10 +205,16 @@ const Detail = () => {
                                 <Title>
                                     <h2>{movieTitle}</h2>
                                 </Title>
-                                <LikeBtn onClick={handleLikeButton}>
-                                    {isLike ? <FullHeart /> : <Heart />}
-                                    <p>좋아요</p>
-                                </LikeBtn>
+                                <ButtonWrapper>
+                                    <LikeBtn onClick={handleLikeButton}>
+                                        {isLike ? <FullHeart /> : <Heart />}
+                                        <p>좋아요</p>
+                                    </LikeBtn>
+                                    <LikeBtn onClick={handleMyMovieButton}>
+                                        {myMovie ? <LikeHeart /> : <Heart />}
+                                        <p>찜하기</p>
+                                    </LikeBtn>
+                                </ButtonWrapper>
                             </TitleLike>
                             <MovieDetailInfo>
                                 <p>12세 이상 관람가 . 10월 12일 . 2시간20분</p>
@@ -228,8 +248,11 @@ const Detail = () => {
                         <VideoWrapper>
                             <VideoTitle>예고편</VideoTitle>
                             <VideoOutLine>
-                                {preview?.slice(0,3).map((props,idx) => (
-                                    <Video videoId={props.id.videoId} key={idx}/>
+                                {preview?.slice(0, 3).map((props, idx) => (
+                                    <Video
+                                        videoId={props.id.videoId}
+                                        key={idx}
+                                    />
                                 ))}
                             </VideoOutLine>
                         </VideoWrapper>
@@ -240,18 +263,20 @@ const Detail = () => {
                                 <h3>더보기 &#62;</h3>
                             </StillImageTitle>
                             <StillImageWrapper>
-                                {movieData.length !== 0 ? movieData.stillImage
-                                    ?.slice(0, 6)
-                                    .map((props, idx) => (
-                                        <img
-                                            src={props}
-                                            key={idx}
-                                            alt="still"
-                                            onError={handleImageError}
-                                        />
-                                    )) : (
-                                        <p>스틸이미지가 존재하지 않습니다.</p>
-                                    )}
+                                {movieData.length !== 0 ? (
+                                    movieData.stillImage
+                                        ?.slice(0, 6)
+                                        .map((props, idx) => (
+                                            <img
+                                                src={props}
+                                                key={idx}
+                                                alt="still"
+                                                onError={handleImageError}
+                                            />
+                                        ))
+                                ) : (
+                                    <p>스틸이미지가 존재하지 않습니다.</p>
+                                )}
                             </StillImageWrapper>
                         </VideoWrapper>
                     </UnderContentWrapper>
@@ -307,6 +332,7 @@ const LikeBtn = styled.div`
     align-items: center;
     width: 5rem;
     height: 2.5rem;
+    margin-bottom: 0.5rem;
     border-radius: 0.3rem;
     background-color: #03af59;
     p {
@@ -352,6 +378,13 @@ const FullHeart = styled(AiFillHeart)`
     width: 1.2rem;
     height: 1.2rem;
     color: red;
+    margin-right: 0.3rem;
+`;
+
+const LikeHeart = styled(AiFillHeart)`
+    width: 1.2rem;
+    height: 1.2rem;
+    color: #e8ac4b;
     margin-right: 0.3rem;
 `;
 
@@ -430,6 +463,7 @@ const TestGraph = styled.div`
 const LikeGraph = styled.div`
     width: 50%;
     height: 20rem;
+    margin-top: 5rem;
     border-bottom: 1px solid #03af59;
 `;
 const VideoWrapper = styled.div`
@@ -495,4 +529,11 @@ const StillImageTitle = styled.div`
         font-weight: 600;
         color: #03af03;
     }
+`;
+
+const ButtonWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 `;
