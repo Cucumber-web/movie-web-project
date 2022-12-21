@@ -84,7 +84,7 @@ const Quiz = () => {
                         <p>{quizList[current].quizTitle}</p>
                     </QuizTitle>
                     <AnswerBtnWrapper>
-                    {quizList[current].quizItems.map((props,idx) => (
+                    {quizList[current]?.quizItems?.map((props,idx) => (
                       <AnswerBtn onClick={handleAnswer} value={props.correct} key={idx}>{props.item}</AnswerBtn>
                       ))}
                     </AnswerBtnWrapper>
