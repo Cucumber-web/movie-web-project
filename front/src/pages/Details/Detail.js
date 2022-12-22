@@ -242,9 +242,9 @@ const Detail = () => {
                         </MovieInfo>
                     </DetailWrapper>
                     <UnderContentWrapper>
-                        <LikeGraph>
+                        {/* <LikeGraph>
                             <TestGraph />
-                        </LikeGraph>
+                        </LikeGraph> */}
                         <VideoWrapper>
                             <VideoTitle>예고편</VideoTitle>
                             <VideoOutLine>
