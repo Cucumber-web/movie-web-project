@@ -14,7 +14,7 @@ import java.io.IOException;
 
 //@Service
 @RequiredArgsConstructor
-//@Component
+@Component
 public class InitService implements ApplicationListener<ContextRefreshedEvent> {
     private final BoxOfficeService boxOfficeService;
     @Override
@@ -22,6 +22,7 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
         try {
             System.out.println("DB 값 주입실행");
             boxOfficeService.saveBoxMovie();
+            boxOfficeService.saveSearchBoxOffice(2021,2022);
         } catch (KobisScrapper.NotScrappedDateException e) {
             throw new RuntimeException(e);
         } catch (IOException e) {

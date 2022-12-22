@@ -1,17 +1,17 @@
 import styled from "styled-components"
 import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 
-const NextArrow = () => {
+const NextArrow = ({onClick}) => {
   return (
-    <Arrow>
+    <Arrow onClick={onClick}>
       <IoIosArrowForward />
     </Arrow>
   )
 }
 
-const PrevArrow = () => {
+const PrevArrow = ({onClick}) => {
   return (
-    <ArrowPrev>
+    <ArrowPrev onClick={onClick}>
       <IoIosArrowBack />
     </ArrowPrev>
   )

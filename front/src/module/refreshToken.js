@@ -23,7 +23,6 @@ const newAccessToken = (err) => {
 
     if (err.response.status === 403) {
         axios(config).then((res) => {
-            console.log(res);
             setAccessToken(res.data.accessToken);
             setRefreshToken(res.data.refreshToken);
             window.location.reload();

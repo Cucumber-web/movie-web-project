@@ -7,6 +7,7 @@ import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { PrevArrow, NextArrow } from "../../components/Button";
+import { getAccessToken } from "../../storage/Cookie";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 
@@ -31,11 +32,11 @@ const Main = () => {
         slidesToShow: 3,
         centerMode: true,
         centerPadding: 0,
-        nextArrow:<PrevArrow />,
-        prevArrow: <NextArrow />,
+        nextArrow: <NextArrow />,
+        prevArrow: <PrevArrow />,
         beforeChange: (current, next) => setImageIndex(next),
     };
-    console.log(movie);
+
     useEffect(() => {
         axios
             .get("/mvi/box")
@@ -45,14 +46,23 @@ const Main = () => {
             .catch((err) => {
                 console.log(err);
             });
+
+        axios
+            .get("/mvi/like")
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
     }, []);
+
+    const handleImageError = (e) => {
+        e.target.src =
+            "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/660px-No-Image-Placeholder.svg.png?20200912122019";
+    };
 
     return (
         <MainOutHeightWrapper>
             <MainWrapper>
-                <Slider
-                    {...CAROUSEL_SETTING}
-                >
+                <MainTopText>이번 주 Best영화</MainTopText>
+                <Slider {...CAROUSEL_SETTING}>
                     {movie &&
                         movie.slice(0, 7).map((props, idx) => (
                             <MainPoster
@@ -64,7 +74,7 @@ const Main = () => {
                             >
                                 <img
                                     src={props.postLink}
-                                    
+                                    onError={handleImageError}
                                     alt={props.title}
                                 />
                             </MainPoster>
@@ -82,9 +92,10 @@ const Main = () => {
                                 alt="quiz imag"
                                 onClick={() =>
                                     navigate("/detail", {
-                                        state:  props.title ,
+                                        state: props.title,
                                     })
                                 }
+                                onError={handleImageError}
                             />
                         ))}
                 </QuizImgWrapper>
@@ -119,6 +130,7 @@ const Main = () => {
                             <PostImageWrapper
                                 src={props?.postLink}
                                 alt="post"
+                                onError={handleImageError}
                             />
                         </div>
                     ))}
@@ -131,7 +143,7 @@ const Main = () => {
 export default Main;
 
 const MainWrapper = styled.section`
-    width: 90%;
+    width: 80%;
     height: 30rem;
     margin: 0 auto;
 `;
@@ -142,7 +154,7 @@ const MainOutHeightWrapper = styled.section`
     justify-content: start;
     flex-direction: column;
     position: relative;
-    height: 180vh;
+    height: 195vh;
     overflow-y: hidden;
 `;
 const MainTopText = styled.div`
@@ -168,6 +180,7 @@ const QuizWrapper = styled.section`
     align-items: center;
     width: 100vw;
     height: 40vh;
+    margin-top: 3rem;
 `;
 
 const QuizImgWrapper = styled.div`
@@ -217,6 +230,7 @@ const ThisWeek = styled.div`
     align-items: center;
     width: 100%;
     height: 8rem;
+    margin-top: 3rem;
 
     h2 {
         font-size: 1.3rem;
@@ -255,5 +269,3 @@ const WeekBtn = styled.button`
         }
     }
 `;
-
-
