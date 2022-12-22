@@ -10,11 +10,26 @@ spring:
     validationQuery: SELECT 1
     tomcat.max-wait: 60000
 
+<<<<<<< HEAD
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+
+
+#  datasource:
+#    url: jdbc:mysql://localhost:3306/movie
+#    username: wookim
+#    password: 1234
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+=======
   # datasource:
   #   url: jdbc:mysql://localhost:3306/movie
   #   username: root
   #   password: black159
   #   driver-class-name: com.mysql.cj.jdbc.Driver
+>>>>>>> c2bf1fa7be55d84bbd1ff13630e88051ae5f44c2
 
   jpa:
     hibernate:

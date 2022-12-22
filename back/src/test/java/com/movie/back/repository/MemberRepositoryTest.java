@@ -121,7 +121,7 @@ class MemberRepositoryTest {
     @Test
     @Transactional
     void 찜한영화테스트(){
-      //  myMovieService.getDtoList("user").forEach(System.out::println);
+       // myMovieService.getDtoList("user").forEach(System.out::println);
     }
 
     @Test
