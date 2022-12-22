@@ -29,6 +29,9 @@ public class InitService implements ApplicationListener<ContextRefreshedEvent> {
             throw new RuntimeException(e);
         }
         /*
+
+
+
         * saveLike 연령별 라이크도 실행할 예정임 박스오피스가 아닌 영화 에서 대략추천 아니면 배포하고 해도 가능함
         *
         * */
