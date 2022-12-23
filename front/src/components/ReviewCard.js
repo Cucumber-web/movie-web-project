@@ -8,7 +8,15 @@ import { BsTrash } from "react-icons/bs";
 import { getAccessToken } from "../storage/Cookie";
 import axios from "axios";
 
-const ReviewCard = ({ id,spoiler, content, rating, userEmail, email, blind }) => {
+const ReviewCard = ({
+    id,
+    spoiler,
+    content,
+    rating,
+    userEmail,
+    email,
+    blind,
+}) => {
     const [isSpoiler, setIsSpoiler] = useState(false);
     const [isOpen, setIsOpen] = useState(false);
 
@@ -21,15 +29,35 @@ const ReviewCard = ({ id,spoiler, content, rating, userEmail, email, blind }) =>
     };
 
     const reportConfig = {
-      method: 'post',
-      url: `/comments/denger/${id}`,
-      headers:{
-        Authorization: `Bearer ${getAccessToken()}`,
-      }
-    }
+        method: "post",
+        url: `/comments/denger/${id}`,
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    };
+
+    const deleteConfig = {
+        method: "delete",
+        url: `/comments/delete?id=${id}`,
+        headers: {
+            Authorization: `Bearer ${getAccessToken()}`,
+        },
+    };
 
     const handleReport = () => {
-      axios(reportConfig).then(res => console.log(res)).catch(err => console.log(err));
+        axios(reportConfig)
+            .then((res) => console.log(res))
+            .catch((err) => console.log(err));
+    };
+
+    const handleDeleteReview = () => {
+        console.log(id);
+        axios(deleteConfig)
+            .then((res) => {
+                alert("삭제되었습니다.");
+                window.location.reload();
+            })
+            .catch((err) => console.log(err));
     };
 
     return (
@@ -48,10 +76,12 @@ const ReviewCard = ({ id,spoiler, content, rating, userEmail, email, blind }) =>
                         <h2>
                             수정하기 <MdAutoFixNormal />
                         </h2>
-                        <h4>
+                        <h4 onClick={handleDeleteReview}>
                             삭제하기 <BsTrash />
                         </h4>
-                        {userEmail !== email && <h3 onClick={handleReport}>신고하기</h3>}
+                        {userEmail !== email && (
+                            <h3 onClick={handleReport}>신고하기</h3>
+                        )}
                     </FixDeleteBox>
                 )}
             </CardTitle>
@@ -143,10 +173,12 @@ const FixDeleteBox = styled.div`
 
     h4 {
         color: red;
+        cursor: pointer;
     }
 
     h3 {
         color: orange;
+        cursor: pointer;
     }
 `;
 const Star = styled(AiFillStar)`

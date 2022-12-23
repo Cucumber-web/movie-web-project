@@ -79,6 +79,7 @@ const UserDetail = () => {
                                 <ReviewCard
                                     content={props.content}
                                     rating={props.rating}
+                                    id={props.id}
                                 ></ReviewCard>
                             </UserReviewCard>
                         ))}
