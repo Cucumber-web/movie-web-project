@@ -52,34 +52,64 @@
 </p>
 
 
-## 🙆🏻‍♂️🙆🏻‍♀️ Contributors
+
+## 💻 Tech
+
+### 🙆🏻‍♂️🙆🏻‍♀️ Contributors
 
 | [김완영](https://github.com/kimwanyoung) | [김재우](https://github.com/kimjaewoo2233) | [박현](https://github.com/HyunP-dev) | [최아리](https://github.com/Akdbkahdkaka) | [조우형](https://github.com/UhyeongJo) |
 | :-------------: | :-------------: | :-------------: | :-------------: | :-------------: |
 | Front-End | Back-End | Back-End(Data) | Web-Design | DevOps |
 
 * Front-End : ![][react] ![][styled-components] ![][HTML] ![][JavaScript-ES6]
-* Back-End : ![][Springboot] ![][JPA(JPQL)] ![][MySQL] ![][Spring-Security(JWT,Session)]
+* Back-End : ![][Java] ![][Springboot] ![][JPA(JPQL)] ![][MySQL] ![][Spring-Security(JWT,Session)]
 * Web-Design : ![][Adobe-Photoshop] ![][Adobe-Illustrator] ![][Adobe-XD] ![][Figma]
 * DevOps : ![][Naver-Cloud-Platform] ![][Docker] ![][Jenkins] ![][ArgoCD] ![][Kubernetes]
 
 [react]: https://img.shields.io/badge/React-61DAFB?style=flat&logo=React&logoColor=white
 [styled-components]: https://img.shields.io/badge/styled-components-DB7093?style=flat&logo=styled-components&logoColor=white
 [HTML]: https://img.shields.io/badge/HTML5-E34F26?style=flat&logo=HTML5&logoColor=white
-[JavaScript-ES6]: https://img.shields.io/badge/JavaScript-F7DF1E?style=flat&logo=JavaScript&logoColor=white
+[JavaScript-ES6]: https://img.shields.io/badge/JavaScript-ES6-F7DF1E?style=flat&logo=JavaScript&logoColor=white
 
-[Springboot]: https://img.shields.io/badge/Spring-Boot-v2.7.5-43853D?logo=spring&logoColor=white
+
+[Java]: https://img.shields.io/badge/Java-11-F7DF1E?logo=java&logoColor=white
+[Springboot]: https://img.shields.io/badge/SpringBoot-2.7.5-6DB33F?logo=Spring-Boot&logoColor=white
 [JPA(JPQL)]: https://img.shields.io/badge/Spring-Data-JPA-43853D?logo=spring&logoColor=white
 [MySQL]: https://img.shields.io/badge/MySQL-4479A1?style=flat&logo=MySQL&logoColor=white
-[Spring-Security(JWT,Session)]: https://img.shields.io/badge/Spring-Security-6DB33F?style=flat&logo=Spring Security&logoColor=white
+[Spring-Security(JWT,Session)]: https://img.shields.io/badge/Spring-Security-6DB33F?style=flat&logo=Spring-Security&logoColor=white
 
-[Adobe-Photoshop]: https://img.shields.io/badge/Adobe-Photoshop-31A8FF?style=flat&logo=Adobe Photoshop&logoColor=white
-[Adobe-Illustrator]: https://img.shields.io/badge/Adobe-Illustrator-FF9A00?style=flat&logo=Adobe Illustrator&logoColor=white
-[Adobe-XD]: https://img.shields.io/badge/Adobe-XD-FF61F6?style=flat&logo=Adobe XD&logoColor=white
+[Adobe-Photoshop]: https://img.shields.io/badge/Adobe-Photoshop-31A8FF?style=flat&logo=Adobe-Photoshop&logoColor=white
+[Adobe-Illustrator]: https://img.shields.io/badge/Adobe-Illustrator-FF9A00?style=flat&logo=Adobe-Illustrator&logoColor=white
+[Adobe-XD]: https://img.shields.io/badge/Adobe-XD-FF61F6?style=flat&logo=Adobe-XD&logoColor=white
 [Figma]: https://img.shields.io/badge/Figma-F24E1E?style=flat&logo=Figma&logoColor=white
 
-[Naver-Cloud-Platform]: https://img.shields.io/badge/Naver-03C75A?style=flat&logo=NCP&logoColor=white
+[Naver-Cloud-Platform]: https://img.shields.io/badge/NCP-03C75A?style=flat&logo=Naver&logoColor=white
 [Docker]: https://img.shields.io/badge/Docker-2496ED?style=flat&logo=Docker&logoColor=white
 [Jenkins]: https://img.shields.io/badge/Jenkins-D24939?style=flat&logo=Jenkins&logoColor=white
 [ArgoCD]: https://img.shields.io/badge/Argo-EF7B4D?style=flat&logo=Argo&logoColor=white
 [Kubernetes]: https://img.shields.io/badge/Kubernetes-326CE5?style=flat&logo=Kubernetes&logoColor=white
+
+---
+
+### 🍎 CI / CD Architecture
+
+<p align="center">
+  <img width="100%" height="100%" src="image/infra-architecture.png">
+</p>
+
+---
+
+### 🍏 Server Architecture
+
+<p align="center">
+  <img width="100%" height="100%" src="image/service-architecture.png">
+</p>
+
+---
+
+### 🍊 ERD
+
+<p align="center">
+  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/62306702/210326081-72a539de-d006-4e46-9ad2-5cab3cb79d61.png">
+</p>
+
