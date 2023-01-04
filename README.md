@@ -94,7 +94,7 @@
 ### 🍎 CI / CD Architecture
 
 <p align="center">
-  <img width="100%" height="100%" src="image/infra-architecture.png">
+  <img width="100%" height="100%" src="https://user-images.githubusercontent.com/62306702/210503656-2651009c-15c4-4af5-a513-147bfed04a56.png">
 </p>
 
 ---
